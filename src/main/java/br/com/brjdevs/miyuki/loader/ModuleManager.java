@@ -10,15 +10,15 @@ import br.com.brjdevs.miyuki.modules.cmds.manager.CommandManager;
 import br.com.brjdevs.miyuki.utils.Log4jUtils;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.ReconnectedEvent;
+import net.dv8tion.jda.core.events.ResumedEvent;
 import net.dv8tion.jda.core.hooks.SubscribeEvent;
 import org.apache.logging.log4j.Logger;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
+import java.util.function.Function;
 
 public class ModuleManager {
 	private static final Logger LOGGER = Log4jUtils.logger();
@@ -49,66 +49,34 @@ public class ModuleManager {
 			ModuleContainer container = new ModuleContainerImpl(module, clazz, instance, resourceManager);
 
 			//Fields being initialized before Module.Predicate
-			for (Field f : container.getFieldsForAnnotation(LoggerInstance.class)) {
-				try {
-					f.set(container.getInstance(), Log4jUtils.logger(clazz));
-				} catch (Exception e) {
-					LOGGER.error("Error while injecting Logger into " + f + ":", e);
-				}
-			}
-
-			for (Field f : container.getFieldsForAnnotation(Module.Instance.class)) {
-				try {
-					f.set(container.getInstance(), container.getInstance());
-				} catch (Exception e) {
-					LOGGER.error("Error while injecting Instance into " + f + ":", e);
-				}
-			}
-
-			for (Field f : container.getFieldsForAnnotation(ResourceManager.class)) {
-				try {
-					f.set(container.getInstance(), resourceManager);
-				} catch (Exception e) {
-					LOGGER.error("Error while injecting ResourceManager into " + f + ":", e);
-				}
-			}
-
-			for (Field f : container.getFieldsForAnnotation(Resource.class)) {
-				try {
-					f.set(container.getInstance(), resourceManager.get(f.getAnnotation(Resource.class).value()));
-				} catch (Exception e) {
-					LOGGER.error("Error while injecting Resource \"" + f.getAnnotation(Resource.class).value() + "\" into " + f + ":", e);
-				}
-			}
-
-			for (Field f : container.getFieldsForAnnotation(JSONResource.class)) {
-				try {
-					f.set(container.getInstance(), resourceManager.getAsJson(f.getAnnotation(JSONResource.class).value()));
-				} catch (Exception e) {
-					LOGGER.error("Error while injecting Resource \"" + f.getAnnotation(JSONResource.class).value() + "\" into " + f + ":", e);
-				}
-			}
+			setFields(container, Container.class, container);
+			setFields(container, ResourceManager.class, container.getResourceManager());
+			setFields(container, LoggerInstance.class, container.getLogger());
+			setFields(container, Instance.class, container.getInstance());
+			setFields(container, Resource.class, resource -> resourceManager.get(resource.value()));
+			setFields(container, JSONResource.class, resource -> resourceManager.getAsJson(resource.value()));
 
 			//If any Module.Predicate is present and fails, it will stop the
-			if (!container.getMethodsForAnnotation(Module.Predicate.class).stream().allMatch(method -> {
+			if (!container.getMethodsForAnnotation(Predicate.class).stream().allMatch(method -> {
 				try {
-					return (Boolean) method.invoke(instance);
+					Object o = method.invoke(instance);
+					return (o instanceof Boolean) ? (Boolean) o : true;
 				} catch (Exception e) {
 					LOGGER.error("Error while Predicating:", e);
 				}
 				return false;
 			})) {
-				fireEventsFor(container, Module.OnDisabled.class);
+				fireEventsFor(container, OnDisabled.class);
 				return;
 			} else {
-				fireEventsFor(container, Module.OnEnabled.class);
+				fireEventsFor(container, OnEnabled.class);
 			}
 
 			//We past this far. Time to register.
 			INSTANCE_MAP.put(clazz, container);
 
 			//Yeah, we need to make this.
-			if (container.isAnnotationPresent(Module.SubscribeJDA.class)) JDA_LISTENERS.add(container.getInstance());
+			if (module.isListener()) JDA_LISTENERS.add(container.getInstance());
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
@@ -122,56 +90,67 @@ public class ModuleManager {
 
 	public static void firePreReadyEvents() {
 		if (firedPre) throw new RuntimeException(new IllegalAccessException("Already fired."));
-		fireEvents(Module.PreReady.class);
+		fireEvents(PreReady.class);
 		firedPre = true;
 	}
 
 	public static void firePostReadyEvents() {
 		if (firedPost) throw new RuntimeException(new IllegalAccessException("Already fired."));
-		fireEvents(Module.PostReady.class);
+		fireEvents(PostReady.class);
 		firedPost = true;
 	}
 
 	@SubscribeEvent
 	private static void ready(ReadyEvent event) {
 		for (ModuleContainer module : INSTANCE_MAP.values()) {
-			for (Field f : module.getFieldsForAnnotation(Module.JDAInstance.class)) {
+			setFields(module, JDAInstance.class, event.getJDA());
+			setFields(module, SelfUserInstance.class, event.getJDA().getSelfUser());
+
+			module.getMethodsForAnnotation(Command.class).stream().filter(method -> ICommand.class.isAssignableFrom(method.getReturnType())).forEach(m -> {
 				try {
-					f.set(module.getInstance(), event.getJDA());
+					CommandManager.addCommand(m.getAnnotation(Command.class).value(), (ICommand) m.invoke(module.getInstance()));
 				} catch (Exception e) {
-					LOGGER.error("Error while injecting JDA Instance into " + f + ":", e);
+					LOGGER.error("Error while registering command \"" + m.getAnnotation(Command.class).value() + "\" from " + m + ":", e);
 				}
-			}
-			for (Field f : module.getFieldsForAnnotation(Module.SelfUserInstance.class)) {
-				try {
-					f.set(module.getInstance(), event.getJDA().getSelfUser());
-				} catch (Exception e) {
-					LOGGER.error("Error while injecting SelfUser Instance into " + f + ":", e);
-				}
-			}
-			for (Method m : module.getMethodsForAnnotation(Module.Command.class)) {
-				try {
-					CommandManager.addCommand(m.getAnnotation(Module.Command.class).value(), (ICommand) m.invoke(module.getInstance()));
-				} catch (Exception e) {
-					LOGGER.error("Error while registering command \"" + m.getAnnotation(Module.Command.class).value() + "\" from " + m + ":", e);
-				}
-			}
+			});
 		}
 
-		fireEvents(Module.Ready.class);
+		fireEvents(Ready.class);
 	}
 
 	@SubscribeEvent
 	private static void reconnect(ReconnectedEvent event) {
-		for (ModuleContainer module : INSTANCE_MAP.values()) {
-			for (Field f : module.getFieldsForAnnotation(Module.SelfUserInstance.class)) {
+		for (ModuleContainer module : INSTANCE_MAP.values())
+			setFields(module, SelfUserInstance.class, event.getJDA().getSelfUser());
+	}
+
+	@SubscribeEvent
+	private static void resumed(ResumedEvent event) {
+		for (ModuleContainer module : INSTANCE_MAP.values())
+			setFields(module, SelfUserInstance.class, event.getJDA().getSelfUser());
+	}
+
+	private static void setFields(ModuleContainer module, Class<? extends Annotation> annotation, Object object) {
+		module.getFieldsForAnnotation(annotation).stream().filter(field -> object.getClass().isAssignableFrom(field.getType())).forEach(field -> {
+			try {
+				field.set(module.getInstance(), object);
+			} catch (Exception e) {
+				LOGGER.error("Error while injecting " + object + " into " + field + ":", e);
+			}
+		});
+	}
+
+	private static <A extends Annotation> void setFields(ModuleContainer module, Class<A> annotation, Function<A, Object> objectCreator) {
+		module.getFieldsForAnnotation(annotation).forEach(field -> {
+			Object object = objectCreator.apply(field.getAnnotation(annotation));
+			if (object.getClass().isAssignableFrom(field.getType())) {
 				try {
-					f.set(module.getInstance(), event.getJDA().getSelfUser());
+					field.set(module.getInstance(), object);
 				} catch (Exception e) {
-					LOGGER.error("Error while injecting SelfUser Instance into " + f + " on Reconnecting:", e);
+					LOGGER.error("Error while injecting " + object + " into " + field + ":", e);
 				}
 			}
-		}
+		});
 	}
 
 	private static void fireEvents(Class<? extends Annotation> annotation) {
@@ -179,16 +158,16 @@ public class ModuleManager {
 	}
 
 	private static void fireEventsFor(ModuleContainer module, Class<? extends Annotation> annotation) {
-		for (Method m : module.getMethodsForAnnotation(annotation)) {
+		module.getMethodsForAnnotation(annotation).stream().filter(m -> m.getParameterCount() == 0).forEach(m -> {
 			try {
 				m.invoke(module.getInstance());
 			} catch (Exception e) {
 				LOGGER.error("Error while firing event \"" + annotation + "\" from " + m + ":", e);
 			}
-		}
+		});
 	}
 
-	public static Object makeInstance(Class<?> clazz) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+	private static Object makeInstance(Class<?> clazz) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		//Creates a Set from the ModuleType[]
 		Set<Type> moduleTypes = new HashSet<>();
 		Collections.addAll(moduleTypes, clazz.getAnnotation(Module.class).type());
@@ -205,6 +184,4 @@ public class ModuleManager {
 
 		return null;
 	}
-
-
 }

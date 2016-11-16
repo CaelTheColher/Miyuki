@@ -3,7 +3,6 @@ package br.com.brjdevs.miyuki.modules.cmds.manager;
 import br.com.brjdevs.miyuki.commands.CommandEvent;
 import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.JDAInstance;
-import br.com.brjdevs.miyuki.loader.Module.Type;
 import br.com.brjdevs.miyuki.modules.db.DBModule;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.GuildModule.Data;
@@ -65,7 +64,7 @@ Permissões:
 	(62/Z)	STOP_BOT
 				Stops/Resets the Bot
  */
-@Module(name = "permissions", type = Type.STATIC)
+@Module(name = "permissions")
 public class PermissionsModule {
 	public static final long
 		RUN_CMDS = bits(0),
@@ -128,7 +127,7 @@ public class PermissionsModule {
 		return true;
 	}
 
-	public static boolean checkPerms(long senderPerm, long targetPerm) {
+	private static boolean checkPerms(long senderPerm, long targetPerm) {
 		long perms = bits(7, 8, 9);
 		senderPerm &= perms;
 		targetPerm &= perms; //Select bits 7 8 9

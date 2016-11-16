@@ -6,8 +6,6 @@ import br.com.brjdevs.miyuki.commands.ICommand;
 import br.com.brjdevs.miyuki.commands.UserCommand;
 import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.Command;
-import br.com.brjdevs.miyuki.loader.Module.SubscribeJDA;
-import br.com.brjdevs.miyuki.loader.Module.Type;
 import br.com.brjdevs.miyuki.modules.cmds.manager.CommandManager;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
@@ -21,8 +19,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Module(name = "cmds.cmds", type = Type.STATIC)
-@SubscribeJDA
+import static br.com.brjdevs.miyuki.modules.db.I18nModule.getLocalized;
+
+@Module(name = "cmds.cmds")
 public class CmdsCmd {
 	@Command("cmds")
 	private static ICommand createCommand() {

@@ -4,7 +4,6 @@ import br.com.brjdevs.miyuki.commands.Commands;
 import br.com.brjdevs.miyuki.commands.ICommand;
 import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.Command;
-import br.com.brjdevs.miyuki.loader.Module.Type;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
@@ -13,7 +12,7 @@ import br.com.brjdevs.miyuki.utils.data.Commitable;
 import java.util.Arrays;
 import java.util.List;
 
-@Module(name = "cmds.guild", type = Type.STATIC)
+@Module(name = "cmds.guild")
 public class GuildCmd {
 	@Command("guild")
 	private static ICommand createCommand() {

@@ -1,6 +1,7 @@
-package br.com.brjdevs.miyuki.modules.cmds;
+package br.com.brjdevs.miyuki.modules.cmds.util;
 
 import br.com.brjdevs.java.lib.IOHelper;
+import br.com.brjdevs.miyuki.modules.cmds.FeedCmd.Subscription;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
 import br.com.brjdevs.miyuki.utils.EncodingUtil;
 import br.com.brjdevs.miyuki.utils.HTML2Discord;
@@ -34,7 +35,7 @@ public class FeedingUtil {
 		return IOHelper.newURL(shorten(url.toString(), shorturl));
 	}
 
-	public static Function<TextChannel, String> handleEntry(final FeedCmd.Subscription subscription, final SyndEntry feed) {
+	public static Function<TextChannel, String> handleEntry(final Subscription subscription, final SyndEntry feed) {
 		//Compile static things
 		Function<TextChannel, String> chunk2, chunk4, chunk6, chunk7;
 		String chunk1 = "***:envelope_with_arrow: - ";

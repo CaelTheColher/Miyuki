@@ -8,8 +8,8 @@ import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.Command;
 import br.com.brjdevs.miyuki.loader.Module.LoggerInstance;
 import br.com.brjdevs.miyuki.loader.Module.PostReady;
-import br.com.brjdevs.miyuki.loader.Module.Type;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
+import br.com.brjdevs.miyuki.modules.cmds.util.FeedingUtil;
 import br.com.brjdevs.miyuki.modules.db.DBModule;
 import br.com.brjdevs.miyuki.oldmodules.cmds.PushCmd;
 import br.com.brjdevs.miyuki.utils.AsyncUtils;
@@ -30,7 +30,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.function.Function;
 
-@Module(name = "cmds.feed", type = Type.STATIC)
+@Module(name = "cmds.feed")
 public class FeedCmd {
 	private static final Set<Subscription> ALL = Collections.synchronizedSet(new HashSet<>());
 	private static final Set<String> ALL_TYPES = Collections.synchronizedSet(new HashSet<>());

@@ -5,7 +5,6 @@ import br.com.brjdevs.miyuki.commands.Commands;
 import br.com.brjdevs.miyuki.commands.ICommand;
 import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.Command;
-import br.com.brjdevs.miyuki.loader.Module.Type;
 import br.com.brjdevs.miyuki.modules.cmds.manager.CommandManager.TooFast;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
@@ -17,7 +16,7 @@ import net.dv8tion.jda.core.JDAInfo;
 
 import java.util.Optional;
 
-@Module(name = "cmds.bot", type = Type.STATIC)
+@Module(name = "cmds.bot")
 public class BotCmd {
 	@Command("bot")
 	private static ICommand createCommand() {

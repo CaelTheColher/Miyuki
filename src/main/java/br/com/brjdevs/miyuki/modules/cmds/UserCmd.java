@@ -6,13 +6,13 @@ import br.com.brjdevs.miyuki.commands.Holder;
 import br.com.brjdevs.miyuki.commands.ICommand;
 import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.Command;
-import br.com.brjdevs.miyuki.loader.Module.Type;
 import br.com.brjdevs.miyuki.modules.db.UserModule;
 import br.com.brjdevs.miyuki.utils.DiscordUtils;
 
 import static br.com.brjdevs.miyuki.modules.db.I18nModule.getLocale;
+import static br.com.brjdevs.miyuki.modules.db.I18nModule.getLocalized;
 
-@Module(name = "cmds.user", type = Type.STATIC)
+@Module(name = "cmds.user")
 public class UserCmd {
 	@Command("user")
 	private static ICommand createCommand() {

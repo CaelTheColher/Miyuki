@@ -4,12 +4,11 @@ import br.com.brjdevs.miyuki.commands.Commands;
 import br.com.brjdevs.miyuki.commands.ICommand;
 import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.Command;
-import br.com.brjdevs.miyuki.loader.Module.Type;
 import br.com.brjdevs.miyuki.utils.StringUtils;
 
 import java.util.Arrays;
 
-@Module(name = "cmds.minor", type = Type.STATIC)
+@Module(name = "cmds.minor")
 public class MinorCmds {
 	//	@Command("parser")
 //	private static ICommand parser() {

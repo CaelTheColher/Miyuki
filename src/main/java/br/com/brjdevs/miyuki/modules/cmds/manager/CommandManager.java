@@ -5,7 +5,6 @@ import br.com.brjdevs.miyuki.commands.ICommand;
 import br.com.brjdevs.miyuki.commands.UserCommand;
 import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.LoggerInstance;
-import br.com.brjdevs.miyuki.loader.Module.SubscribeJDA;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.UserCommandsModule;
 import br.com.brjdevs.miyuki.oldmodules.init.Statistics;
@@ -20,21 +19,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static br.com.brjdevs.miyuki.loader.Module.Type.STATIC;
 import static br.com.brjdevs.miyuki.utils.AsyncUtils.async;
 import static br.com.brjdevs.miyuki.utils.AsyncUtils.asyncSleepThen;
 import static br.com.brjdevs.miyuki.utils.CollectionUtils.concatMaps;
 import static br.com.brjdevs.miyuki.utils.StringUtils.splitArgs;
 
-@Module(name = "cmdmanager", type = STATIC)
-@SubscribeJDA
+@Module(name = "cmdmanager", isListener = true)
 public class CommandManager {
 	private static final Map<String, ICommand> COMMANDS = new HashMap<>();
 	@LoggerInstance
 	private static Logger logger = null;
 
 	@SubscribeEvent
-	public static void onMessageReceived(GuildMessageReceivedEvent msgEvent) {
+	private static void onMessageReceived(GuildMessageReceivedEvent msgEvent) {
 		if (msgEvent.getAuthor().equals(msgEvent.getJDA().getSelfUser())) {
 			asyncSleepThen(15 * 1000, () -> {
 				if (GuildModule.fromDiscord(msgEvent.getGuild()).getFlag("cleanup"))
@@ -48,7 +45,7 @@ public class CommandManager {
 		async(() -> onCommand(msgEvent)).run();
 	}
 
-	public static void onCommand(GuildMessageReceivedEvent msgEvent) {
+	private static void onCommand(GuildMessageReceivedEvent msgEvent) {
 		GuildModule.Data local = GuildModule.fromDiscord(msgEvent.getGuild()), global = GuildModule.GLOBAL, target = local;
 		if (!PermissionsModule.havePermsRequired(global, msgEvent.getAuthor(), PermissionsModule.RUN_CMDS) || !PermissionsModule.havePermsRequired(local, msgEvent.getAuthor(), PermissionsModule.RUN_CMDS))
 			return;

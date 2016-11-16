@@ -4,10 +4,10 @@ import br.com.brjdevs.miyuki.commands.Commands;
 import br.com.brjdevs.miyuki.commands.ICommand;
 import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.Command;
-import br.com.brjdevs.miyuki.loader.Module.Type;
+import br.com.brjdevs.miyuki.modules.cmds.util.FeedingUtil;
 import br.com.brjdevs.miyuki.utils.HTML2Discord;
 
-@Module(name = "cmds.utils", type = Type.STATIC)
+@Module(name = "cmds.utils")
 public class UtilsCmd {
 	@Command("utils")
 	private static ICommand utils() {

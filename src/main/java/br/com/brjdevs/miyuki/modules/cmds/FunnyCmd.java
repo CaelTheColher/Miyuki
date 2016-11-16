@@ -22,7 +22,7 @@ import static br.com.brjdevs.miyuki.utils.AsyncUtils.async;
 import static br.com.brjdevs.miyuki.utils.AsyncUtils.sleep;
 import static br.com.brjdevs.miyuki.utils.CollectionUtils.random;
 
-@Module(name = "cmds.funny", type = Type.STATIC)
+@Module(name = "cmds.funny")
 public class FunnyCmd {
 	@LoggerInstance
 	private static Logger logger;

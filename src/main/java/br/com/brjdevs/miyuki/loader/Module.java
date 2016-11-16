@@ -8,7 +8,9 @@ import java.lang.annotation.*;
 public @interface Module {
 	String name();
 
-	Type[] type();
+	Type[] type() default {Type.STATIC};
+
+	boolean isListener() default false;
 
 	enum Type {
 		STATIC, INSTANCE
@@ -62,12 +64,6 @@ public @interface Module {
 	@Inherited
 	@interface JSONResource {
 		String value();
-	}
-
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target(ElementType.TYPE)
-	@Inherited
-	@interface SubscribeJDA {
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
