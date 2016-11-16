@@ -1,5 +1,9 @@
 #!/bin/bash
 cd ./build/libs/
+
+#Gambiarra do Tipo Malandra
+find . -type f ! -name '*-all.jar' -delete
+
 FILE_NAME=`echo Miyuki-*`
 cd ../../
 FILE_LOCATION=`echo "./build/libs/$FILE_NAME"`
