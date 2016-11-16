@@ -16,6 +16,10 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.function.Consumer;
 
+import static br.com.brjdevs.miyuki.modules.gui.GUIModule.hooks;
+import static br.com.brjdevs.miyuki.modules.gui.GUIModule.jda;
+import static br.com.brjdevs.miyuki.modules.gui.impl.GuiTranslationHandler.*;
+
 public class BotGui extends JComponent {
 	private static final Logger LOGGER = LogManager.getLogger("BotGUI");
 	private static final Font GUI_FONT = new Font("Monospaced", 0, 12);
@@ -48,7 +52,7 @@ public class BotGui extends JComponent {
 		addHook(frame::setTitle, "title");
 		addLazyHook(frame::repaint);
 		addLazyHook(frame::revalidate);
-		Bot.onLoaded.add(GuiTranslationHandler::update);
+		hooks.add(GuiTranslationHandler::update);
 		ui.frame = frame;
 		frame.add(ui);
 		frame.pack();
@@ -79,7 +83,7 @@ public class BotGui extends JComponent {
 		TitledBorder b = new TitledBorder(new EtchedBorder(), "Guilds");
 		addHook(b::setTitle, "guilds");
 		pane.setBorder(b);
-		Bot.onLoaded.add(() -> Bot.API.addEventListener(list));
+		hooks.add(() -> jda.addEventListener(list));
 		return pane;
 	}
 
@@ -91,7 +95,7 @@ public class BotGui extends JComponent {
 		textArea.setFont(GUI_FONT);
 		final JTextField textField = new JTextField();
 		textField.setEditable(false);
-		Bot.onLoaded.add(() -> textField.setEditable(true));
+		hooks.add(() -> textField.setEditable(true));
 
 		out = ConsoleHandler.wrap(in -> appendLine(textArea, pane, in + "\r\n"));
 

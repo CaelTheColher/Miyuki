@@ -4,7 +4,6 @@ import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.JDAInstance;
 import br.com.brjdevs.miyuki.loader.Module.PreReady;
 import br.com.brjdevs.miyuki.loader.Module.Ready;
-import br.com.brjdevs.miyuki.loader.Module.Type;
 import br.com.brjdevs.miyuki.utils.StringUtils;
 import br.com.brjdevs.miyuki.utils.TaskManager;
 import br.com.brjdevs.miyuki.utils.data.ConfigUtils;
@@ -26,7 +25,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Function;
 
-@Module(name = "db.user", type = Type.STATIC)
+@Module(name = "db.user")
 public class UserModule {
 	@JDAInstance
 	private static JDA jda = null;

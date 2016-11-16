@@ -8,13 +8,20 @@ import br.com.brjdevs.miyuki.modules.gui.impl.BotGui;
 import br.com.brjdevs.miyuki.oldmodules.cmds.PushCmd;
 import br.com.brjdevs.miyuki.utils.QueueLogAppender;
 import br.com.brjdevs.miyuki.utils.ThreadBuilder;
+import net.dv8tion.jda.core.JDA;
 import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-@Module(name = "gui", type = Type.STATIC)
+@Module(name = "gui")
 public class GUIModule {
+	@JDAInstance
+	public static JDA jda = null;
+	public static boolean loaded = false;
+	public static List<Runnable> hooks = new ArrayList<>(), lazyHooks = new ArrayList<>();
 	@LoggerInstance
 	private static Logger logger = null;
 	private static BotGui UI;
@@ -44,5 +51,18 @@ public class GUIModule {
 		if (GraphicsEnvironment.isHeadless()) {
 			logger.info("GUI Disabled. (Headless Environiment)");
 		} else logger.info("GUI Disabled. (parameter \"nogui\")");
+	}
+
+	@Ready
+	private static void ready() {
+		loaded = true;
+		hooks.forEach(Runnable::run);
+		hooks = null;
+	}
+
+	@PostReady
+	private static void postReady() {
+		lazyHooks.forEach(Runnable::run);
+		lazyHooks = null;
 	}
 }

@@ -2,7 +2,6 @@ package br.com.brjdevs.miyuki.modules.db;
 
 import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.OnEnabled;
-import br.com.brjdevs.miyuki.loader.Module.SubscribeJDA;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.utils.TaskManager;
 import br.com.brjdevs.miyuki.utils.data.Commitable;
@@ -20,10 +19,7 @@ import net.dv8tion.jda.core.hooks.SubscribeEvent;
 import java.util.*;
 import java.util.function.Function;
 
-import static br.com.brjdevs.miyuki.loader.Module.Type.STATIC;
-
-@Module(name = "db.guild", type = STATIC)
-@SubscribeJDA
+@Module(name = "db.guild", isListener = true)
 public class GuildModule {
 	public static final String[] DEFAULT_PREFIXES = {"&", "!"};
 	public static Data GLOBAL;

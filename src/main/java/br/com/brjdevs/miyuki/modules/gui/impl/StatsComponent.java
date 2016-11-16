@@ -8,6 +8,9 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.Date;
 
+import static br.com.brjdevs.miyuki.modules.gui.GUIModule.hooks;
+import static br.com.brjdevs.miyuki.modules.gui.GUIModule.loaded;
+
 public class StatsComponent extends JComponent {
 	private static final int mb = 1024 * 1024;
 	private final int[] graphicValues = new int[229];
@@ -20,7 +23,7 @@ public class StatsComponent extends JComponent {
 		this.setMaximumSize(new Dimension(456, 246));
 		new Timer(1000, actionPerformed -> tick()).start();
 		this.setBackground(Color.BLACK);
-		Bot.onLoaded.add(this::tick);
+		hooks.add(this::tick);
 	}
 
 	private void addToArray(int value) {
@@ -36,7 +39,7 @@ public class StatsComponent extends JComponent {
 
 		Runtime instance = Runtime.getRuntime();
 		System.gc();
-		if (!Bot.LOADED) {
+		if (!loaded) {
 			this.msgs[0] = "Please Wait...";
 			this.msgs[1] = null;
 			this.msgs[2] = null;

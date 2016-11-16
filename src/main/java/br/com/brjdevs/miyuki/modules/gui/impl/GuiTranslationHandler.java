@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static br.com.brjdevs.miyuki.modules.gui.GUIModule.loaded;
+
 public class GuiTranslationHandler {
 	private static final List<Runnable> hooks = new ArrayList<>(), lazyHooks = new ArrayList<>();
 	private static String lang = "en_US";
@@ -33,7 +35,7 @@ public class GuiTranslationHandler {
 	}
 
 	public static String get(String unlocalized) {
-		if (!Bot.LOADED) return unlocalized;
+		if (!loaded) return unlocalized;
 		else return I18nModule.getLocalized("gui." + unlocalized, lang);
 	}
 

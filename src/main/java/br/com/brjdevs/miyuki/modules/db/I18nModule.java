@@ -2,7 +2,10 @@ package br.com.brjdevs.miyuki.modules.db;
 
 import br.com.brjdevs.miyuki.commands.CommandEvent;
 import br.com.brjdevs.miyuki.loader.Module;
-import br.com.brjdevs.miyuki.loader.Module.*;
+import br.com.brjdevs.miyuki.loader.Module.JDAInstance;
+import br.com.brjdevs.miyuki.loader.Module.PostReady;
+import br.com.brjdevs.miyuki.loader.Module.Resource;
+import br.com.brjdevs.miyuki.loader.Module.ResourceManager;
 import br.com.brjdevs.miyuki.loader.entities.ModuleResourceManager;
 import br.com.brjdevs.miyuki.oldmodules.cmds.PushCmd;
 import br.com.brjdevs.miyuki.utils.Log4jUtils;
@@ -20,7 +23,7 @@ import static br.com.brjdevs.miyuki.utils.AsyncUtils.asyncSleepThen;
 import static br.com.brjdevs.miyuki.utils.CollectionUtils.iterate;
 import static br.com.brjdevs.miyuki.utils.StringUtils.notNullOrDefault;
 
-@Module(name = "i18n", type = Type.STATIC)
+@Module(name = "i18n")
 public class I18nModule {
 	private static final Pattern compiledPattern = Pattern.compile("\\$\\([A-Za-z.]+?\\)");
 	@ResourceManager
