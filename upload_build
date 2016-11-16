@@ -20,7 +20,7 @@ else
     WARN=$((WARN++))
 fi
 
-if [ $WARN = 2 ]
+if [ $WARN -eq 2 ]
 then
     echo "Build discarded."
 fi
