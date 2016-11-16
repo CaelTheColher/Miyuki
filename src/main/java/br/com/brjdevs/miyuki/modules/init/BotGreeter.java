@@ -2,8 +2,6 @@ package br.com.brjdevs.miyuki.modules.init;
 
 import br.com.brjdevs.miyuki.commands.Holder;
 import br.com.brjdevs.miyuki.loader.Module;
-import br.com.brjdevs.miyuki.loader.Module.SubscribeJDA;
-import br.com.brjdevs.miyuki.loader.Module.Type;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
 import br.com.brjdevs.miyuki.modules.db.UserModule;
@@ -18,8 +16,7 @@ import net.dv8tion.jda.core.hooks.SubscribeEvent;
 
 import java.util.Optional;
 
-@Module(name = "greeter", type = Type.STATIC)
-@SubscribeJDA
+@Module(name = "greeter", isListener = true)
 public class BotGreeter {
 	public static void greet(TextChannel channel, Optional<User> optionalUser) {
 		Holder<String> lang = new Holder<>(GuildModule.fromDiscord(channel.getGuild()).getLang());
