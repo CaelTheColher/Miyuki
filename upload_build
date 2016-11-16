@@ -10,9 +10,8 @@ FILE_LOCATION=`echo "./build/libs/$FILE_NAME"`
 WARN=0
 if [[ $COMMIT_MSG == *\[D\]* ]]
 then
-    echo "Uploading $FILE_NAME to VPS Relay [DEBUG]..."
-    v=`curl -X POST -F release="0" -F key="$UPLOAD_KEY" -F file="@$FILE_LOCATION" https://vps.adriantodt.cf/relay/miyuki.php`
-    echo "$v"
+    echo "Uploading $FILE_LOCATION to VPS Relay [DEBUG]..."
+    v=`curl -X POST -F release="0" -F key="$UPLOAD_KEY" -F compiledJar="@$FILE_LOCATION" https://vps.adriantodt.cf/relay/miyuki.php`
     echo -e "\n$v\n"
 else
     WARN=$((WARN++))
@@ -20,9 +19,8 @@ fi
 
 if [[ $COMMIT_MSG == *\[R\]* ]]
 then
-    echo "Uploading $FILE_NAME to VPS Relay [RELEASE]..."
-    v=`curl -X POST -F release="1" -F key="$UPLOAD_KEY" -F file="@$FILE_LOCATION" https://vps.adriantodt.cf/relay/miyuki.php`
-    echo "$v"
+    echo "Uploading $FILE_LOCATION to VPS Relay [RELEASE]..."
+    v=`curl -X POST -F release="1" -F key="$UPLOAD_KEY" -F compiledJar="@$FILE_LOCATION" https://vps.adriantodt.cf/relay/miyuki.php`
     echo -e "\n$v\n"
 else
     WARN=$((WARN++))
