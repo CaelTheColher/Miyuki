@@ -11,7 +11,9 @@ WARN=0
 if [[ $COMMIT_MSG == *\[D\]* ]]
 then
     echo "Uploading $FILE_NAME to VPS Relay [DEBUG]..."
-    curl -X POST -F release="0" -F key="$UPLOAD_KEY" -F file="@$FILE_LOCATION" https://vps.adriantodt.cf/relay/miyuki.php
+    v=`curl -X POST -F release="0" -F key="$UPLOAD_KEY" -F file="@$FILE_LOCATION" https://vps.adriantodt.cf/relay/miyuki.php`
+    echo "$v"
+    echo -e "\n$v\n"
 else
     WARN=$((WARN++))
 fi
@@ -19,7 +21,9 @@ fi
 if [[ $COMMIT_MSG == *\[R\]* ]]
 then
     echo "Uploading $FILE_NAME to VPS Relay [RELEASE]..."
-    curl -X POST -F release="1" -F key="$UPLOAD_KEY" -F file="@$FILE_LOCATION" https://vps.adriantodt.cf/relay/miyuki.php
+    v=`curl -X POST -F release="1" -F key="$UPLOAD_KEY" -F file="@$FILE_LOCATION" https://vps.adriantodt.cf/relay/miyuki.php`
+    echo "$v"
+    echo -e "\n$v\n"
 else
     WARN=$((WARN++))
 fi
