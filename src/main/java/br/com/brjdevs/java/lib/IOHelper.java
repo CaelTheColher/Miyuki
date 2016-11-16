@@ -1,6 +1,6 @@
 package br.com.brjdevs.java.lib;
 
-import br.com.brjdevs.miyuki.David.oldmodules.init.Statistics;
+import br.com.brjdevs.miyuki.oldmodules.init.Statistics;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;

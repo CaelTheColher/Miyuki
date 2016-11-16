@@ -1,24 +1,12 @@
-/*
- * This class was created by <AdrianTodt>. It's distributed as
- * part of the DavidBot. Get the Source Code in github:
- * https://github.com/adriantodt/David
- *
- * DavidBot is Open Source and distributed under the
- * GNU Lesser General Public License v2.1:
- * https://github.com/adriantodt/David/blob/master/LICENSE
- *
- * File Created @ [07/11/16 20:36]
- */
+package br.com.brjdevs.miyuki.oldmodules.cmds;
 
-package br.com.brjdevs.miyuki.David.oldmodules.cmds;
-
-import br.com.brjdevs.miyuki.David.commands.base.Commands;
-import br.com.brjdevs.miyuki.David.commands.base.Holder;
-import br.com.brjdevs.miyuki.David.commands.base.ICommand;
-import br.com.brjdevs.miyuki.David.loader.Module.Command;
-import br.com.brjdevs.miyuki.David.modules.cmds.manager.PermissionsModule;
-import br.com.brjdevs.miyuki.David.modules.db.GuildModule;
-import br.com.brjdevs.miyuki.David.modules.db.I18nModule;
+import br.com.brjdevs.miyuki.commands.Commands;
+import br.com.brjdevs.miyuki.commands.Holder;
+import br.com.brjdevs.miyuki.commands.ICommand;
+import br.com.brjdevs.miyuki.loader.Module.Command;
+import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
+import br.com.brjdevs.miyuki.modules.db.GuildModule;
+import br.com.brjdevs.miyuki.modules.db.I18nModule;
 import br.com.brjdevs.miyuki.utils.Log4jUtils;
 import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.SetMultimap;

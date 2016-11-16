@@ -1,30 +1,20 @@
-/*
- * This class was created by <AdrianTodt>. It's distributed as
- * part of the DavidBot. Get the Source Code in github:
- * https://github.com/adriantodt/David
- *
- * DavidBot is Open Source and distributed under the
- * GNU Lesser General Public License v2.1:
- * https://github.com/adriantodt/David/blob/master/LICENSE
- *
- * File Created @ [11/11/16 08:33]
- */
+package br.com.brjdevs.miyuki.loader.entities.impl;
 
-package br.com.brjdevs.miyuki.David.loader.entities.impl;
-
-import br.com.brjdevs.miyuki.David.Loader;
-import br.com.brjdevs.miyuki.David.loader.Module;
-import br.com.brjdevs.miyuki.David.loader.entities.ModuleResourceManager;
+import br.com.brjdevs.miyuki.Loader;
+import br.com.brjdevs.miyuki.loader.Module;
+import br.com.brjdevs.miyuki.loader.entities.ModuleResourceManager;
 
 public class ModuleResourceManagerImpl implements ModuleResourceManager {
 	private final String moduleName;
+	private final Class clazz;
 
-	public ModuleResourceManagerImpl(Module module) {
+	public ModuleResourceManagerImpl(Module module, Class clazz) {
 		this.moduleName = module.name().replace('.', '/');
+		this.clazz = clazz;
 	}
 
 	@Override
 	public String get(String path) {
-		return Loader.resource("/assets/" + moduleName + "/" + path);
+		return Loader.resource(clazz, "/assets/" + moduleName + "/" + path);
 	}
 }

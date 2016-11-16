@@ -1,30 +1,18 @@
-/*
- * This class was created by <AdrianTodt>. It's distributed as
- * part of the DavidBot. Get the Source Code in github:
- * https://github.com/adriantodt/David
- *
- * DavidBot is Open Source and distributed under the
- * GNU Lesser General Public License v2.1:
- * https://github.com/adriantodt/David/blob/master/LICENSE
- *
- * File Created @ [11/11/16 08:16]
- */
+package br.com.brjdevs.miyuki.modules.cmds;
 
-package br.com.brjdevs.miyuki.David.modules.cmds;
-
-import br.com.brjdevs.miyuki.David.commands.base.Commands;
-import br.com.brjdevs.miyuki.David.commands.base.Holder;
-import br.com.brjdevs.miyuki.David.commands.base.ICommand;
-import br.com.brjdevs.miyuki.David.commands.base.UserCommand;
-import br.com.brjdevs.miyuki.David.loader.Module;
-import br.com.brjdevs.miyuki.David.loader.Module.Command;
-import br.com.brjdevs.miyuki.David.loader.Module.SubscribeJDA;
-import br.com.brjdevs.miyuki.David.loader.Module.Type;
-import br.com.brjdevs.miyuki.David.modules.cmds.manager.CommandManager;
-import br.com.brjdevs.miyuki.David.modules.cmds.manager.PermissionsModule;
-import br.com.brjdevs.miyuki.David.modules.db.I18nModule;
-import br.com.brjdevs.miyuki.David.modules.db.UserCommandsModule;
-import br.com.brjdevs.miyuki.David.utils.Formatter;
+import br.com.brjdevs.miyuki.commands.Commands;
+import br.com.brjdevs.miyuki.commands.Holder;
+import br.com.brjdevs.miyuki.commands.ICommand;
+import br.com.brjdevs.miyuki.commands.UserCommand;
+import br.com.brjdevs.miyuki.loader.Module;
+import br.com.brjdevs.miyuki.loader.Module.Command;
+import br.com.brjdevs.miyuki.loader.Module.SubscribeJDA;
+import br.com.brjdevs.miyuki.loader.Module.Type;
+import br.com.brjdevs.miyuki.modules.cmds.manager.CommandManager;
+import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
+import br.com.brjdevs.miyuki.modules.db.I18nModule;
+import br.com.brjdevs.miyuki.modules.db.UserCommandsModule;
+import br.com.brjdevs.miyuki.utils.Formatter;
 import net.dv8tion.jda.core.entities.MessageChannel;
 
 import java.util.ArrayList;

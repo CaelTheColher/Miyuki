@@ -1,20 +1,20 @@
 /*
- * This class was created by <AdrianTodt>. It's distributed as
- * part of the DavidBot. Get the Source Code in github:
- * https://github.com/adriantodt/David
+ * This class was created by <$user.name>. It's distributed as
+ * part of the Miyuki Bot. Get the Source Code in github:
+ * https://github.com/BRjDevs/Miyuki
  *
- * DavidBot is Open Source and distributed under the
+ * Miyuki is Open Source and distributed under the
  * GNU Lesser General Public License v2.1:
- * https://github.com/adriantodt/David/blob/master/LICENSE
+ * https://github.com/BRjDevs/Miyuki/blob/master/LICENSE
  *
- * File Created @ [01/11/16 12:39]
+ * File Created @ [16/11/16 13:58]
  */
 
-package br.com.brjdevs.miyuki.David.commands.base;
+package br.com.brjdevs.miyuki.commands;
 
-import br.com.brjdevs.miyuki.David.modules.cmds.manager.CommandManager;
-import br.com.brjdevs.miyuki.David.modules.cmds.manager.PermissionsModule;
-import br.com.brjdevs.miyuki.David.modules.db.I18nModule;
+import br.com.brjdevs.miyuki.modules.cmds.manager.CommandManager;
+import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
+import br.com.brjdevs.miyuki.modules.db.I18nModule;
 import org.apache.logging.log4j.LogManager;
 
 import java.util.HashMap;

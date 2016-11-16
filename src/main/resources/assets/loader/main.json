@@ -1,9 +1,6 @@
 [
-  //Init
-  "cf.adriantodt.David.modules.init.InitModule",
-  //GUI
+  "br.com.brjdevs.miyuki.modules.init.InitModule",
   "cf.adriantodt.David.modules.gui.GUIModule",
-  //DB + subs
   "cf.adriantodt.David.modules.db.DBModule",
   "cf.adriantodt.David.modules.db.UserModule",
   "cf.adriantodt.David.modules.db.GuildModule",

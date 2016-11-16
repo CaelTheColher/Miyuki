@@ -1,20 +1,8 @@
-/*
- * This class was created by <AdrianTodt>. It's distributed as
- * part of the DavidBot. Get the Source Code in github:
- * https://github.com/adriantodt/David
- *
- * DavidBot is Open Source and distributed under the
- * GNU Lesser General Public License v2.1:
- * https://github.com/adriantodt/David/blob/master/LICENSE
- *
- * File Created @ [04/11/16 22:42]
- */
-
-package br.com.brjdevs.miyuki.David;
+package br.com.brjdevs.miyuki;
 
 import br.com.brjdevs.java.lib.IOHelper;
-import br.com.brjdevs.miyuki.David.loader.ModuleManager;
-import br.com.brjdevs.miyuki.David.modules.db.DBModule;
+import br.com.brjdevs.miyuki.loader.ModuleManager;
+import br.com.brjdevs.miyuki.modules.db.DBModule;
 import br.com.brjdevs.miyuki.utils.Log4jUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -30,7 +18,7 @@ public class Loader {
 
 	public static void main(String[] args) throws Exception {
 		Loader.args = args;
-		JsonElement src = new JsonParser().parse(resource("/assets/loader/main.json"));
+		JsonElement src = new JsonParser().parse(resource(Loader.class, "/assets/loader/main.json"));
 
 		if (!src.isJsonArray()) {
 			LOGGER.error("\"/assets/loader/main.json\" is in a incorrect form. Expected \"" + JsonArray.class + "\", got \"" + src.getClass() + "\"");
@@ -56,7 +44,7 @@ public class Loader {
 		ModuleManager.firePostReadyEvents();
 	}
 
-	public static String resource(String file) {
-		return IOHelper.toString(Loader.class.getResourceAsStream(file));
+	public static String resource(Class c, String file) {
+		return IOHelper.toString(c.getResourceAsStream(file));
 	}
 }

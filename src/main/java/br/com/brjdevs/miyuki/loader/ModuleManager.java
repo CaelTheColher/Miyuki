@@ -1,24 +1,12 @@
-/*
- * This class was created by <AdrianTodt>. It's distributed as
- * part of the DavidBot. Get the Source Code in github:
- * https://github.com/adriantodt/David
- *
- * DavidBot is Open Source and distributed under the
- * GNU Lesser General Public License v2.1:
- * https://github.com/adriantodt/David/blob/master/LICENSE
- *
- * File Created @ [05/11/16 19:24]
- */
+package br.com.brjdevs.miyuki.loader;
 
-package br.com.brjdevs.miyuki.David.loader;
-
-import br.com.brjdevs.miyuki.David.commands.base.ICommand;
-import br.com.brjdevs.miyuki.David.loader.Module.*;
-import br.com.brjdevs.miyuki.David.loader.entities.ModuleContainer;
-import br.com.brjdevs.miyuki.David.loader.entities.ModuleResourceManager;
-import br.com.brjdevs.miyuki.David.loader.entities.impl.ModuleContainerImpl;
-import br.com.brjdevs.miyuki.David.loader.entities.impl.ModuleResourceManagerImpl;
-import br.com.brjdevs.miyuki.David.modules.cmds.manager.CommandManager;
+import br.com.brjdevs.miyuki.commands.ICommand;
+import br.com.brjdevs.miyuki.loader.Module.*;
+import br.com.brjdevs.miyuki.loader.entities.ModuleContainer;
+import br.com.brjdevs.miyuki.loader.entities.ModuleResourceManager;
+import br.com.brjdevs.miyuki.loader.entities.impl.ModuleContainerImpl;
+import br.com.brjdevs.miyuki.loader.entities.impl.ModuleResourceManagerImpl;
+import br.com.brjdevs.miyuki.modules.cmds.manager.CommandManager;
 import br.com.brjdevs.miyuki.utils.Log4jUtils;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.ReconnectedEvent;
@@ -56,7 +44,7 @@ public class ModuleManager {
 			Object instance = makeInstance(clazz);
 			if (instance == null) return;
 
-			ModuleResourceManager resourceManager = new ModuleResourceManagerImpl(module);
+			ModuleResourceManager resourceManager = new ModuleResourceManagerImpl(module, clazz);
 
 			ModuleContainer container = new ModuleContainerImpl(module, clazz, instance, resourceManager);
 

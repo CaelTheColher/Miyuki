@@ -1,21 +1,9 @@
-/*
- * This class was created by <AdrianTodt>. It's distributed as
- * part of the DavidBot. Get the Source Code in github:
- * https://github.com/adriantodt/David
- *
- * DavidBot is Open Source and distributed under the
- * GNU Lesser General Public License v2.1:
- * https://github.com/adriantodt/David/blob/master/LICENSE
- *
- * File Created @ [07/11/16 21:23]
- */
+package br.com.brjdevs.miyuki.modules.init;
 
-package br.com.brjdevs.miyuki.David.modules.init;
-
-import br.com.brjdevs.miyuki.David.loader.Module;
-import br.com.brjdevs.miyuki.David.loader.Module.*;
-import br.com.brjdevs.miyuki.David.modules.db.DBModule;
-import br.com.brjdevs.miyuki.David.utils.DiscordUtils;
+import br.com.brjdevs.miyuki.loader.Module;
+import br.com.brjdevs.miyuki.loader.Module.*;
+import br.com.brjdevs.miyuki.modules.db.DBModule;
+import br.com.brjdevs.miyuki.utils.DiscordUtils;
 import br.com.brjdevs.miyuki.utils.Java;
 import br.com.brjdevs.miyuki.utils.Log4jUtils;
 import net.dv8tion.jda.core.JDA;
