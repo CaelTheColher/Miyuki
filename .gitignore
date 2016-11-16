@@ -1,0 +1,17 @@
+# Miyuki
+
+# Java
+*.class
+*.jar
+hs_err_pid*
+
+# IntelliJ
+*.iws
+/.idea
+/out/
+TODO-LOCAL.txt
+
+# Gradle
+.gradle
+/build/
+!gradle-wrapper.jar
