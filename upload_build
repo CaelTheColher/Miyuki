@@ -3,8 +3,24 @@ cd ./build/libs/
 FILE_NAME=`echo Miyuki-*`
 cd ../../
 FILE_LOCATION=`echo "./build/libs/$FILE_NAME"`
-RELEASE=0
-if [[ $COMMIT_MSG == *\[R\]* ]] ; then RELEASE=1; fi
+WARN=0
+if [[ $COMMIT_MSG == *\[D\]* ]]
+then
+    echo "Uploading $FILE_NAME to VPS Relay [DEBUG]..."
+    curl -X POST -F release="0" -F key="$UPLOAD_KEY" -F file="@$FILE_LOCATION" https://vps.adriantodt.cf/relay/miyuki.php
+else
+    WARN=$((WARN++))
+fi
 
-echo "Uploading $FILE_NAME to VPS Relay..."
-curl -X POST -F release="$RELEASE" -F key="$UPLOAD_KEY" -F file="@$FILE_LOCATION" https://vps.adriantodt.cf/relay/miyuki.php
+if [[ $COMMIT_MSG == *\[R\]* ]]
+then
+    echo "Uploading $FILE_NAME to VPS Relay [RELEASE]..."
+    curl -X POST -F release="1" -F key="$UPLOAD_KEY" -F file="@$FILE_LOCATION" https://vps.adriantodt.cf/relay/miyuki.php
+else
+    WARN=$((WARN++))
+fi
+
+if [ $WARN = 2 ]
+then
+    echo "Build discarded."
+fi
