@@ -16,8 +16,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-@Module(name = "init", type = Type.STATIC)
-@SubscribeJDA
+@Module(name = "init", isListener = true)
 public class InitModule {
 	@JDAInstance
 	private static JDA jda = null;

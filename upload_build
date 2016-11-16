@@ -1,0 +1,10 @@
+#!/bin/bash
+cd ./build/libs/
+FILE_NAME=`echo Miyuki-*`
+cd ../../
+FILE_LOCATION=`echo "./build/libs/$FILE_NAME"`
+RELEASE=0
+if [[ $COMMIT_MSG == *\[R\]* ]] ; then RELEASE=1; fi
+
+echo "Uploading $FILE_NAME to VPS Relay..."
+curl -X POST -F release="$RELEASE" -F key="$UPLOAD_KEY" -F file="@$FILE_LOCATION" https://vps.adriantodt.cf/relay/miyuki.php

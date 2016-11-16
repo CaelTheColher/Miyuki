@@ -1,6 +1,6 @@
-import com.github.edwgiz.mavenShadePlugin.log4j2CacheTransformer.PluginsCacheFileTransformer
-import com.github.jengelman.gradle.plugins.shadow.relocation.Relocator
-import org.apache.tools.zip.ZipOutputStream
+
+
+def env = System.getenv()
 
 buildscript {
     repositories {
@@ -22,8 +22,8 @@ apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: 'java'
 apply plugin: 'application'
 
-group 'cf.adriantodt.bot'
-version '4.0-BETA'
+group 'br.com.brjdevs.miyuki'
+version '1.0-build' + env['BUILD_NUMBER']
 
 mainClassName = "br.com.brjdevs.miyuki.Loader"
 
@@ -61,6 +61,12 @@ def commonManifest = {
     attributes 'Main-Class': mainClassName
 }
 
+import com.github.edwgiz.mavenShadePlugin.log4j2CacheTransformer.PluginsCacheFileTransformer
+import com.github.jengelman.gradle.plugins.shadow.relocation.Relocator
+import org.apache.tools.zip.ZipOutputStream
+
+import java.util.jar.JarOutputStream
+
 shadowJar {
     classifier 'fat'
     transform(new com.github.jengelman.gradle.plugins.shadow.transformers.Transformer() {
@@ -76,7 +82,7 @@ shadowJar {
 
         @Override
         void transform(String path, InputStream is, List<Relocator> relocators) {
-            target.processResource(path, is, relocators);
+            target.processResource(path, is, relocators as List<org.apache.maven.plugins.shade.relocation.Relocator>);
         }
 
         @Override
@@ -86,18 +92,9 @@ shadowJar {
 
         @Override
         void modifyOutputStream(ZipOutputStream jos) {
-            target.modifyOutputStream(jos);
+            target.modifyOutputStream(jos as JarOutputStream);
         }
     })
-}
-
-
-run {
-    standardInput = System.in
-
-    if (project.hasProperty("appArgs")) {
-        args Eval.me(appArgs)
-    }
 }
 
 compileJava.options.encoding = 'UTF-8'
