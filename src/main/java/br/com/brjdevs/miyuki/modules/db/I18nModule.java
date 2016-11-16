@@ -7,7 +7,7 @@ import br.com.brjdevs.miyuki.loader.Module.PostReady;
 import br.com.brjdevs.miyuki.loader.Module.Resource;
 import br.com.brjdevs.miyuki.loader.Module.ResourceManager;
 import br.com.brjdevs.miyuki.loader.entities.ModuleResourceManager;
-import br.com.brjdevs.miyuki.oldmodules.cmds.PushCmd;
+import br.com.brjdevs.miyuki.modules.cmds.PushCmd;
 import br.com.brjdevs.miyuki.utils.Log4jUtils;
 import br.com.brjdevs.miyuki.utils.data.ConfigUtils;
 import com.google.gson.JsonElement;

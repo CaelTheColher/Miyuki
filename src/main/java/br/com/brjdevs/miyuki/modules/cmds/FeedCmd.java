@@ -11,7 +11,6 @@ import br.com.brjdevs.miyuki.loader.Module.PostReady;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.cmds.util.FeedingUtil;
 import br.com.brjdevs.miyuki.modules.db.DBModule;
-import br.com.brjdevs.miyuki.oldmodules.cmds.PushCmd;
 import br.com.brjdevs.miyuki.utils.AsyncUtils;
 import br.com.brjdevs.miyuki.utils.CollectionUtils;
 import br.com.brjdevs.miyuki.utils.EncodingUtil;

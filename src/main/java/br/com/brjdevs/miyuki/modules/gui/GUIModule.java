@@ -5,7 +5,7 @@ import br.com.brjdevs.miyuki.commands.Holder;
 import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.*;
 import br.com.brjdevs.miyuki.modules.gui.impl.BotGui;
-import br.com.brjdevs.miyuki.oldmodules.cmds.PushCmd;
+import br.com.brjdevs.miyuki.modules.cmds.PushCmd;
 import br.com.brjdevs.miyuki.utils.QueueLogAppender;
 import br.com.brjdevs.miyuki.utils.ThreadBuilder;
 import net.dv8tion.jda.core.JDA;

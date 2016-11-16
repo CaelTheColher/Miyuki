@@ -1,7 +1,7 @@
 package br.com.brjdevs.miyuki.modules.gui.impl;
 
 import br.com.brjdevs.miyuki.modules.init.InitModule;
-import br.com.brjdevs.miyuki.oldmodules.cmds.PushCmd;
+import br.com.brjdevs.miyuki.modules.cmds.PushCmd;
 import br.com.brjdevs.miyuki.utils.StringUtils;
 
 import java.text.SimpleDateFormat;

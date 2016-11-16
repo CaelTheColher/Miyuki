@@ -1,9 +1,13 @@
-package br.com.brjdevs.miyuki.oldmodules.cmds;
+package br.com.brjdevs.miyuki.modules.cmds;
 
 import br.com.brjdevs.miyuki.commands.Commands;
 import br.com.brjdevs.miyuki.commands.Holder;
 import br.com.brjdevs.miyuki.commands.ICommand;
+import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.Command;
+import br.com.brjdevs.miyuki.loader.Module.JDAInstance;
+import br.com.brjdevs.miyuki.loader.Module.LoggerInstance;
+import br.com.brjdevs.miyuki.loader.Module.OnEnabled;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
@@ -12,9 +16,11 @@ import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.SetMultimap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import java.util.function.Function;
@@ -22,33 +28,41 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static br.com.brjdevs.miyuki.modules.db.DBModule.onDB;
+import static com.rethinkdb.RethinkDB.r;
 
+@Module(name = "cmds.push")
 public class PushCmd {
+	@LoggerInstance
+	private static Logger logger;
+	@JDAInstance
+	private static JDA jda;
 	private static Map<String, String> pushParenting = new HashMap<>();
 	private static Map<Supplier<Set<String>>, String> dynamicParenting = Collections.synchronizedMap(new HashMap<>());
 	private static SetMultimap<TextChannel, String> subscriptions = MultimapBuilder.hashKeys().hashSetValues().build();
 
-	static {
-		pushParenting.put("*", null);
-		pushParenting.put("bot", "*");
-		pushParenting.put("stop", "bot");
-		pushParenting.put("start", "bot");
-		pushParenting.put("update", "*");
-		pushParenting.put("changelog", "update");
-		pushParenting.put("get", "*");
-		pushParenting.put("ownerID", "*");
-		pushParenting.put("guild", "*");
-		pushParenting.put("i18n", "*");
-		pushParenting.put("feeds", "*");
+	@OnEnabled
+	private static void enabled() {
+		registerType("*", null);
+		registerType("bot", "*");
+		registerType("stop", "bot");
+		registerType("start", "bot");
+		registerType("update", "*");
+		registerType("changelog", "update");
+		registerType("get", "*");
+		registerType("ownerID", "*");
+		registerType("guild", "*");
+		registerType("i18n", "*");
+		registerType("feeds", "*");
 
-		dynamicParenting.put(() -> Bot.API.getGuilds().stream().map(guild -> "guild_" + GuildModule.fromDiscord(guild).getName()).collect(Collectors.toSet()), "guild");
+		registerDynamicTypes(() -> jda.getGuilds().stream().map(guild -> "guild_" + GuildModule.fromDiscord(guild).getName()).collect(Collectors.toSet()), "guild");
 
-		h.from(r.table("pushSubs").run(conn)).cursorExpected().forEach(json -> {
+		onDB(r.table("pushSubs")).run().cursorExpected().forEach(json -> {
 			JsonObject subscription = json.getAsJsonObject();
-			TextChannel channel = Bot.API.getTextChannelById(subscription.get("id").getAsString());
+			TextChannel channel = jda.getTextChannelById(subscription.get("id").getAsString());
 
 			if (channel == null) {
-				r.table("pushSubs").get(subscription.get("id").getAsString()).delete().runNoReply(conn);
+				onDB(r.table("pushSubs").get(subscription.get("id").getAsString()).delete()).noReply();
 				return;
 			}
 
@@ -71,9 +85,9 @@ public class PushCmd {
 
 			if (currentSubs.size() == size) return false;
 
-			r.table("pushSubs").get(channel.getId()).update(arg -> r.hashMap("types", new ArrayList<>(currentSubs))).runNoReply(conn);
+			onDB(r.table("pushSubs").get(channel.getId()).update(arg -> r.hashMap("types", new ArrayList<>(currentSubs)))).noReply();
 		} else {
-			r.table("pushSubs").insert(r.hashMap("id", channel.getId()).with("types", new ArrayList<>(typesToAdd))).runNoReply(conn);
+			onDB(r.table("pushSubs").insert(r.hashMap("id", channel.getId()).with("types", new ArrayList<>(typesToAdd)))).noReply();
 			subscriptions.putAll(channel, typesToAdd);
 		}
 		return true;
@@ -89,9 +103,9 @@ public class PushCmd {
 		if (currentSubs.size() == size) return false;
 
 		if (currentSubs.size() > 0) {
-			r.table("pushSubs").get(channel.getId()).update(arg -> r.hashMap("types", new ArrayList<>(currentSubs))).runNoReply(conn);
+			onDB(r.table("pushSubs").get(channel.getId()).update(arg -> r.hashMap("types", new ArrayList<>(currentSubs)))).noReply();
 		} else {
-			r.table("pushSubs").get(channel.getId()).delete().runNoReply(conn);
+			onDB(r.table("pushSubs").get(channel.getId()).delete()).noReply();
 			subscriptions.removeAll(channel);
 		}
 
@@ -99,11 +113,11 @@ public class PushCmd {
 	}
 
 	public static void unsubscribeAll(Set<String> typesToRemove) {
-		Bot.API.getTextChannels().parallelStream().forEach(c -> unsubscribe(c, typesToRemove));
+		jda.getTextChannels().parallelStream().forEach(c -> unsubscribe(c, typesToRemove));
 	}
 
-	public static void uubscribeAll(Set<String> typesToRemove) {
-		Bot.API.getTextChannels().parallelStream().forEach(c -> subscribe(c, typesToRemove));
+	public static void subscribeAll(Set<String> typesToRemove) {
+		jda.getTextChannels().parallelStream().forEach(c -> subscribe(c, typesToRemove));
 	}
 
 	public static void registerType(String type, String parent) {
