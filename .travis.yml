@@ -10,4 +10,10 @@ jdk:
   - oraclejdk8
 
 before_install:
- - chmod +x gradlew
+ - 'chmod +x gradlew'
+
+deploy:
+ - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then bash ./travis/upload_build; fi'
+
+before_script:
+ - 'COMMIT_MSG="$(git log --format=%B -n 1 $GIT_COMMIT | grep .)"'
