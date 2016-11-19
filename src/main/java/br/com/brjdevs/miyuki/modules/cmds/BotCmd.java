@@ -34,6 +34,14 @@ public class BotCmd {
 					})
 					.build()
 			)
+			.addCommand("restart",
+				Commands.buildSimple("bot.stop.usage", PermissionsModule.STOP_BOT)
+					.setAction(event -> {
+						event.getAnswers().announce(I18nModule.getLocalized("bot.stop", event)).queue();
+						InitModule.restartBot();
+					})
+					.build()
+			)
 			.addCommand("toofast",
 				Commands.buildSimple("bot.toofast.usage", PermissionsModule.BOT_OWNER)
 					.setAction((event) -> event.getAnswers().bool(TooFast.enabled = !TooFast.enabled).queue()).build()
