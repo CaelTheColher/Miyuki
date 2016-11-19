@@ -166,7 +166,7 @@
         }
       },
       "translations": {
-        "admin": "Dono",
+        "owner": "Dono",
         "channels": "Canais",
         "cmds": "Comandos",
         "guild": "Guild",

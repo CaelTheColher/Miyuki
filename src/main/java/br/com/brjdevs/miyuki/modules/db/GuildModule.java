@@ -173,7 +173,7 @@ public class GuildModule {
 		builder.setTimestamp(Instant.now().atOffset(ZoneOffset.UTC));
 		builder.addField(I18nModule.getLocalized("guild.guild", lang), data.name + (guild != null && !data.name.equals(guild.getName()) ? " \n(" + guild.getName() + ")" : ""), true)
 				.addField("VIP", data.getFlag("vip") + "", true)
-				.addField(I18nModule.getLocalized("guild.admin", lang), (guild == null ? CollectionUtils.toString(DBModule.getOwners(), User::getName, ", ") : guild.getOwner().getUser().getName()), true)
+				.addField(I18nModule.getLocalized("guild.owner", lang), (guild == null ? CollectionUtils.toString(DBModule.getOwners(), User::getName, ", ") : guild.getOwner().getUser().getName()), true)
 				.addField(I18nModule.getLocalized("guild.cmds", lang), UserCommandsModule.allFrom(data).size() + "", true)
 				.addField(I18nModule.getLocalized("guild.channels", lang), (guild == null ? (jda.getTextChannels().size() + jda.getPrivateChannels().size()) : guild.getTextChannels().size()) + "", true)
 				.addField(I18nModule.getLocalized("guild.users", lang), (guild == null ? jda.getUsers().size() : guild.getMembers().size()) + "", true)

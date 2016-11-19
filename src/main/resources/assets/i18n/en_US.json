@@ -165,7 +165,7 @@
         }
       },
       "translations": {
-        "admin": "Admin",
+        "owner": "Owner",
         "channels": "Channels",
         "cmds": "Commands",
         "guild": "Guild",
