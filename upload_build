@@ -1,16 +1,20 @@
 #!/bin/bash
-echo "Initializing Upload.."
+echo "Initializing Upload Script..."
 WARN=0
 if [[ $COMMIT_MSG == *\[D\]* ]]
 then
+    echo "Begin Debug Upload."
     java -jar uploader.jar $DEV_KEY $DEV_DEPLOY
+    echo "Debug Upload ended."
 else
     WARN=$((WARN++))
 fi
 
 if [[ $COMMIT_MSG == *\[R\]* ]]
 then
+    echo "Begin Release Upload."
     java -jar uploader.jar $PROD_KEY $PROD_DEPLOY
+    echo "Release Upload ended."
 else
     WARN=$((WARN++))
 fi
