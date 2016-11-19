@@ -47,9 +47,9 @@ public class ConfigUtils {
 				if (generateFileOnError) {
 					try {
 						Files.write(path, GSON.toJson(defaultObj).getBytes(Charset.forName("UTF-8")));
-						LOGGER.error("Configuration File generated.");
+						LOGGER.error("Configuration File generated at "+path.toAbsolutePath()+".");
 					} catch (Exception ex) {
-						LOGGER.error("Configuration File could not be generated. Please fix the permissions.");
+						LOGGER.error("Configuration File could not be generated at "+path.toAbsolutePath()+". Please fix the permissions.");
 					}
 				}
 
