@@ -31,11 +31,6 @@ public class UserCmd {
 						net.dv8tion.jda.core.entities.User user = event.getJDA().getUserById(DiscordUtils.processId(userId));
 						if (user == null) continue;
 						any.var = true;
-						/*event.awaitTyping().getAnswers().send(
-							user.getAsMention() + ": \n" + getLocalized("user.avatar", event) + ": " + user.getAvatarUrl() + "\n```" +
-								UserModule.toString(UserModule.fromDiscord(user), event.getJDA(), getLocale(event), event.getGuild().getGuild(event.getJDA())) +
-								"\n```"
-						).queue();*/
 
 						event.awaitTyping().sendMessage(new MessageBuilder().setEmbed(UserModule.createEmbed(UserModule.fromDiscord(user), event.getJDA(), getLocale(event), event.getGuild().getGuild(event.getJDA()))).build()).queue();
 					}
@@ -43,11 +38,6 @@ public class UserCmd {
 					if (!any.var) {
 						net.dv8tion.jda.core.entities.User user = event.getAuthor();
 						any.var = true;
-						/*event.awaitTyping().getAnswers().send(
-							user.getAsMention() + ": \n" + getLocalized("user.avatar", event) + ": " + user.getAvatarUrl() + "\n```" +
-								UserModule.toString(UserModule.fromDiscord(user), event.getJDA(), getLocale(event), event.getGuild().getGuild(event.getJDA())) +
-								"\n```"
-						).queue();*/
 						event.awaitTyping().sendMessage(new MessageBuilder().setEmbed(UserModule.createEmbed(UserModule.fromDiscord(user), event.getJDA(), getLocale(event), event.getGuild().getGuild(event.getJDA()))).build()).queue();
 					}
 

@@ -167,10 +167,9 @@ public class GuildModule {
 	public static MessageEmbed createEmbed(Data data, JDA jda, String lang) {
 		Guild guild = data.getGuild(jda);
 		EmbedBuilder builder = new EmbedBuilder();
-		if (guild != null) {
-			builder.setColor(guild.getOwner().getColor() == null ? Color.decode("#002b79") : guild.getOwner().getColor());
+		if (guild != null)
 			builder.setThumbnail(guild.getIconUrl());
-		}
+		builder.setColor(guild == null ? Color.decode("#f1c40f") : guild.getOwner().getColor() == null ? Color.decode("#f1c40f") : guild.getOwner().getColor());
 		builder.setTimestamp(Instant.now().atOffset(ZoneOffset.UTC));
 		builder.addField(I18nModule.getLocalized("guild.guild", lang), data.name + (guild != null && !data.name.equals(guild.getName()) ? " \n(" + guild.getName() + ")" : ""), true)
 				.addField("VIP", data.getFlag("vip") + "", true)
@@ -182,7 +181,8 @@ public class GuildModule {
 				.addField(I18nModule.getLocalized("guild.emotes.count", lang), (guild == null ? jda.getEmotes().size() : guild.getEmotes().size()) + "", true);
 		if (guild != null && !guild.getEmotes().isEmpty())
 			builder.addField(I18nModule.getLocalized("guild.emotes", lang), (String.join(" ", guild.getEmotes().stream().map(Emote::getAsMention).collect(Collectors.toList()))), false);
-
+        if (guild == null)
+            builder.addField("Exists", "false", true);
 		return builder.build();
 	}
 

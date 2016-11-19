@@ -115,7 +115,7 @@ public class UserModule {
 		Member member = data.getMember(guildAt);
 		if (member == null) throw new RuntimeException("User doesn't belong to the Guild");
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.setColor(member.getColor() == null ? Color.decode("#002b79") : member.getColor());
+		builder.setColor(member.getColor() == null ? Color.decode("#f1c40f") : member.getColor());
 		builder.setThumbnail(getAvatarUrl(user));
 		builder.setTimestamp(Instant.now().atOffset(ZoneOffset.UTC));
 		builder.addField(I18nModule.getLocalized("user.name", language), user.getName(), true);
