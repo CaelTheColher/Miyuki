@@ -11,18 +11,20 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.rethinkdb.RethinkDB;
 import com.rethinkdb.model.MapObject;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.SubscribeEvent;
 
+import java.awt.*;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
 import java.util.function.Function;
 
 @Module(name = "db.user")
@@ -109,6 +111,24 @@ public class UserModule {
 		return fromDiscord(event.getAuthor());
 	}
 
+	public static MessageEmbed createEmbed(Data data, JDA jda, String language, Guild guildAt) {
+		User user = data.getUser(jda);
+		Member member = data.getMember(guildAt);
+		if (member == null) throw new RuntimeException("User doesn't belong to the Guild");
+		EmbedBuilder builder = new EmbedBuilder();
+		builder.setColor(member.getColor() == null ? Color.decode("#002b79") : member.getColor());
+		builder.setThumbnail(getAvatarUrl(user));
+		builder.setTimestamp(Instant.now().atOffset(ZoneOffset.UTC));
+		builder.addField(I18nModule.getLocalized("user.name", language), user.getName(), true);
+		builder.addField("ID", user.getId(), true);
+		builder.addField(I18nModule.getLocalized("user.nick", language), member.getNickname() == null ? "*(" + I18nModule.getLocalized("user.none",language) + ")*" : member.getNickname(), true);
+		builder.addField(I18nModule.getLocalized("user.roles", language), StringUtils.notNullOrDefault(String.join(", ", member.getRoles().stream().map(Role::getName).toArray(String[]::new)), "(" + I18nModule.getLocalized("user.none", language) + ")"), true);
+		builder.addField(I18nModule.getLocalized("user.memberSince", language), member.getJoinDate().format(DateTimeFormatter.RFC_1123_DATE_TIME), true);
+		builder.addField(I18nModule.getLocalized("user.commonGuildModule", language), (String.join(", ", jda.getGuilds().stream().filter(guild -> guild.isMember(user)).map(Guild::getName).toArray(String[]::new))), true);
+		builder.addField(I18nModule.getLocalized("user.playing", language), (member.getGame() == null ? "(" + I18nModule.getLocalized("user.none", language) + ")" : member.getGame().getName()), true);
+		builder.addField(I18nModule.getLocalized("user.status", language), member.getOnlineStatus().name(), true);
+		return builder.build();
+	}
 	public static String toString(Data data, JDA jda, String language, Guild guildAt) {
 		User user = data.getUser(jda);
 		Member member = data.getMember(guildAt);
@@ -122,7 +142,9 @@ public class UserModule {
 			I18nModule.getLocalized("user.status", language) + ": " + member.getOnlineStatus() + "\n" +
 			I18nModule.getLocalized("user.playing", language) + ": " + (member.getGame() == null ? "(" + I18nModule.getLocalized("user.none", language) + ")" : member.getGame().getName());
 	}
-
+	public static String getAvatarUrl(User user) {
+		return user.getAvatarUrl() == null ? user.getDefaultAvatarUrl() : user.getAvatarUrl();
+	}
 	public static class Data {
 		private String id = "-1", lang = null;
 
