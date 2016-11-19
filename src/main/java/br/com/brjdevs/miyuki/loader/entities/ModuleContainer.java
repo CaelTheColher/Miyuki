@@ -15,6 +15,8 @@ public interface ModuleContainer {
 
 	Object getInstance();
 
+	Object getRealInstance();
+
 	Logger getLogger();
 
 	String getName();

@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 
 public class ModuleContainerImpl implements ModuleContainer {
 
-
 	private final Class<?> moduleClass;
 	private final Object moduleInstance;
 	private final Module module;
@@ -32,6 +31,11 @@ public class ModuleContainerImpl implements ModuleContainer {
 	@Override
 	public Object getInstance() {
 		return moduleInstance;
+	}
+
+	@Override
+	public Object getRealInstance() {
+		return moduleInstance instanceof Class ? null : moduleInstance;
 	}
 
 	@Override
