@@ -133,6 +133,7 @@ public class ModuleManager {
 	private static void setFields(ModuleContainer module, Class<? extends Annotation> annotation, Object object) {
 		module.getFieldsForAnnotation(annotation).stream().filter(field -> object.getClass().isAssignableFrom(field.getType())).forEach(field -> {
 			try {
+				field.setAccessible(true);
 				field.set(module.getInstance(), object);
 			} catch (Exception e) {
 				LOGGER.error("Error while injecting " + object + " into " + field + ":", e);
@@ -145,6 +146,7 @@ public class ModuleManager {
 			Object object = objectCreator.apply(field.getAnnotation(annotation));
 			if (object.getClass().isAssignableFrom(field.getType())) {
 				try {
+					field.setAccessible(true);
 					field.set(module.getInstance(), object);
 				} catch (Exception e) {
 					LOGGER.error("Error while injecting " + object + " into " + field + ":", e);
@@ -160,6 +162,7 @@ public class ModuleManager {
 	private static void fireEventsFor(ModuleContainer module, Class<? extends Annotation> annotation) {
 		module.getMethodsForAnnotation(annotation).stream().filter(m -> m.getParameterCount() == 0).forEach(m -> {
 			try {
+				m.setAccessible(true);
 				m.invoke(module.getInstance());
 			} catch (Exception e) {
 				LOGGER.error("Error while firing event \"" + annotation + "\" from " + m + ":", e);
