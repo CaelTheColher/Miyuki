@@ -137,6 +137,7 @@ public class ModuleManager {
 	private static void setFields(ModuleContainer module, Class<? extends Annotation> annotation, Object object) {
 		module.getFieldsForAnnotation(annotation).stream().filter(field -> object.getClass().isAssignableFrom(field.getType())).forEach(field -> {
 			try {
+				LOGGER.info("Injecting: " + limit(object.toString(),100) + " into " + field);
 				field.setAccessible(true);
 				field.set(module.getRealInstance(), object);
 			} catch (Exception e) {
@@ -150,6 +151,7 @@ public class ModuleManager {
 			Object object = objectCreator.apply(field.getAnnotation(annotation));
 			if (object.getClass().isAssignableFrom(field.getType())) {
 				try {
+					LOGGER.info("Injecting: " + limit(object.toString(),100) + " into " + field);
 					field.setAccessible(true);
 					field.set(module.getRealInstance(), object);
 				} catch (Exception e) {
