@@ -61,6 +61,7 @@ public class ModuleManager {
 			//If any Module.Predicate is present and fails, it will stop the
 			if (!container.getMethodsForAnnotation(Predicate.class).stream().allMatch(method -> {
 				try {
+					method.setAccessible(true);
 					Object o = method.invoke(instance);
 					return (o instanceof Boolean) ? (Boolean) o : true;
 				} catch (Exception e) {

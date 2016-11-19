@@ -3,6 +3,7 @@ package br.com.brjdevs.miyuki;
 import br.com.brjdevs.java.lib.IOHelper;
 import br.com.brjdevs.miyuki.loader.ModuleManager;
 import br.com.brjdevs.miyuki.modules.db.DBModule;
+import br.com.brjdevs.miyuki.utils.Java;
 import br.com.brjdevs.miyuki.utils.Log4jUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -18,6 +19,8 @@ public class Loader {
 
 	public static void main(String[] args) throws Exception {
 		Loader.args = args;
+
+		try {
 		JsonElement src = new JsonParser().parse(resource(Loader.class, "/assets/loader/main.json"));
 
 		if (!src.isJsonArray()) {
@@ -42,6 +45,10 @@ public class Loader {
 			.buildBlocking();
 
 		ModuleManager.firePostReadyEvents();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Java.stopApp();
+		}
 	}
 
 	public static String resource(Class c, String file) {
