@@ -36,6 +36,7 @@ public class UserCmd {
 								UserModule.toString(UserModule.fromDiscord(user), event.getJDA(), getLocale(event), event.getGuild().getGuild(event.getJDA())) +
 								"\n```"
 						).queue();*/
+
 						event.awaitTyping().sendMessage(new MessageBuilder().setEmbed(UserModule.createEmbed(UserModule.fromDiscord(user), event.getJDA(), getLocale(event), event.getGuild().getGuild(event.getJDA()))).build()).queue();
 					}
 

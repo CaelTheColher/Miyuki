@@ -110,7 +110,6 @@ public class UserModule {
 	public static Data fromDiscord(GuildMessageReceivedEvent event) {
 		return fromDiscord(event.getAuthor());
 	}
-
 	public static MessageEmbed createEmbed(Data data, JDA jda, String language, Guild guildAt) {
 		User user = data.getUser(jda);
 		Member member = data.getMember(guildAt);
