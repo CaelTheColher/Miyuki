@@ -8,6 +8,7 @@ import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
 import br.com.brjdevs.miyuki.utils.data.Commitable;
+import net.dv8tion.jda.core.MessageBuilder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +20,7 @@ public class GuildCmd {
 		return Commands.buildTree()
 			.addCommand("info",
 				Commands.buildSimple("guild.info.usage")
-					.setAction(event -> event.awaitTyping().getAnswers().sendCased(GuildModule.toString(event.getGuild(), event.getJDA(), I18nModule.getLocale(event))).queue())
+					.setAction(event -> event.awaitTyping().sendMessage(new MessageBuilder().setEmbed(GuildModule.createEmbed(event.getGuild(), event.getJDA(), I18nModule.getLocale(event))).build()).queue())
 					.build()
 			)
 			.addDefault("info")

@@ -9,15 +9,23 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.rethinkdb.RethinkDB;
 import com.rethinkdb.model.MapObject;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.guild.update.GuildUpdateNameEvent;
 import net.dv8tion.jda.core.hooks.SubscribeEvent;
 
+import java.awt.*;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.*;
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Module(name = "db.guild", isListener = true)
 public class GuildModule {
@@ -154,6 +162,27 @@ public class GuildModule {
 		throw new RuntimeException("What. the. fuck.");
 	}
 
+	public static MessageEmbed createEmbed(Data data, JDA jda, String lang) {
+		Guild guild = data.getGuild(jda);
+		EmbedBuilder builder = new EmbedBuilder();
+		if (guild != null) {
+			builder.setColor(guild.getOwner().getColor() == null ? Color.decode("#002b79") : guild.getOwner().getColor());
+			builder.setThumbnail(guild.getIconUrl());
+		}
+		builder.setTimestamp(Instant.now().atOffset(ZoneOffset.UTC));
+		builder.addField(I18nModule.getLocalized("guild.guild", lang), data.name + (guild != null && !data.name.equals(guild.getName()) ? " (" + guild.getName() + ")" : ""), true)
+				.addField("VIP", data.getFlag("vip") + "", true)
+				.addField(I18nModule.getLocalized("guild.admin", lang), (guild == null ? jda.getUserById(DBModule.getConfig().get("ownerID").getAsString()).getName() : guild.getOwner().getUser().getName()), true)
+				.addField(I18nModule.getLocalized("guild.cmds", lang), UserCommandsModule.allFrom(data).size() + "", true)
+				.addField(I18nModule.getLocalized("guild.channels", lang), (guild == null ? (jda.getTextChannels().size() + jda.getPrivateChannels().size()) : guild.getTextChannels().size()) + "", true)
+				.addField(I18nModule.getLocalized("guild.users", lang), (guild == null ? jda.getUsers().size() : guild.getMembers().size()) + "", true)
+				.addField(I18nModule.getLocalized("guild.id", lang), data.id, true)
+				.addField(I18nModule.getLocalized("guild.emotes.count", lang), (guild == null ? jda.getEmotes().size() : guild.getEmotes().size()) + "", true);
+		if (guild != null && !guild.getEmotes().isEmpty())
+			builder.addField(I18nModule.getLocalized("guild.emotes", lang), (String.join(" ", guild.getEmotes().stream().map(Emote::getAsMention).collect(Collectors.toList()))), true);
+
+		return builder.build();
+	}
 	public static String toString(Data data, JDA jda, String language) {
 		Guild guild = data.getGuild(jda);
 		return I18nModule.getLocalized("guild.guild", language) + ": " + data.name + (data.getFlag("vip") ? " [VIP]" : "") + (guild != null && !data.name.equals(guild.getName()) ? " (" + guild.getName() + ")" : "")
