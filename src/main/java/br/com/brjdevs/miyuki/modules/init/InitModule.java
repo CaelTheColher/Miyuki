@@ -82,4 +82,17 @@ public class InitModule {
 		jda.shutdownNow(true);
 		Java.stopApp();
 	}
+
+	public static void restartBot() {
+		jda.getPresence().setGame(Game.of("Restarting..."));
+		jda.getPresence().setIdle(true);
+		logger.info("Bot restarting...");
+		//Pushes.pushSimple("stop", channel -> boldAndItalic(I18nModule.getLocalized("bot.stop", channel)));
+		try {
+			Thread.sleep(2 * 1000);
+		} catch (Exception ignored) {
+		}
+		jda.shutdownNow(true);
+		Java.restartApp();
+	}
 }

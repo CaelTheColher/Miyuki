@@ -28,7 +28,7 @@ public class I18nModule {
 	private static final Pattern compiledPattern = Pattern.compile("\\$\\([A-Za-z.]+?\\)");
 	@ResourceManager
 	private static ModuleResourceManager manager;
-	@Resource("/assets/i18n/main.json")
+	@Resource("main.json")
 	private static String i18nMain = "";
 	@JDAInstance
 	private static JDA jda = null;

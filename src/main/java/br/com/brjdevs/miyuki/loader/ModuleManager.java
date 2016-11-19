@@ -20,6 +20,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.function.Function;
 
+import static br.com.brjdevs.miyuki.utils.StringUtils.limit;
+
 public class ModuleManager {
 	private static final Logger LOGGER = Log4jUtils.logger();
 	private static Map<Class, ModuleContainer> INSTANCE_MAP = new HashMap<>();
@@ -52,13 +54,14 @@ public class ModuleManager {
 			setFields(container, Container.class, container);
 			setFields(container, ResourceManager.class, container.getResourceManager());
 			setFields(container, LoggerInstance.class, container.getLogger());
-			setFields(container, Instance.class, container.getInstance());
+			setFields(container, Instance.class, container.getRealInstance());
 			setFields(container, Resource.class, resource -> resourceManager.get(resource.value()));
 			setFields(container, JSONResource.class, resource -> resourceManager.getAsJson(resource.value()));
 
 			//If any Module.Predicate is present and fails, it will stop the
 			if (!container.getMethodsForAnnotation(Predicate.class).stream().allMatch(method -> {
 				try {
+					method.setAccessible(true);
 					Object o = method.invoke(instance);
 					return (o instanceof Boolean) ? (Boolean) o : true;
 				} catch (Exception e) {
@@ -106,9 +109,10 @@ public class ModuleManager {
 			setFields(module, JDAInstance.class, event.getJDA());
 			setFields(module, SelfUserInstance.class, event.getJDA().getSelfUser());
 
-			module.getMethodsForAnnotation(Command.class).stream().filter(method -> ICommand.class.isAssignableFrom(method.getReturnType())).forEach(m -> {
+			module.getMethodsForAnnotation(Command.class).forEach(m -> {
 				try {
-					CommandManager.addCommand(m.getAnnotation(Command.class).value(), (ICommand) m.invoke(module.getInstance()));
+					m.setAccessible(true);
+					CommandManager.addCommand(m.getAnnotation(Command.class).value(), (ICommand) m.invoke(module.getRealInstance()));
 				} catch (Exception e) {
 					LOGGER.error("Error while registering command \"" + m.getAnnotation(Command.class).value() + "\" from " + m + ":", e);
 				}
@@ -131,11 +135,13 @@ public class ModuleManager {
 	}
 
 	private static void setFields(ModuleContainer module, Class<? extends Annotation> annotation, Object object) {
-		module.getFieldsForAnnotation(annotation).stream().filter(field -> object.getClass().isAssignableFrom(field.getType())).forEach(field -> {
+		module.getFieldsForAnnotation(annotation).forEach(field -> {
 			try {
-				field.set(module.getInstance(), object);
+				LOGGER.info("Injecting: " + limit(object.toString(), 100) + " into " + field);
+				field.setAccessible(true);
+				field.set(module.getRealInstance(), object);
 			} catch (Exception e) {
-				LOGGER.error("Error while injecting " + object + " into " + field + ":", e);
+				LOGGER.error("Error while injecting " + limit(object.toString(), 100) + " into " + field + ":", e);
 			}
 		});
 	}
@@ -143,12 +149,12 @@ public class ModuleManager {
 	private static <A extends Annotation> void setFields(ModuleContainer module, Class<A> annotation, Function<A, Object> objectCreator) {
 		module.getFieldsForAnnotation(annotation).forEach(field -> {
 			Object object = objectCreator.apply(field.getAnnotation(annotation));
-			if (object.getClass().isAssignableFrom(field.getType())) {
-				try {
-					field.set(module.getInstance(), object);
-				} catch (Exception e) {
-					LOGGER.error("Error while injecting " + object + " into " + field + ":", e);
-				}
+			try {
+				LOGGER.info("Injecting: " + limit(object.toString(), 100) + " into " + field);
+				field.setAccessible(true);
+				field.set(module.getRealInstance(), object);
+			} catch (Exception e) {
+				LOGGER.error("Error while injecting " + object + " into " + field + ":", e);
 			}
 		});
 	}
@@ -160,7 +166,8 @@ public class ModuleManager {
 	private static void fireEventsFor(ModuleContainer module, Class<? extends Annotation> annotation) {
 		module.getMethodsForAnnotation(annotation).stream().filter(m -> m.getParameterCount() == 0).forEach(m -> {
 			try {
-				m.invoke(module.getInstance());
+				m.setAccessible(true);
+				m.invoke(module.getRealInstance());
 			} catch (Exception e) {
 				LOGGER.error("Error while firing event \"" + annotation + "\" from " + m + ":", e);
 			}
