@@ -170,7 +170,7 @@ public class GuildModule {
 			builder.setThumbnail(guild.getIconUrl());
 		}
 		builder.setTimestamp(Instant.now().atOffset(ZoneOffset.UTC));
-		builder.addField(I18nModule.getLocalized("guild.guild", lang), data.name + (guild != null && !data.name.equals(guild.getName()) ? " (" + guild.getName() + ")" : ""), true)
+		builder.addField(I18nModule.getLocalized("guild.guild", lang), data.name + (guild != null && !data.name.equals(guild.getName()) ? " \n(" + guild.getName() + ")" : ""), true)
 				.addField("VIP", data.getFlag("vip") + "", true)
 				.addField(I18nModule.getLocalized("guild.admin", lang), (guild == null ? jda.getUserById(DBModule.getConfig().get("ownerID").getAsString()).getName() : guild.getOwner().getUser().getName()), true)
 				.addField(I18nModule.getLocalized("guild.cmds", lang), UserCommandsModule.allFrom(data).size() + "", true)
@@ -179,7 +179,7 @@ public class GuildModule {
 				.addField(I18nModule.getLocalized("guild.id", lang), data.id, true)
 				.addField(I18nModule.getLocalized("guild.emotes.count", lang), (guild == null ? jda.getEmotes().size() : guild.getEmotes().size()) + "", true);
 		if (guild != null && !guild.getEmotes().isEmpty())
-			builder.addField(I18nModule.getLocalized("guild.emotes", lang), (String.join(" ", guild.getEmotes().stream().map(Emote::getAsMention).collect(Collectors.toList()))), true);
+			builder.addField(I18nModule.getLocalized("guild.emotes", lang), (String.join(" ", guild.getEmotes().stream().map(Emote::getAsMention).collect(Collectors.toList()))), false);
 
 		return builder.build();
 	}
