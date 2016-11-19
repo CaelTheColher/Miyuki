@@ -1,27 +1,20 @@
 #!/bin/bash
-cd ./build/libs/
 
-#Gambiarra do Tipo Malandra
-find . -type f ! -name '*-all.jar' -delete
+# PRs? NOPE.
+if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then exit 0; fi
 
-FILE_NAME=`echo Miyuki-*`
+COMMIT_MSG="$(git log --format=%B -n 1 $TRAVIS_COMMIT | grep .)"
 WARN=0
 if [[ $COMMIT_MSG == *\[D\]* ]]
 then
-    echo "Uploading ./$FILE_NAME to VPS Relay [DEBUG]..."
-    echo 'curl -X POST -F release="0" -F key="~HIDDEN~" -F compiledJar="@./$FILE_NAME" https://vps.adriantodt.cf/relay/miyuki.php'
-    v=`curl -X POST -F release="0" -F key="$UPLOAD_KEY" -F compiledJar="@./$FILE_NAME" https://vps.adriantodt.cf/relay/miyuki.php`
-    echo -e "\n$v\n"
+    java -jar uploader.jar $DEV_KEY $DEV_DEPLOY
 else
     WARN=$((WARN++))
 fi
 
 if [[ $COMMIT_MSG == *\[R\]* ]]
 then
-    echo "Uploading ./$FILE_NAME to VPS Relay [RELEASE]..."
-    echo 'curl -X POST -F release="1" -F key="~HIDDEN~" -F compiledJar="@./$FILE_NAME" https://vps.adriantodt.cf/relay/miyuki.php'
-    v=`curl -X POST -F release="1" -F key="$UPLOAD_KEY" -F compiledJar="@./$FILE_NAME" https://vps.adriantodt.cf/relay/miyuki.php`
-    echo -e "\n$v\n"
+    java -jar uploader.jar $PROD_KEY $PROD_DEPLOY
 else
     WARN=$((WARN++))
 fi

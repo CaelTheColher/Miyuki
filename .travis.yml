@@ -9,5 +9,6 @@ addons:
 jdk:
   - oraclejdk8
 
-before_install:
- - chmod +x gradlew
+before_install: chmod +x gradlew
+before_deploy: chmod +x upload_build
+deploy: ./upload_build
