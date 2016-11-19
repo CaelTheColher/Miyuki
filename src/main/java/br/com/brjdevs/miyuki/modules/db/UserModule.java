@@ -123,7 +123,7 @@ public class UserModule {
 		builder.addField(I18nModule.getLocalized("user.nick", language), member.getNickname() == null ? "*(" + I18nModule.getLocalized("user.none",language) + ")*" : member.getNickname(), true);
 		builder.addField(I18nModule.getLocalized("user.roles", language), StringUtils.notNullOrDefault(String.join(", ", member.getRoles().stream().map(Role::getName).toArray(String[]::new)), "(" + I18nModule.getLocalized("user.none", language) + ")"), true);
 		builder.addField(I18nModule.getLocalized("user.memberSince", language), member.getJoinDate().format(DateTimeFormatter.RFC_1123_DATE_TIME), true);
-		builder.addField(I18nModule.getLocalized("user.commonGuildModule", language), (String.join(", ", jda.getGuilds().stream().filter(guild -> guild.isMember(user)).map(Guild::getName).toArray(String[]::new))), true);
+		builder.addField(I18nModule.getLocalized("user.donator", language), "false", true);
 		builder.addField(I18nModule.getLocalized("user.playing", language), (member.getGame() == null ? "(" + I18nModule.getLocalized("user.none", language) + ")" : member.getGame().getName()), true);
 		builder.addField(I18nModule.getLocalized("user.status", language), member.getOnlineStatus().name(), true);
 		return builder.build();
