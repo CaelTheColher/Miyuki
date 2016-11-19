@@ -109,7 +109,7 @@ public class ModuleManager {
 			setFields(module, JDAInstance.class, event.getJDA());
 			setFields(module, SelfUserInstance.class, event.getJDA().getSelfUser());
 
-			module.getMethodsForAnnotation(Command.class).stream().filter(method -> ICommand.class.isAssignableFrom(method.getReturnType())).forEach(m -> {
+			module.getMethodsForAnnotation(Command.class).forEach(m -> {
 				try {
 					m.setAccessible(true);
 					CommandManager.addCommand(m.getAnnotation(Command.class).value(), (ICommand) m.invoke(module.getRealInstance()));
@@ -135,13 +135,13 @@ public class ModuleManager {
 	}
 
 	private static void setFields(ModuleContainer module, Class<? extends Annotation> annotation, Object object) {
-		module.getFieldsForAnnotation(annotation).stream().filter(field -> object.getClass().isAssignableFrom(field.getType())).forEach(field -> {
+		module.getFieldsForAnnotation(annotation).forEach(field -> {
 			try {
-				LOGGER.info("Injecting: " + limit(object.toString(),100) + " into " + field);
+				LOGGER.info("Injecting: " + limit(object.toString(), 100) + " into " + field);
 				field.setAccessible(true);
 				field.set(module.getRealInstance(), object);
 			} catch (Exception e) {
-				LOGGER.error("Error while injecting " + limit(object.toString(),100) + " into " + field + ":", e);
+				LOGGER.error("Error while injecting " + limit(object.toString(), 100) + " into " + field + ":", e);
 			}
 		});
 	}
@@ -149,14 +149,12 @@ public class ModuleManager {
 	private static <A extends Annotation> void setFields(ModuleContainer module, Class<A> annotation, Function<A, Object> objectCreator) {
 		module.getFieldsForAnnotation(annotation).forEach(field -> {
 			Object object = objectCreator.apply(field.getAnnotation(annotation));
-			if (object.getClass().isAssignableFrom(field.getType())) {
-				try {
-					LOGGER.info("Injecting: " + limit(object.toString(),100) + " into " + field);
-					field.setAccessible(true);
-					field.set(module.getRealInstance(), object);
-				} catch (Exception e) {
-					LOGGER.error("Error while injecting " + object + " into " + field + ":", e);
-				}
+			try {
+				LOGGER.info("Injecting: " + limit(object.toString(), 100) + " into " + field);
+				field.setAccessible(true);
+				field.set(module.getRealInstance(), object);
+			} catch (Exception e) {
+				LOGGER.error("Error while injecting " + object + " into " + field + ":", e);
 			}
 		});
 	}
