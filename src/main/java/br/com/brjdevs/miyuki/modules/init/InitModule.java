@@ -3,6 +3,7 @@ package br.com.brjdevs.miyuki.modules.init;
 import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.*;
 import br.com.brjdevs.miyuki.modules.db.DBModule;
+import br.com.brjdevs.miyuki.utils.CollectionUtils;
 import br.com.brjdevs.miyuki.utils.DiscordUtils;
 import br.com.brjdevs.miyuki.utils.Java;
 import br.com.brjdevs.miyuki.utils.Log4jUtils;
@@ -11,10 +12,12 @@ import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.SelfUser;
 import net.dv8tion.jda.core.entities.User;
 import org.apache.logging.log4j.Logger;
+import org.luaj.vm2.ast.Str;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Set;
 
 @Module(name = "init", isListener = true)
 public class InitModule {
@@ -54,11 +57,11 @@ public class InitModule {
 
 	@PostReady
 	public static void postReady() {
-		User user = jda.getUserById(DBModule.getConfig().get("ownerID").getAsString());
-		if (user == null) {
-			logger.warn("Owner not regognized. This WILL cause issues (specially PermSystem)");
+		Set<User> owners = DBModule.getOwners();
+		if (owners.size() == 0) {
+			logger.warn("Owner(s) not regognized. This WILL cause issues (specially PermSystem)");
 		} else {
-			logger.info("Owner recognized: " + user.getName() + "#" + user.getDiscriminator() + " (ID: " + user.getId() + ")");
+			logger.info("Owner(s) recognized: " + CollectionUtils.toString(owners, (user -> user.getName() + "#" + user.getDiscriminator() + " (ID: " + user.getId() + ")"), ", "));
 		}
 
 		//Pushes.pushSimple("start", channel -> I18nModule.getLocalized("bot.startup", channel));

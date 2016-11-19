@@ -70,5 +70,9 @@ public class CollectionUtils {
 	public static <T, R> List<R> apply(List<T> list, Function<T, R> mapper) {
 		return list.stream().map(mapper).collect(Collectors.toList());
 	}
+
+	public static <T> String toString(Collection<T> collection, Function<T, String> toString, String join) {
+		return String.join(join, collection.stream().map(toString).toArray(String[]::new));
+	}
 }
 

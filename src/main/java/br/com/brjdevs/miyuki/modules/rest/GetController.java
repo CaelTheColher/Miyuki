@@ -33,14 +33,16 @@ public class GetController {
 				else array.add(new JsonPrimitive(g.getId()));
 			});
 			object.add("guildsOwned", array);
-			object.addProperty("owner", DBModule.getConfig().get("ownerID").getAsString().equals(id));
+			object.addProperty("owner", DBModule.getOwnerIDs().contains(id));
 			return object;
 		});
 
 		api.put("me", map -> {
 			JsonObject object = WebInterfaceHelper.object();
 			object.addProperty("avatar", RESTInterface.jda.getSelfUser().getAvatarUrl());
-			object.addProperty("owner", DBModule.getConfig().get("ownerID").getAsString());
+			JsonArray array = new JsonArray();
+			DBModule.getOwnerIDs().forEach(s -> array.add(new JsonPrimitive(s)));
+			object.add("owner", array);
 			return object;
 		});
 	}

@@ -138,7 +138,7 @@ public class PermissionsModule {
 
 	public static long getPermFor(Data guild, String target) {
 		target = DiscordUtils.processId(target);
-		long global = GuildModule.GLOBAL.getUserPerms(target, 0L), unrevokeable = (target.equals(DiscordUtils.processId(DBModule.getConfig().get("ownerID").getAsString())) || target.equals("console") ? BOT_OWNER : (guild.getGuild(jda) != null && guild.getGuild(jda).getOwner().getUser().getId().equals(target)) ? GUILD_OWNER : 0);
+		long global = GuildModule.GLOBAL.getUserPerms(target, 0L), unrevokeable = DBModule.getOwnerIDs().contains(target) ? BOT_OWNER : guild.getGuild(jda) != null && guild.getGuild(jda).getOwner().getUser().getId().equals(target) ? GUILD_OWNER : 0;
 		return global | guild.getUserPerms(target, (global == 0 ? guild.getUserPerms("default", BASE_USER) : global)) | unrevokeable;
 		//this will merge the Global Perms, the Local Perms, and Unrevokeable Perms (BOT_OWNER or GUILD_OWNER)
 	}

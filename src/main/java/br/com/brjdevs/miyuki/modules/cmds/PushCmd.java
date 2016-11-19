@@ -50,7 +50,7 @@ public class PushCmd {
 		registerType("update", "*");
 		registerType("changelog", "update");
 		registerType("get", "*");
-		registerType("ownerID", "*");
+		registerType("owner", "*");
 		registerType("guild", "*");
 		registerType("i18n", "*");
 		registerType("feeds", "*");

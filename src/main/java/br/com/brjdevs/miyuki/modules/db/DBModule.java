@@ -2,6 +2,7 @@ package br.com.brjdevs.miyuki.modules.db;
 
 import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.Instance;
+import br.com.brjdevs.miyuki.loader.Module.JDAInstance;
 import br.com.brjdevs.miyuki.loader.Module.Type;
 import br.com.brjdevs.miyuki.utils.data.ConfigUtils;
 import br.com.brjdevs.miyuki.utils.data.ReturnHandler;
@@ -15,9 +16,14 @@ import com.rethinkdb.RethinkDB;
 import com.rethinkdb.ast.ReqlAst;
 import com.rethinkdb.model.OptArgs;
 import com.rethinkdb.net.Connection;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.User;
 
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Module(name = "db", type = {Type.STATIC, Type.INSTANCE})
 public class DBModule {
@@ -28,6 +34,9 @@ public class DBModule {
 	@Instance
 	private static DBModule instance = null;
 
+	@JDAInstance
+	private static JDA jda;
+
 	private final RethinkDB r = RethinkDB.r;
 	private final ReturnHandler h = ReturnHandler.h;
 	private final Connection conn;
@@ -37,12 +46,12 @@ public class DBModule {
 		mainConfig = ConfigUtils.get(
 			"main",
 			ImmutableMap.<String, java.util.function.Predicate<JsonElement>>builder()
-				.put("ownerID", ConfigUtils::isJsonString)
+				.put("owners", JsonElement::isJsonArray)
 				.put("token", ConfigUtils::isJsonString)
 				.build(),
 			() -> {
 				JsonObject object = new JsonObject();
-				object.add("ownerID", null);
+				object.add("owners", null);
 				object.add("token", null);
 				return object;
 			},
@@ -79,6 +88,16 @@ public class DBModule {
 
 	public static Handler onDB(Function<RethinkDB, ReqlAst> dbConsumer) {
 		return new Handler(dbConsumer.apply(instance.r));
+	}
+
+	public static Set<User> getOwners() {
+		return jda.getUsers().stream().filter(user -> getOwnerIDs().contains(user.getId())).collect(Collectors.toSet());
+	}
+
+	public static Set<String> getOwnerIDs() {
+		return StreamSupport.stream(getConfig().get("owners").getAsJsonArray().spliterator(), false)
+			.map(JsonElement::getAsString)
+			.collect(Collectors.toSet());
 	}
 
 	public static Handler onDB(Supplier<ReqlAst> dbConsumer) {

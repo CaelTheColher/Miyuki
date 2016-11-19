@@ -172,7 +172,9 @@
         "vip": "VIP",
         "lang.set": "Now I'll speak %s in this Guild!",
         "id": "ID",
-        "users": "Users"
+        "users": "Users",
+        "emotes" : "Emotes",
+        "emotes.count" : "Emotes Count"
       }
     },
     "push": {

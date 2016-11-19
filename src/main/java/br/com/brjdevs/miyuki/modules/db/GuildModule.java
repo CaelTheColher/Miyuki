@@ -3,6 +3,7 @@ package br.com.brjdevs.miyuki.modules.db;
 import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.OnEnabled;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
+import br.com.brjdevs.miyuki.utils.CollectionUtils;
 import br.com.brjdevs.miyuki.utils.TaskManager;
 import br.com.brjdevs.miyuki.utils.data.Commitable;
 import com.google.gson.JsonElement;
@@ -14,6 +15,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.guild.update.GuildUpdateNameEvent;
@@ -172,7 +174,7 @@ public class GuildModule {
 		builder.setTimestamp(Instant.now().atOffset(ZoneOffset.UTC));
 		builder.addField(I18nModule.getLocalized("guild.guild", lang), data.name + (guild != null && !data.name.equals(guild.getName()) ? " \n(" + guild.getName() + ")" : ""), true)
 				.addField("VIP", data.getFlag("vip") + "", true)
-				.addField(I18nModule.getLocalized("guild.admin", lang), (guild == null ? jda.getUserById(DBModule.getConfig().get("ownerID").getAsString()).getName() : guild.getOwner().getUser().getName()), true)
+				.addField(I18nModule.getLocalized("guild.admin", lang), (guild == null ? CollectionUtils.toString(DBModule.getOwners(), User::getName, ", ") : guild.getOwner().getUser().getName()), true)
 				.addField(I18nModule.getLocalized("guild.cmds", lang), UserCommandsModule.allFrom(data).size() + "", true)
 				.addField(I18nModule.getLocalized("guild.channels", lang), (guild == null ? (jda.getTextChannels().size() + jda.getPrivateChannels().size()) : guild.getTextChannels().size()) + "", true)
 				.addField(I18nModule.getLocalized("guild.users", lang), (guild == null ? jda.getUsers().size() : guild.getMembers().size()) + "", true)
@@ -182,15 +184,6 @@ public class GuildModule {
 			builder.addField(I18nModule.getLocalized("guild.emotes", lang), (String.join(" ", guild.getEmotes().stream().map(Emote::getAsMention).collect(Collectors.toList()))), false);
 
 		return builder.build();
-	}
-	public static String toString(Data data, JDA jda, String language) {
-		Guild guild = data.getGuild(jda);
-		return I18nModule.getLocalized("guild.guild", language) + ": " + data.name + (data.getFlag("vip") ? " [VIP]" : "") + (guild != null && !data.name.equals(guild.getName()) ? " (" + guild.getName() + ")" : "")
-			+ "\n - " + I18nModule.getLocalized("guild.admin", language) + ": " + (guild == null ? jda.getUserById(DBModule.getConfig().get("ownerID").getAsString()).getName() : guild.getOwner().getUser().getName())
-			+ "\n - " + I18nModule.getLocalized("guild.cmds", language) + ": " + UserCommandsModule.allFrom(data).size()
-			+ "\n - " + I18nModule.getLocalized("guild.channels", language) + ": " + (guild == null ? (jda.getTextChannels().size() + jda.getPrivateChannels().size()) : guild.getTextChannels().size())
-			+ "\n - " + I18nModule.getLocalized("guild.users", language) + ": " + (guild == null ? jda.getUsers().size() : guild.getMembers().size())
-			+ "\n - " + I18nModule.getLocalized("guild.id", language) + ": " + data.id;
 	}
 
 	public static class Data {
