@@ -20,6 +20,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.function.Function;
 
+import static br.com.brjdevs.miyuki.utils.StringUtils.limit;
+
 public class ModuleManager {
 	private static final Logger LOGGER = Log4jUtils.logger();
 	private static Map<Class, ModuleContainer> INSTANCE_MAP = new HashMap<>();
@@ -108,6 +110,7 @@ public class ModuleManager {
 
 			module.getMethodsForAnnotation(Command.class).stream().filter(method -> ICommand.class.isAssignableFrom(method.getReturnType())).forEach(m -> {
 				try {
+					m.setAccessible(true);
 					CommandManager.addCommand(m.getAnnotation(Command.class).value(), (ICommand) m.invoke(module.getInstance()));
 				} catch (Exception e) {
 					LOGGER.error("Error while registering command \"" + m.getAnnotation(Command.class).value() + "\" from " + m + ":", e);
@@ -136,7 +139,7 @@ public class ModuleManager {
 				field.setAccessible(true);
 				field.set(module.getInstance(), object);
 			} catch (Exception e) {
-				LOGGER.error("Error while injecting " + object + " into " + field + ":", e);
+				LOGGER.error("Error while injecting " + limit(object.toString(),100) + " into " + field + ":", e);
 			}
 		});
 	}
