@@ -15,3 +15,6 @@ TODO-LOCAL.txt
 .gradle
 /build/
 !gradle-wrapper.jar
+
+#Custom Build Script
+!uploader.jar
