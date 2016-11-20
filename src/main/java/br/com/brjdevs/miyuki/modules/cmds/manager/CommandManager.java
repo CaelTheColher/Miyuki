@@ -5,9 +5,9 @@ import br.com.brjdevs.miyuki.commands.ICommand;
 import br.com.brjdevs.miyuki.commands.UserCommand;
 import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.LoggerInstance;
+import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.UserCommandsModule;
-import br.com.brjdevs.miyuki.oldmodules.init.Statistics;
 import br.com.brjdevs.miyuki.utils.TaskManager;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.User;
@@ -89,7 +89,7 @@ public class CommandManager {
 				else if (TooFast.enabled && !TooFast.canExecuteCmd(msgEvent)) event.getAnswers().toofast().queue();
 				else {
 					if (event.getCommand().sendStartTyping()) event.sendAwaitableTyping();
-					Statistics.cmds++;
+					SessionManager.cmds++;
 					Thread.currentThread().setName(event.getAuthor().getName() + ">" + baseCmd);
 					try {
 						execute(event);

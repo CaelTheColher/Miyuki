@@ -23,8 +23,7 @@ import static br.com.brjdevs.miyuki.modules.gui.impl.GuiTranslationHandler.*;
 public class BotGui extends JComponent {
 	private static final Logger LOGGER = LogManager.getLogger("BotGUI");
 	private static final Font GUI_FONT = new Font("Monospaced", 0, 12);
-	public JFrame frame;
-	private Consumer<String> out;
+	private JFrame frame;
 
 	private BotGui() {
 		this.setPreferredSize(new Dimension(858, 480));
@@ -97,7 +96,7 @@ public class BotGui extends JComponent {
 		textField.setEditable(false);
 		hooks.add(() -> textField.setEditable(true));
 
-		out = ConsoleHandler.wrap(in -> appendLine(textArea, pane, in + "\r\n"));
+		Consumer<String> out = ConsoleHandler.wrap(in -> appendLine(textArea, pane, in + "\r\n"));
 
 		textField.addActionListener(actionPerformed -> {
 			String s = textField.getText().trim();

@@ -13,8 +13,9 @@ import java.util.function.Function;
 public class SetController {
 	public static final Map<String, Function<Map<String, String>, JsonElement>> api = new HashMap<>();
 
-	static {
-	}
+//	static {
+//
+//	}
 
 	@RequestMapping("/set")
 	public String api(@RequestParam Map<String, String> params) {

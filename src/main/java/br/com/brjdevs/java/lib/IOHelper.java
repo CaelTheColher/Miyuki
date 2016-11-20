@@ -1,6 +1,6 @@
 package br.com.brjdevs.java.lib;
 
-import br.com.brjdevs.miyuki.oldmodules.init.Statistics;
+import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -49,7 +49,7 @@ public class IOHelper {
 	}
 
 	public static InputStream toStream(URL url) {
-		Statistics.wgets++;
+		SessionManager.wgets++;
 		try {
 			URLConnection c = url.openConnection();
 			c.setRequestProperty("User-Agent", System.getProperty("java.version"));

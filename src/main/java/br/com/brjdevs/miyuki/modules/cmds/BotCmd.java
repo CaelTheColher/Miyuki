@@ -7,11 +7,11 @@ import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.Command;
 import br.com.brjdevs.miyuki.modules.cmds.manager.CommandManager.TooFast;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
+import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
 import br.com.brjdevs.miyuki.modules.init.BotGreeter;
 import br.com.brjdevs.miyuki.modules.init.InitModule;
 import br.com.brjdevs.miyuki.oldmodules.cmds.utils.scripting.JS;
-import br.com.brjdevs.miyuki.oldmodules.init.Statistics;
 import net.dv8tion.jda.core.JDAInfo;
 import net.dv8tion.jda.core.MessageBuilder;
 
@@ -49,7 +49,7 @@ public class BotCmd {
 					.setAction((event) -> event.getAnswers().bool(TooFast.enabled = !TooFast.enabled).queue()).build()
 			)
 			.addCommand("session",
-				Commands.buildSimple("bot.session.usage").setAction((event) -> event.sendMessage(new MessageBuilder().setEmbed(Statistics.createEmbed(event)).build()).queue()).build()
+				Commands.buildSimple("bot.session.usage").setAction((event) -> event.sendMessage(new MessageBuilder().setEmbed(SessionManager.createEmbed(event)).build()).queue()).build()
 			)
 			.addCommand("inviteme",
 				Commands.buildSimple("bot.inviteme.usage")

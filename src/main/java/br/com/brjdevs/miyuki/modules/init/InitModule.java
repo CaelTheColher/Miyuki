@@ -2,8 +2,8 @@ package br.com.brjdevs.miyuki.modules.init;
 
 import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.*;
+import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 import br.com.brjdevs.miyuki.modules.db.DBModule;
-import br.com.brjdevs.miyuki.oldmodules.init.Statistics;
 import br.com.brjdevs.miyuki.utils.CollectionUtils;
 import br.com.brjdevs.miyuki.utils.DiscordUtils;
 import br.com.brjdevs.miyuki.utils.Java;
@@ -52,7 +52,7 @@ public class InitModule {
 
 	@Ready
 	public static void ready() {
-		Statistics.startDate = new Date();
+		SessionManager.startDate = new Date();
 		logger.info("Bot: " + user.getName() + " (#" + jda.getSelfUser().getId() + ")");
 		jda.getPresence().setGame(Game.of("mention me for help"));
 	}

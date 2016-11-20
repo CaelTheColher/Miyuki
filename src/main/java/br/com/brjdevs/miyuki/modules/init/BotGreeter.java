@@ -2,10 +2,10 @@ package br.com.brjdevs.miyuki.modules.init;
 
 import br.com.brjdevs.miyuki.commands.Holder;
 import br.com.brjdevs.miyuki.loader.Module;
+import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
 import br.com.brjdevs.miyuki.modules.db.UserModule;
-import br.com.brjdevs.miyuki.oldmodules.init.Statistics;
 import br.com.brjdevs.miyuki.utils.DiscordUtils;
 import br.com.brjdevs.miyuki.utils.StringUtils;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -22,7 +22,7 @@ public class BotGreeter {
 		Holder<String> lang = new Holder<>(GuildModule.fromDiscord(channel.getGuild()).getLang());
 		optionalUser.ifPresent(user -> lang.var = StringUtils.notNullOrDefault(UserModule.fromDiscord(user).getLang(), lang.var));
 		channel.sendTyping().queue(success -> {
-			Statistics.restActions++;
+			SessionManager.restActions++;
 			channel.sendMessage(I18nModule.getLocalized("bot.help", lang.var)).queue();
 		});
 	}

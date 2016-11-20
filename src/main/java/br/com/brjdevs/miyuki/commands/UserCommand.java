@@ -29,22 +29,22 @@ public class UserCommand implements ICommand, ITranslatable {
 	@Override
 	public void run(CommandEvent event) {
 		String response = random(responses);
-		if (response.length() > 7) {
+//		if (response.length() > 7) {
 //			if (response.substring(0, 6).equals("get://")) {
 //				event.getAnswers().send(IOHelper.toString(response.substring(6))).queue();
 //				return;
-//			} else
-			//} else if (response.substring(0, 6).equals("aud://")) {
-			//	Audio.queue(IOHelper.newURL(response.substring(6)), event);
-			//	return;
-		} else if (response.substring(0, 5).equals("js://")) {
-			if (PermissionsModule.havePermsRequired(event.getGuild(), event.getAuthor(), PermissionsModule.RUN_SCRIPT_CMDS)) {
-				//JS.eval(event.getGuild(), response.substring(5), event.getEvent());
-			} else {
-				event.awaitTyping(false).getAnswers().noperm().queue();
-			}
-			return;
-		}
+//			} else if (response.substring(0, 6).equals("aud://")) {
+//				Audio.queue(IOHelper.newURL(response.substring(6)), event);
+//				return;
+//			}
+//		} else if (response.substring(0, 5).equals("js://")) {
+//			if (PermissionsModule.havePermsRequired(event.getGuild(), event.getAuthor(), PermissionsModule.RUN_SCRIPT_CMDS)) {
+//				JS.eval(event.getGuild(), response.substring(5), event.getEvent());
+//			} else {
+//				event.awaitTyping(false).getAnswers().noperm().queue();
+//			}
+//			return;
+//		}
 
 		Map<String, String> dynamicMap = new HashMap<>();
 		dynamicMap.put("event.username", event.getAuthor().getName());

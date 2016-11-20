@@ -182,7 +182,7 @@ public class PushCmd {
 			r.add(type);
 			type = resolvedMap.getOrDefault(type, "*");
 			if (type == null) type = "*";
-		} while (!type.equals("*"));
+		} while (!"*".equals(type));
 
 		return r;
 	}

@@ -13,8 +13,8 @@
 package br.com.brjdevs.miyuki.commands;
 
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
+import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
-import br.com.brjdevs.miyuki.oldmodules.init.Statistics;
 import br.com.brjdevs.miyuki.utils.*;
 import com.google.common.base.Throwables;
 import net.dv8tion.jda.core.entities.Message;
@@ -46,7 +46,7 @@ public class FastAnswers {
 		Future<String> stringFuture = TaskManager.getThreadPool().submit(() -> Hastebin.post(Throwables.getStackTraceAsString(e)));
 		dear("uma exceção ocorreu durante a execução do comando:");
 		Log4jUtils.logger().error("Exception occurred during command \"" + event.getMessage().getContent() + "\": ", e);
-		Statistics.crashes++;
+		SessionManager.crashes++;
 		String s;
 		try {
 			s = "Full StackTrace: " + stringFuture.get();
@@ -57,7 +57,7 @@ public class FastAnswers {
 	}
 
 	public RestAction<Message> toofast() {
-		Statistics.toofasts++;
+		SessionManager.toofasts++;
 		return send("*" + I18nModule.getLocalized("answers.calmDown", event) + " " + event.getAuthor().getAsMention() + "! " + I18nModule.getLocalized("answers.tooFast", event) + "!*");
 	}
 
@@ -90,7 +90,7 @@ public class FastAnswers {
 	}
 
 	public RestAction<Message> noperm(long permsMissing) {
-		Statistics.noperm++;
+		SessionManager.noperm++;
 		StringBuilder b = new StringBuilder("*(Permissões Ausentes:");
 		PermissionsModule.toCollection(permsMissing).forEach(s -> b.append(" ").append(s));
 		b.append(")*");
@@ -107,7 +107,7 @@ public class FastAnswers {
 	}
 
 	public RestAction<Message> invalidargs() {
-		Statistics.invalidargs++;
+		SessionManager.invalidargs++;
 		String usage = event.getCommand().toString(I18nModule.getLocale(event));
 		if (usage == null) return dear(I18nModule.getLocalized("answers.invalidArgs", event));
 		else if (!usage.isEmpty()) return sendCased(usage);

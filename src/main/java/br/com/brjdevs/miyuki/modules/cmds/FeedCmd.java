@@ -119,7 +119,7 @@ public class FeedCmd {
 	public static class Subscription {
 		public final URL url;
 		public final String pushName, id;
-		List<Function<TextChannel, String>> compiledPushes = Collections.synchronizedList(new ArrayList<>());
+		private List<Function<TextChannel, String>> compiledPushes = Collections.synchronizedList(new ArrayList<>());
 		private int lastHashCode = 0;
 		private boolean active = true, loadedOnce = false;
 

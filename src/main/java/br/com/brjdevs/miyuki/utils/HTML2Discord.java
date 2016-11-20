@@ -77,13 +77,13 @@ public class HTML2Discord {
 				//we are at opening tag
 				if (!inBlock) {
 					//we are outside of block -> handle normally
-					if (token.format.equals("`")) {
+					if ("`".equals(token.format)) {
 						//block start... invalidate all previous tags
 						stack.clear();
 						inBlock = true;
 					}
 					stack.push(token);
-				} else if (token.format.equals("`")) {
+				} else if ("`".equals(token.format)) {
 					//we are inside of a block -> handle only block tag
 					stack.push(token);
 				}
@@ -91,7 +91,7 @@ public class HTML2Discord {
 				//we found a matching close-tag
 				toRemove.add(stack.pop());
 				toRemove.add(token);
-				if (token.format.equals("`") && stack.empty()) {
+				if ("`".equals(token.format) && stack.empty()) {
 					//close tag closed the block
 					inBlock = false;
 				}

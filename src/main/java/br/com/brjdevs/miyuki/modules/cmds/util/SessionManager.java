@@ -1,4 +1,4 @@
-package br.com.brjdevs.miyuki.oldmodules.init;
+package br.com.brjdevs.miyuki.modules.cmds.util;
 
 
 import br.com.brjdevs.miyuki.commands.CommandEvent;
@@ -7,7 +7,6 @@ import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
 import br.com.brjdevs.miyuki.modules.db.UserModule;
 import br.com.brjdevs.miyuki.utils.DataFormatter;
-import br.com.brjdevs.miyuki.utils.Formatter;
 import br.com.brjdevs.miyuki.utils.TaskManager;
 import com.sun.management.OperatingSystemMXBean;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -27,7 +26,7 @@ import java.util.Date;
 
 //TODO CLEANUP THIS WHOLE SHIT. TOO MUCH TO FIX.
 @SuppressWarnings("unchecked")
-public class Statistics {
+public class SessionManager {
 
 	public static Date startDate = null;
 	//public static int loads = 0, saves = 0, crashes = 0, noperm = 0, invalidargs = 0, msgs = 0, cmds = 0, wgets = 0, toofasts = 0;
@@ -43,7 +42,7 @@ public class Statistics {
 			Field modifiersField = Field.class.getDeclaredField("modifiers");
 			modifiersField.setAccessible(true);
 			modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-			field.set(null, RestAction.DEFAULT_SUCCESS.andThen(o -> Statistics.restActions++));
+			field.set(null, RestAction.DEFAULT_SUCCESS.andThen(o -> SessionManager.restActions++));
 		} catch (Exception e) {
 			LogManager.getLogger("Statistics-BruteReflections").error("The hacky heavy reflection static code block crashed. #BlameSpong and #BlameMinn", e);
 		}
@@ -105,41 +104,19 @@ public class Statistics {
 		EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(event.getOriginGuild().getSelfMember().getColor() == null ? Color.decode("#f1c40f") : event.getOriginGuild().getSelfMember().getColor());
 		builder.setFooter("Requested by " + event.getAuthor().getName() + " at " + DataFormatter.format(Instant.now().atOffset(ZoneOffset.UTC)), UserModule.getAvatarUrl(event.getAuthor()));
-		builder.addField(I18nModule.getLocalized("bot.session.uptime", lang), Statistics.calculate(Statistics.startDate, new Date(), lang), false);
-        builder.addField(I18nModule.getLocalized("bot.session.users", lang), jda.getUsers().size() + "", true);
-		builder.addField(I18nModule.getLocalized("bot.session.restactions", lang), Statistics.restActions + "", true);
-		builder.addField(I18nModule.getLocalized("bot.session.executedcmds", lang), Statistics.cmds + "", true);
-		builder.addField(I18nModule.getLocalized("bot.session.crashes", lang), Statistics.crashes + "", true);
-		builder.addField(I18nModule.getLocalized("bot.session.toofasts", lang), Statistics.toofasts + "", true);
-		builder.addField(I18nModule.getLocalized("bot.session.wgets", lang), Statistics.wgets + "", true);
+		builder.addField(I18nModule.getLocalized("bot.session.uptime", lang), SessionManager.calculate(SessionManager.startDate, new Date(), lang), false);
+		builder.addField(I18nModule.getLocalized("bot.session.users", lang), jda.getUsers().size() + "", true);
+		builder.addField(I18nModule.getLocalized("bot.session.restactions", lang), SessionManager.restActions + "", true);
+		builder.addField(I18nModule.getLocalized("bot.session.executedcmds", lang), SessionManager.cmds + "", true);
+		builder.addField(I18nModule.getLocalized("bot.session.crashes", lang), SessionManager.crashes + "", true);
+		builder.addField(I18nModule.getLocalized("bot.session.toofasts", lang), SessionManager.toofasts + "", true);
+		builder.addField(I18nModule.getLocalized("bot.session.wgets", lang), SessionManager.wgets + "", true);
 		builder.addField(I18nModule.getLocalized("bot.session.activethreads", lang), Thread.activeCount() + "", true);
-		builder.addField(I18nModule.getLocalized("bot.session.noperm", lang), Statistics.noperm + "", true);
+		builder.addField(I18nModule.getLocalized("bot.session.noperm", lang), SessionManager.noperm + "", true);
 		builder.addField(I18nModule.getLocalized("bot.session.guilds", lang), jda.getGuilds().size() + "", true);
 		builder.addField(I18nModule.getLocalized("bot.session.channels", lang), jda.getTextChannels().size() + "", true);
 		builder.addField(I18nModule.getLocalized("bot.session.ram", lang), ((instance.totalMemory() - instance.freeMemory()) / mb) + " MB/" + (instance.totalMemory() / mb) + " MB/" + (instance.maxMemory() / mb) + " MB", true);
 		builder.addField(I18nModule.getLocalized("bot.session.cpu", lang), cpuUsage + "%", true);
 		return builder.build();
-	}
-
-	public static void printStats(CommandEvent event) {
-		String language = I18nModule.getLocale(event);
-		int mb = 1024 * 1024;
-		Runtime instance = Runtime.getRuntime();
-		event.getAnswers().send(
-			Formatter.boldAndItalic("Estatísticas da sessão") + "\n" + Formatter.encase(
-				"- Ligado à " + Statistics.calculate(Statistics.startDate, new Date(), language)
-					+ "\n - " + Statistics.restActions + " Rest Actions enviadas"
-					+ "\n - " + Statistics.cmds + " comandos executados"
-					+ "\n - " + Statistics.crashes + " crashes ocorreram"
-					+ "\n - " + Statistics.toofasts + " comandos bloqueados por SpamDetection"
-					+ "\n - " + Statistics.wgets + " solicitações Web"
-					+ "\n - " + Thread.activeCount() + " threads ativas"
-					+ "\n - Sem Permissão: " + Statistics.noperm + " / Argumentos Invalidos: " + Statistics.invalidargs
-					+ "\n - Guilds conhecidas: " + event.getJDA().getGuilds().size()
-					+ "\n - Canais conhecidos: " + event.getJDA().getTextChannels().size()
-					+ "\n - Uso de RAM(Usando/Total/Máximo): " + ((instance.totalMemory() - instance.freeMemory()) / mb) + " MB/" + (instance.totalMemory() / mb) + " MB/" + (instance.maxMemory() / mb) + " MB"
-					+ "\n - Uso de CPU: " + cpuUsage + "%"
-			)
-		).queue();
 	}
 }

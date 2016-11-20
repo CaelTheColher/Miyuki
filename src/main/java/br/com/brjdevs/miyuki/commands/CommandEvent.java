@@ -12,8 +12,8 @@
 
 package br.com.brjdevs.miyuki.commands;
 
+import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 import br.com.brjdevs.miyuki.modules.db.GuildModule.Data;
-import br.com.brjdevs.miyuki.oldmodules.init.Statistics;
 import br.com.brjdevs.miyuki.utils.TaskManager;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
@@ -39,7 +39,7 @@ public class CommandEvent {
 	private Future<Void> awaitableTyping = null;
 
 	public CommandEvent(GuildMessageReceivedEvent event, Data targetGuild, ICommand command, String args) {
-		Statistics.cmds++;
+		SessionManager.cmds++;
 		this.event = event;
 		this.targetGuild = targetGuild;
 		this.command = command;

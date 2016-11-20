@@ -5,7 +5,7 @@ import br.com.brjdevs.miyuki.commands.Commands;
 import br.com.brjdevs.miyuki.commands.ICommand;
 import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.*;
-import br.com.brjdevs.miyuki.oldmodules.init.Statistics;
+import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 import br.com.brjdevs.miyuki.utils.Formatter;
 import br.com.brjdevs.miyuki.utils.TaskManager;
 import com.google.gson.JsonElement;
@@ -129,7 +129,7 @@ public class FunnyCmd {
 			.addCommand("minecraft", Commands.buildTree()
 				.addCommand("drama", Commands.buildSimple("funny.minecraft.drama.usage")
 					.setAction(event -> {
-						int amount = Statistics.clampIfNotOwner(Statistics.parseInt(event.getArgs(), 1), 0, 10, event.getAuthor());
+						int amount = SessionManager.clampIfNotOwner(SessionManager.parseInt(event.getArgs(), 1), 0, 10, event.getAuthor());
 						if (amount > 1) {
 							event.getAnswers().send(Formatter.italic("Pulling " + amount + " dramas... This can take a while...")).queue(message -> event.sendTyping().queue());
 						}
@@ -160,7 +160,7 @@ public class FunnyCmd {
 						event.awaitTyping(false).getAnswers().sendTranslated("error.contentmanager").queue();
 						return;
 					}
-					for (int i = 0, amount = Statistics.clampIfNotOwner(Statistics.parseInt(event.getArgs(), 1), 0, 10, event.getAuthor()); i < amount; i++) {
+					for (int i = 0, amount = SessionManager.clampIfNotOwner(SessionManager.parseInt(event.getArgs(), 1), 0, 10, event.getAuthor()); i < amount; i++) {
 						String result = "";
 						for (String[] theoryArray : random(SU_THEORIES))
 							result = result + random(theoryArray) + " ";
@@ -173,7 +173,7 @@ public class FunnyCmd {
 						event.awaitTyping(false).getAnswers().sendTranslated("error.contentmanager").queue();
 						return;
 					}
-					for (int i = 0, amount = Statistics.clampIfNotOwner(Statistics.parseInt(event.getArgs(), 1), 0, 10, event.getAuthor()); i < amount; i++)
+					for (int i = 0, amount = SessionManager.clampIfNotOwner(SessionManager.parseInt(event.getArgs(), 1), 0, 10, event.getAuthor()); i < amount; i++)
 						event.getAnswers().send("[#" + (i + 1) + "] " + random(SU_STEVONNIE)).queue();
 				}).build())
 				.build()
@@ -185,7 +185,7 @@ public class FunnyCmd {
 						event.awaitTyping(false).getAnswers().sendTranslated("error.contentmanager").queue();
 						return;
 					}
-					for (int i = 0, amount = Statistics.clampIfNotOwner(Statistics.parseInt(event.getArgs(), 1), 0, 10, event.getAuthor()); i < amount; i++)
+					for (int i = 0, amount = SessionManager.clampIfNotOwner(SessionManager.parseInt(event.getArgs(), 1), 0, 10, event.getAuthor()); i < amount; i++)
 						event.getAnswers().send("[#" + (i + 1) + "] " + random(TESV_GUARDS)).queue();
 				}).build())
 				.addCommand("lydia", Commands.buildSimple("funny.skyrim.lydia.usage").setAction(event -> {
@@ -193,7 +193,7 @@ public class FunnyCmd {
 						event.awaitTyping(false).getAnswers().sendTranslated("error.contentmanager").queue();
 						return;
 					}
-					for (int i = 0, amount = Statistics.clampIfNotOwner(Statistics.parseInt(event.getArgs(), 1), 0, 10, event.getAuthor()); i < amount; i++)
+					for (int i = 0, amount = SessionManager.clampIfNotOwner(SessionManager.parseInt(event.getArgs(), 1), 0, 10, event.getAuthor()); i < amount; i++)
 						event.getAnswers().send("[#" + (i + 1) + "] " + random(TESV_LYDIA)).queue();
 				}).build())
 				.build()

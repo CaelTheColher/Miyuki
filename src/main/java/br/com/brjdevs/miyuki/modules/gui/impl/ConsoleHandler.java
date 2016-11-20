@@ -1,8 +1,7 @@
 package br.com.brjdevs.miyuki.modules.gui.impl;
 
-import br.com.brjdevs.miyuki.modules.init.InitModule;
 import br.com.brjdevs.miyuki.modules.cmds.PushCmd;
-import br.com.brjdevs.miyuki.utils.StringUtils;
+import br.com.brjdevs.miyuki.modules.init.InitModule;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,7 +28,7 @@ public class ConsoleHandler {
 		CMDS.put("threads", (s, in) -> Thread.getAllStackTraces().keySet().forEach(t -> in.accept(t.getName())));
 
 		CMDS.put("push", (s, in) -> {
-			String[] args = StringUtils.splitArgs(s, 2);
+			String[] args = splitArgs(s, 2);
 			if (args[0].isEmpty() || args[1].isEmpty()) {
 				in.accept("Invalid args.");
 			} else {

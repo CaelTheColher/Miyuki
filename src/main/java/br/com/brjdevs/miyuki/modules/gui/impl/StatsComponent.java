@@ -1,7 +1,7 @@
 package br.com.brjdevs.miyuki.modules.gui.impl;
 
 
-import br.com.brjdevs.miyuki.oldmodules.init.Statistics;
+import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,14 +48,14 @@ public class StatsComponent extends JComponent {
 			this.msgs[5] = null;
 
 		} else {
-			this.msgs[0] = String.format(GuiTranslationHandler.get("stats0"), Statistics.calculate(Statistics.startDate == null ? new Date() : Statistics.startDate, new Date(), GuiTranslationHandler.getLang()));
-			this.msgs[1] = String.format(GuiTranslationHandler.get("stats1"), Statistics.restActions, Statistics.cmds, Statistics.crashes, Statistics.toofasts, Statistics.noperm, Statistics.invalidargs);
-			this.msgs[2] = String.format(GuiTranslationHandler.get("stats2"), Statistics.wgets, Thread.activeCount());
+			this.msgs[0] = String.format(GuiTranslationHandler.get("stats0"), SessionManager.calculate(SessionManager.startDate == null ? new Date() : SessionManager.startDate, new Date(), GuiTranslationHandler.getLang()));
+			this.msgs[1] = String.format(GuiTranslationHandler.get("stats1"), SessionManager.restActions, SessionManager.cmds, SessionManager.crashes, SessionManager.toofasts, SessionManager.noperm, SessionManager.invalidargs);
+			this.msgs[2] = String.format(GuiTranslationHandler.get("stats2"), SessionManager.wgets, Thread.activeCount());
 			this.msgs[3] = String.format(GuiTranslationHandler.get("stats3"), (instance.totalMemory() - instance.freeMemory()) / mb, instance.totalMemory() / mb, instance.maxMemory() / mb);
-			this.msgs[4] = String.format(GuiTranslationHandler.get("stats4"), Statistics.cpuUsage);
+			this.msgs[4] = String.format(GuiTranslationHandler.get("stats4"), SessionManager.cpuUsage);
 		}
-		addToArray(Statistics.restActions - lastValue);
-		lastValue = Statistics.restActions;
+		addToArray(SessionManager.restActions - lastValue);
+		lastValue = SessionManager.restActions;
 		this.repaint();
 	}
 
