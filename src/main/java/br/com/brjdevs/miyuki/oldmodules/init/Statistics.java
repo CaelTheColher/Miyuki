@@ -5,9 +5,14 @@ import br.com.brjdevs.miyuki.commands.CommandEvent;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
+import br.com.brjdevs.miyuki.modules.db.UserModule;
+import br.com.brjdevs.miyuki.utils.DataFormatter;
 import br.com.brjdevs.miyuki.utils.Formatter;
 import br.com.brjdevs.miyuki.utils.TaskManager;
 import com.sun.management.OperatingSystemMXBean;
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.requests.RestAction;
 import org.apache.logging.log4j.LogManager;
@@ -15,6 +20,8 @@ import org.apache.logging.log4j.LogManager;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.Date;
 
 //TODO CLEANUP THIS WHOLE SHIT. TOO MUCH TO FIX.
@@ -88,7 +95,27 @@ public class Statistics {
 		}
 		return onCatch;
 	}
-
+	public static MessageEmbed createEmbed(CommandEvent event) {
+		String lang = I18nModule.getLocale(event);
+		JDA jda = event.getJDA();
+		int mb = 1024 * 1024;
+		Runtime instance = Runtime.getRuntime();
+		EmbedBuilder builder = new EmbedBuilder();
+		builder.setFooter("Requested by " + event.getAuthor().getName() + " at " + DataFormatter.format(Instant.now().atOffset(ZoneOffset.UTC)), UserModule.getAvatarUrl(event.getAuthor()));
+		builder.addField(I18nModule.getLocalized("bot.session.uptime", lang), Statistics.calculate(Statistics.startDate, new Date(), lang), true);
+		builder.addField(I18nModule.getLocalized("bot.session.restactions", lang), Statistics.restActions + "", true);
+		builder.addField(I18nModule.getLocalized("bot.session.executedcmds", lang), Statistics.cmds + "", true);
+		builder.addField(I18nModule.getLocalized("bot.session.crashes", lang), Statistics.crashes + "", true);
+		builder.addField(I18nModule.getLocalized("bot.session.toofasts", lang), Statistics.toofasts + "", true);
+		builder.addField(I18nModule.getLocalized("bot.session.wgets", lang), Statistics.wgets + "", true);
+		builder.addField(I18nModule.getLocalized("bot.session.activethreads", lang), Thread.activeCount() + "", true);
+		builder.addField(I18nModule.getLocalized("bot.session.noperm", lang), Statistics.noperm + "", true);
+		builder.addField(I18nModule.getLocalized("bot.session.guilds", lang), jda.getGuilds().size() + "", true);
+		builder.addField(I18nModule.getLocalized("bot.session.channels", lang), jda.getTextChannels().size() + "", true);
+		builder.addField(I18nModule.getLocalized("bot.session.ram", lang), ((instance.totalMemory() - instance.freeMemory()) / mb) + " MB/" + (instance.totalMemory() / mb) + " MB/" + (instance.maxMemory() / mb) + " MB", true);
+		builder.addField(I18nModule.getLocalized("bot.session.cpu", lang), cpuUsage + "%", true);
+		return builder.build();
+	}
 	public static void printStats(CommandEvent event) {
 		String language = I18nModule.getLocale(event);
 		int mb = 1024 * 1024;
