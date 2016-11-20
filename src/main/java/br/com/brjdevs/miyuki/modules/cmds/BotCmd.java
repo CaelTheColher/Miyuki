@@ -59,10 +59,10 @@ public class BotCmd {
 						.setAction((event) -> event.getAnswers().bool(TooFast.enabled = !TooFast.enabled).queue()).build()
 				)
 				.addCommand("updatecheck",
-					Commands.buildSimple()
+					Commands.buildSimple("bot.admin.updatecheck.usage")
 						.setAction(event -> {
 							boolean exists = new File("/var/updates/Miyuki-r.jar").exists();
-							event.awaitTyping(true).getAnswers().bool(exists, exists ? "Oh, hey. There's an Update waiting!" : "Meh, no Jars for me.").queue();
+							event.awaitTyping(true).getAnswers().bool(exists, exists ? " Oh, hey. There's an Update waiting!" : " Meh, no new Jars for me.").queue();
 						})
 						.build()
 				)
