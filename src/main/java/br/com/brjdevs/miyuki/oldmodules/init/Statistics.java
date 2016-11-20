@@ -95,6 +95,7 @@ public class Statistics {
 		}
 		return onCatch;
 	}
+
 	public static MessageEmbed createEmbed(CommandEvent event) {
 		String lang = I18nModule.getLocale(event);
 		JDA jda = event.getJDA();
@@ -116,6 +117,7 @@ public class Statistics {
 		builder.addField(I18nModule.getLocalized("bot.session.cpu", lang), cpuUsage + "%", true);
 		return builder.build();
 	}
+
 	public static void printStats(CommandEvent event) {
 		String language = I18nModule.getLocale(event);
 		int mb = 1024 * 1024;

@@ -3,6 +3,7 @@ package br.com.brjdevs.miyuki.utils;
 import java.time.OffsetDateTime;
 
 public class DataFormatter {
+
     public static String format(OffsetDateTime date) {
         StringBuilder builder = new StringBuilder();
         builder.append(substring(date.getDayOfWeek())).append(", ").append(substring(date.getMonth()));
