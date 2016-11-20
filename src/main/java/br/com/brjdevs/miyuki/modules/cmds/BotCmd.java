@@ -90,7 +90,34 @@ public class BotCmd {
 					.setAction(JS::eval)
 					.build()
 			)
+			.addCommand("ping", Commands.buildSimple()
+				.sendStartTyping(false)
+				.setAction((event) -> {
+					long milis = System.currentTimeMillis();
+					event.sendTyping().queue(
+						success -> {
+							long time = System.currentTimeMillis() - milis;
+							event.sendMessage("Found out that my ping is " + time + "ms, " + ratePing(time)).queue();
+						}
+					);
+				}).build())
 			.build();
+	}
+
+	private static String ratePing(long ping) {
+		if (ping < 0) return "which doesn't even make any sense at all.";
+		if (ping < 10) return "which is faster than Sonic.";
+		if (ping < 100) return "which is great!";
+		if (ping < 200) return "which is nice!";
+		if (ping < 300) return "which is good!";
+		if (ping < 400) return "which is average...";
+		if (ping < 500) return "which is not that bad.";
+		if (ping < 600) return "which is kinda slow..";
+		if (ping < 700) return "which is not that fast..";
+		if (ping < 800) return "which is slow.";
+		if (ping < 800) return "which is awful.";
+		if (ping < 900) return "which is bad.";
+		return "which is slow af";
 	}
 
 }

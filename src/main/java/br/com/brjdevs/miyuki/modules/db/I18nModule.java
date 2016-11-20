@@ -1,15 +1,14 @@
 package br.com.brjdevs.miyuki.modules.db;
 
 import br.com.brjdevs.miyuki.commands.CommandEvent;
+import br.com.brjdevs.miyuki.commands.Commands;
+import br.com.brjdevs.miyuki.commands.ICommand;
 import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.*;
 import br.com.brjdevs.miyuki.loader.entities.ModuleResourceManager;
 import br.com.brjdevs.miyuki.modules.cmds.PushCmd;
-import br.com.brjdevs.miyuki.utils.Log4jUtils;
-import br.com.brjdevs.miyuki.utils.data.ConfigUtils;
-import com.google.gson.JsonElement;
+import br.com.brjdevs.miyuki.utils.Hastebin;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.TextChannel;
 
@@ -20,6 +19,7 @@ import static br.com.brjdevs.miyuki.modules.db.DBModule.onDB;
 import static br.com.brjdevs.miyuki.utils.AsyncUtils.asyncSleepThen;
 import static br.com.brjdevs.miyuki.utils.CollectionUtils.iterate;
 import static br.com.brjdevs.miyuki.utils.StringUtils.notNullOrDefault;
+import static br.com.brjdevs.miyuki.utils.data.DBUtils.decode;
 import static br.com.brjdevs.miyuki.utils.data.DBUtils.encode;
 import static com.rethinkdb.RethinkDB.r;
 
@@ -38,111 +38,34 @@ public class I18nModule {
 
 	@PreReady
 	private static void load() {
-		JsonObject mainFile = new JsonParser().parse(i18nMain).getAsJsonObject();
-		mainFile.entrySet().forEach(entry -> {
-			//Before Load, Parse Contents
-			JsonObject def = entry.getValue().getAsJsonObject();
-			if (def.has("parent")) setParent(entry.getKey(), def.get("parent").getAsString());
+		onDB(r.table("i18n")).run().cursorExpected().forEach(element -> {
+			JsonObject object = element.getAsJsonObject();
+			if (!object.has("id") || !object.has("value")) return;
+			String[] id = object.get("id").getAsString().split(":", 2);
+			if (id.length != 2) return;
+			setLocalTranslation(id[0], id[1], decode(object.get("value").getAsString()));
 
-			String resource = manager.get(entry.getKey() + ".json");
-			if (resource == null) return;
-
-			loadFile(entry.getKey(), new JsonParser().parse(resource));
+			if (object.has("moderated")) setModerated(id[0], id[1], object.get("moderated").getAsBoolean());
 		});
 	}
 
-	@Ready
-	private static void ready() {
+	@PostReady
+	private static void postReady() {
 		localizeLocal("botname", jda.getSelfUser().getName());
 		localizeLocal("mention", jda.getSelfUser().getAsMention());
 	}
 
-	private static void loadFile(String lang, JsonElement src) {
-		if (!src.isJsonObject()) return;
-		JsonObject file = src.getAsJsonObject();
-
-		List<Exception> post = new ArrayList<>();
-
-		try {
-			if (file.has("translations")) {
-				loadTranslation(lang, "", file.get("translations"), post);
-			}
-		} catch (Exception e) {
-			post.add(e);
-		}
-
-		try {
-			if (file.has("commands")) {
-				JsonElement metaSrc = file.get("meta");
-
-				JsonObject meta = metaSrc.isJsonObject() ? metaSrc.getAsJsonObject() : null;
-
-				file.get("commands").getAsJsonObject().entrySet().forEach(
-					entry -> loadCommand(lang, entry.getKey(), entry.getValue(), meta, post)
-				);
-			}
-		} catch (Exception e) {
-			post.add(e);
-		}
-
-		if (post.size() > 0) {
-			Log4jUtils.logger().info("Errors occurred while loading I18nModule:");
-			post.forEach(e -> Log4jUtils.logger().error(e));
-		}
+	@Command("i18n")
+	private static ICommand generateCommand() {
+		return Commands.buildTree()
+			.build();
 	}
 
-	private static void loadTranslation(String lang, String base, JsonElement src, List<Exception> post) {
-		if (!src.isJsonObject()) return;
-		JsonObject t = src.getAsJsonObject();
-
-		t.entrySet().forEach(
-			entry -> {
-				if (ConfigUtils.isJsonString(entry.getValue())) {
-					localize(lang, base + entry.getKey(), entry.getValue().getAsString());
-				}
-				if (entry.getValue().isJsonObject()) {
-					loadTranslation(lang, base + entry.getKey() + ".", entry.getValue(), post);
-				}
-			}
-		);
-	}
-
-	private static void loadCommand(String lang, String name, JsonElement src, JsonObject metadata, List<Exception> post) {
-		Log4jUtils.logger().trace(lang + " - " + name + " - " + src.toString());
-		if (!src.isJsonObject()) return;
-		JsonObject cmd = src.getAsJsonObject();
-		try {
-			if (cmd.has("desc") || cmd.has("params") || cmd.has("info")) {
-				String desc = cmd.has("desc") ? cmd.get("desc").getAsString() : metadata.get("noDesc").getAsString();
-				String params = cmd.has("params") ? cmd.get("params").getAsString() : metadata.get("noParams").getAsString();
-				String info = cmd.has("info") ? "\n  " + cmd.get("info").getAsString().replace("\n", "\n  ") : "";
-				localize(
-					lang,
-					name + ".usage",
-					desc + "\n" + metadata.get("params").getAsString() + ": " + params + info
-				);
-			}
-		} catch (Exception e) {
-			post.add(e);
-		}
-
-		try {
-			if (cmd.has("translations")) {
-				loadTranslation(lang, name + ".", cmd.get("translations"), post);
-			}
-		} catch (Exception e) {
-			post.add(e);
-		}
-
-		try {
-			if (cmd.has("subs") && cmd.get("subs").isJsonObject()) {
-				cmd.get("subs").getAsJsonObject().entrySet().forEach(entry ->
-					loadCommand(lang, name + "." + entry.getKey(), entry.getValue(), metadata, post)
-				);
-			}
-		} catch (Exception e) {
-			post.add(e);
-		}
+	private static String genCmdUsage(String desc, String params, String info, Optional<String> noDesc, Optional<String> noParams, Optional<String> paramsMeta) {
+		desc = desc != null ? desc : noDesc.orElse("null");
+		params = params != null ? params : noParams.orElse("null");
+		info = params != null ? "\n  " + info.replace("\n", "\n  ") : "";
+		return desc + "\n" + paramsMeta.orElse("null") + ": " + params + info;
 	}
 
 	private static void localize(String lang, String untranslated, String translated) {
@@ -170,7 +93,7 @@ public class I18nModule {
 
 		json.add("parents", parentsJson);
 		json.add("localizations", localizations);
-		return json.toString();
+		return Hastebin.post(json.toString());
 	}
 
 	public static void pushTranslation(String unlocalized, String locale, String localized) {
