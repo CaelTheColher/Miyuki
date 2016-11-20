@@ -24,6 +24,14 @@ public class MinorCmds {
 			.build();
 	}
 
+	@Command("ping")
+	private static ICommand ping() {
+		return Commands.buildSimple().setAction((event) -> {
+			long time = System.currentTimeMillis();
+			event.sendMessage("Ping").queue(msg -> msg.editMessage("Pong! Took " + (System.currentTimeMillis() - time) + "ms."));
+		}).build();
+	}
+
 //	@Command("testcode")
 //	private static ICommand testcode() {
 //		return Commands.buildSimple()
