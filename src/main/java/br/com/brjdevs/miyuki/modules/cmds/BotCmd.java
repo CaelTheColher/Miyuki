@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @Module(name = "cmds.bot")
 public class BotCmd {
-	
+    
 	@Command("bot")
 	private static ICommand createCommand() {
 		return Commands.buildTree(PermissionsModule.RUN_CMDS)
@@ -66,4 +66,5 @@ public class BotCmd {
 			)
 			.build();
 	}
+
 }
