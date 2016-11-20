@@ -6,12 +6,15 @@ import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
 import br.com.brjdevs.miyuki.modules.db.UserModule;
+import br.com.brjdevs.miyuki.utils.AsyncUtils;
 import br.com.brjdevs.miyuki.utils.DiscordUtils;
 import br.com.brjdevs.miyuki.utils.StringUtils;
+import net.dv8tion.jda.core.entities.PrivateChannel;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import net.dv8tion.jda.core.hooks.SubscribeEvent;
 
 import java.util.Optional;
@@ -31,6 +34,7 @@ public class BotGreeter {
 	public static void onGuildJoin(GuildJoinEvent event) {
 		GuildModule.Data guild = GuildModule.fromDiscord(event.getGuild());
 		guild.setLang(DiscordUtils.guessGuildLanguage(event.getGuild()));
+		if (!event.getGuild().getPublicChannel().canTalk()) return;
 		event.getGuild().getPublicChannel().sendTyping().queue();
 		event.getGuild().getPublicChannel().sendMessage(I18nModule.getLocalized("bot.hello1", guild.getLang())).queue();
 		event.getGuild().getPublicChannel().sendMessage(String.format(I18nModule.getLocalized("bot.hello2", guild.getLang()), event.getGuild().getOwner().getAsMention(), guild.getLang())).queue();

@@ -23,6 +23,13 @@ public class MinorCmds {
 			.setAction(event -> event.awaitTyping(false).sendMessage(Arrays.toString(StringUtils.advancedSplitArgs(event.getArgs(), 0))).queue())
 			.build();
 	}
+	@Command("ping")
+	private static ICommand ping() {
+		return Commands.buildSimple().setAction((event) -> {
+			long time = System.currentTimeMillis();
+			event.sendMessage("Ping").queue(msg -> msg.editMessage("Pong! Took " + (System.currentTimeMillis() - time) + "ms.").queue());
+		}).build();
+	}
 
 //	@Command("testcode")
 //	private static ICommand testcode() {

@@ -30,7 +30,7 @@ public class BotCmd {
 			.addDefault("info")
 			.addCommand("version", Commands.buildSimple("bot.version.usage").setAction(e -> e.getAnswers().send("**Bot Version:** " + Info.VERSION + "\n**JDA Version** " + JDAInfo.VERSION).queue()).build())
 			.addCommand("session",
-				Commands.buildSimple("bot.session.usage").setAction((event) -> event.sendMessage(new MessageBuilder().setEmbed(SessionManager.createEmbed(event)).build()).queue()).build()
+				Commands.buildSimple("bot.session.usage").setAction((event) -> event.awaitTyping(false).sendMessage(new MessageBuilder().setEmbed(SessionManager.createEmbed(event)).build()).queue()).build()
 			)
 			.addCommand("inviteme",
 				Commands.buildSimple("bot.inviteme.usage")
