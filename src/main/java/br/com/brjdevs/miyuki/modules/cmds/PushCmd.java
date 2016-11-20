@@ -43,7 +43,7 @@ public class PushCmd {
 
 	@OnEnabled
 	private static void enabled() {
-		registerType("*", null);
+		pushParenting.put("*", null);
 		registerType("bot", "*");
 		registerType("stop", "bot");
 		registerType("start", "bot");

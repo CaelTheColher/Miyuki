@@ -95,6 +95,7 @@ shadowJar {
             target.modifyOutputStream(jos as JarOutputStream);
         }
     })
+    filter(ReplaceTokens, tokens: ['VERSION': version])
 }
 
 compileJava.options.encoding = 'UTF-8'
