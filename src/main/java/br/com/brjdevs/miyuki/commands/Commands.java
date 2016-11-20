@@ -260,7 +260,7 @@ public class Commands {
 		}
 
 		public ICommand build() {
-			return Commands.buildSimple(USAGE_IMPL, permRequired).setAction(event -> {
+			return Commands.buildSimple(usageProvider, permRequired).setAction(event -> {
 				String[] args = event.getArgs(2);
 				ICommand cmd = SUBCMDS.get(args[0].toLowerCase());
 				if (cmd == null) onNotFound.accept(event, SUBCMDS);
