@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 public class Loader {
 	public static final Logger LOGGER = Log4jUtils.logger();
 	public static String[] args;
-	public static String latestLog;
+	public static String latestLog = "";
 
 	public static void main(String[] args) throws Exception {
 		Loader.args = args;
