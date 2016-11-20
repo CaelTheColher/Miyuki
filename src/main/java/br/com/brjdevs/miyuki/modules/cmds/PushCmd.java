@@ -4,10 +4,7 @@ import br.com.brjdevs.miyuki.commands.Commands;
 import br.com.brjdevs.miyuki.commands.Holder;
 import br.com.brjdevs.miyuki.commands.ICommand;
 import br.com.brjdevs.miyuki.loader.Module;
-import br.com.brjdevs.miyuki.loader.Module.Command;
-import br.com.brjdevs.miyuki.loader.Module.JDAInstance;
-import br.com.brjdevs.miyuki.loader.Module.LoggerInstance;
-import br.com.brjdevs.miyuki.loader.Module.OnEnabled;
+import br.com.brjdevs.miyuki.loader.Module.*;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
@@ -56,7 +53,10 @@ public class PushCmd {
 		registerType("feeds", "*");
 
 		registerDynamicTypes(() -> jda.getGuilds().stream().map(guild -> "guild_" + GuildModule.fromDiscord(guild).getName()).collect(Collectors.toSet()), "guild");
+	}
 
+	@Ready
+	private static void ready() {
 		onDB(r.table("pushSubs")).run().cursorExpected().forEach(json -> {
 			JsonObject subscription = json.getAsJsonObject();
 			TextChannel channel = jda.getTextChannelById(subscription.get("id").getAsString());
