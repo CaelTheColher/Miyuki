@@ -75,9 +75,9 @@ public class BotCmd {
 						.setAction(event -> {
 							Future<String> stringFuture = TaskManager.getThreadPool().submit(() -> Hastebin.post(Loader.latestLog));
 							try {
-								event.awaitTyping().getAnswers().bool(true, " Latest Log: " + stringFuture.get());
+								event.awaitTyping().getAnswers().bool(true, " Latest Log: " + stringFuture.get()).queue();
 							} catch (InterruptedException | ExecutionException ignored) {
-								event.awaitTyping().getAnswers().bool(false, " Could not upload the Log :(");
+								event.awaitTyping().getAnswers().bool(false, " Could not upload the Log :(").queue();
 							}
 						}).build()
 				)
