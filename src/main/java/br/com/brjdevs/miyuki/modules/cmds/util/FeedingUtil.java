@@ -8,9 +8,6 @@ import br.com.brjdevs.miyuki.utils.HTML2Discord;
 import br.com.brjdevs.miyuki.utils.PatternCollection;
 import br.com.brjdevs.miyuki.utils.StringUtils;
 import com.rometools.rome.feed.synd.SyndEntry;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.net.URL;
@@ -38,7 +35,7 @@ public class FeedingUtil {
 		return IOHelper.newURL(shorten(url.toString(), shorturl));
 	}
 
-	public static Function<TextChannel, Message> handleEntry(final Subscription subscription, final SyndEntry feed) {
+	public static Function<TextChannel, String> handleEntry(final Subscription subscription, final SyndEntry feed) {
 		//Compile static things
 		Function<TextChannel, String> chunk2, chunk4, chunk6, chunk7;
 		String chunk1 = "***:envelope_with_arrow: - ";
@@ -70,12 +67,7 @@ public class FeedingUtil {
 		} else {
 			chunk7 = c -> I18nModule.getLocalized("feed.unknown", c);
 		}
-		Function<String, String> func = compileReplace(PatternCollection.MULTIPLE_LINES, "\n");
-		EmbedBuilder builder = new EmbedBuilder()
-				.setTitle(subscription.pushName).setUrl(subscription.url.toString())
-				.setDescription(StringUtils.limit(HTML2Discord.toDiscordFormat(feed.getDescription().getValue()), 1024));
-        builder.addField(feed.getTitle(), StringUtils.limit(func.apply(HTML2Discord.toPlainText(feed.getTitle())), 1024), true);
-		Message message = new MessageBuilder().setEmbed(builder.build()).build();
-		return channel -> message;//chunk1 + chunk2.apply(channel) + chunk3 + chunk4.apply(channel) + chunk5 + chunk6.apply(channel) + " " + chunk7.apply(channel) + chunk8;
+
+		return channel -> chunk1 + chunk2.apply(channel) + chunk3 + chunk4.apply(channel) + chunk5 + chunk6.apply(channel) + " " + chunk7.apply(channel) + chunk8;
 	}
 }

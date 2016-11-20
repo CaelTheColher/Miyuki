@@ -22,7 +22,6 @@ import com.google.gson.JsonObject;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import org.apache.logging.log4j.Logger;
 
@@ -114,13 +113,13 @@ public class FeedCmd {
 	public static void onSendFeed(Subscription subs) {
 		if (subs.compiledPushes.size() == 0) return;
 		logger.trace(subs.pushName + ".size() = " + subs.compiledPushes.size());
-		AsyncUtils.async(() -> PushCmd.pushMessage("feed_" + subs.pushName, subs.compiledPushes.remove(0))).run();
+		AsyncUtils.async(() -> PushCmd.pushSimple("feed_" + subs.pushName, subs.compiledPushes.remove(0))).run();
 	}
 
 	public static class Subscription {
 		public final URL url;
 		public final String pushName, id;
-		private List<Function<TextChannel, Message>> compiledPushes = Collections.synchronizedList(new ArrayList<>());
+		private List<Function<TextChannel, String>> compiledPushes = Collections.synchronizedList(new ArrayList<>());
 		private int lastHashCode = 0;
 		private boolean active = true, loadedOnce = false;
 
