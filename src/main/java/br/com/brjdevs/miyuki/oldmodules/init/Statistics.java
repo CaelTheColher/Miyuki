@@ -17,6 +17,7 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.requests.RestAction;
 import org.apache.logging.log4j.LogManager;
 
+import java.awt.*;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -102,6 +103,7 @@ public class Statistics {
 		int mb = 1024 * 1024;
 		Runtime instance = Runtime.getRuntime();
 		EmbedBuilder builder = new EmbedBuilder();
+        builder.setColor(event.getMember().getColor() == null ? Color.decode("#f1c40f") : event.getMember().getColor());
 		builder.setFooter("Requested by " + event.getAuthor().getName() + " at " + DataFormatter.format(Instant.now().atOffset(ZoneOffset.UTC)), UserModule.getAvatarUrl(event.getAuthor()));
 		builder.addField(I18nModule.getLocalized("bot.session.uptime", lang), Statistics.calculate(Statistics.startDate, new Date(), lang), true);
 		builder.addField(I18nModule.getLocalized("bot.session.restactions", lang), Statistics.restActions + "", true);
