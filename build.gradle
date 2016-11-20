@@ -63,7 +63,6 @@ def commonManifest = {
 
 import com.github.edwgiz.mavenShadePlugin.log4j2CacheTransformer.PluginsCacheFileTransformer
 import com.github.jengelman.gradle.plugins.shadow.relocation.Relocator
-import org.apache.tools.ant.filters.ReplaceTokens
 import org.apache.tools.zip.ZipOutputStream
 
 import java.util.jar.JarOutputStream
@@ -95,14 +94,28 @@ shadowJar {
             target.modifyOutputStream(jos as JarOutputStream);
         }
     })
-    filter(ReplaceTokens, tokens: ['VERSION': version])
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    from(sourceSets.main.resources) {
+        include 'miyuki.version'
+
+        // replace version and mcversion
+        expand 'version': project.version
+    }
+
+    from(sourceSets.main.resources) {
+        exclude 'miyuki.version'
+    }
 }
 
 compileJava.options.encoding = 'UTF-8'
 
 jar {
     manifest commonManifest
-    filter(ReplaceTokens, tokens: ['VERSION': version])
+
 }
 
 sourceCompatibility = 1.8
