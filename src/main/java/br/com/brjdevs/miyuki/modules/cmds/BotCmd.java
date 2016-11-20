@@ -77,7 +77,8 @@ public class BotCmd {
 							try {
 								event.awaitTyping().getAnswers().bool(true, " Latest Log: " + stringFuture.get()).queue();
 							} catch (InterruptedException | ExecutionException ignored) {
-								event.awaitTyping().getAnswers().bool(false, " Could not upload the Log :(").queue();
+								event.awaitTyping().getAnswers().bool(false, " Could not upload the Log \uD83D\uDE26").queue();
+								throw new RuntimeException(ignored);
 							}
 						}).build()
 				)
