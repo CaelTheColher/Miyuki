@@ -15,19 +15,22 @@ buildscript {
     }
 }
 
+
+import com.github.edwgiz.mavenShadePlugin.log4j2CacheTransformer.PluginsCacheFileTransformer
+import com.github.jengelman.gradle.plugins.shadow.relocation.Relocator
+import org.apache.tools.zip.ZipOutputStream
+
+import java.util.jar.JarOutputStream
+
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: 'java'
 apply plugin: 'application'
 
-def append = env.containsKey('DRONE_BUILD_NUMBER') ? 'build' + env['DRONE_BUILD_NUMBER'] : 'dev';
-
 group 'br.com.brjdevs.miyuki'
-version '1.0-' + append;
-
+version '1.0.' + (env.containsKey('DRONE_BUILD_NUMBER') ? 'BUILD_' + env['DRONE_BUILD_NUMBER'] : 'DEV')
 mainClassName = "br.com.brjdevs.miyuki.Loader"
 
 println System.getProperty("java.home")
-
 
 repositories {
     mavenCentral()
@@ -43,7 +46,6 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.6.2'
     compile group: 'com.rethinkdb', name: 'rethinkdb-driver', version: '2.3.3'
     compile group: 'org.apache.commons', name: 'commons-io', version: '1.3.2'
-    compile group: 'org.luaj', name: 'luaj-jse', version: '3.0.1'
     compile group: 'com.google.guava', name: 'guava', version: '19.0'
     compile group: 'com.rometools', name: 'rome', version: '1.7.0'
     compile group: 'com.google.code.gson', name: 'gson', version: '1.7.2'
@@ -56,22 +58,8 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: '1.4.1.RELEASE'
 }
 
-def commonManifest = {
-    attributes 'Main-Class': mainClassName
-}
-
-
-import com.github.edwgiz.mavenShadePlugin.log4j2CacheTransformer.PluginsCacheFileTransformer
-import com.github.jengelman.gradle.plugins.shadow.relocation.Relocator
-import org.apache.tools.zip.ZipOutputStream
-
-import java.util.jar.JarOutputStream
-
 shadowJar {
     transform(new com.github.jengelman.gradle.plugins.shadow.transformers.Transformer() {
-
-        // this is an adapter required for generating a fat jar with correct log4j2 output
-
         PluginsCacheFileTransformer target = new PluginsCacheFileTransformer();
 
         @Override
@@ -101,8 +89,6 @@ processResources {
 
     from(sourceSets.main.resources) {
         include 'miyuki.version'
-
-        // replace version and mcversion
         expand 'version': project.version
     }
 
@@ -113,14 +99,13 @@ processResources {
 
 compileJava.options.encoding = 'UTF-8'
 
-jar {
-    manifest commonManifest
-
-}
+//jar {
+//    manifest commonManifest
+//}
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 artifacts {
-    archives shadowJar//, sourceJar
+    archives shadowJar
 }
