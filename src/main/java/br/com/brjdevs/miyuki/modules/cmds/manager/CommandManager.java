@@ -9,9 +9,11 @@ import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.UserCommandsModule;
 import br.com.brjdevs.miyuki.oldmodules.init.Statistics;
 import br.com.brjdevs.miyuki.utils.TaskManager;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.SubscribeEvent;
+import net.dv8tion.jda.core.utils.PermissionUtil;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
@@ -32,6 +34,9 @@ public class CommandManager {
 
 	@SubscribeEvent
 	private static void onMessageReceived(GuildMessageReceivedEvent msgEvent) {
+		if (!PermissionUtil.checkPermission(msgEvent.getChannel(), msgEvent.getGuild().getSelfMember(), Permission.MESSAGE_WRITE))
+			return;
+
 		if (msgEvent.getAuthor().equals(msgEvent.getJDA().getSelfUser())) {
 			asyncSleepThen(15 * 1000, () -> {
 				if (GuildModule.fromDiscord(msgEvent.getGuild()).getFlag("cleanup"))
