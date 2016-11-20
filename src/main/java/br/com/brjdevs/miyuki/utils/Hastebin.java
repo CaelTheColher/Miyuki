@@ -21,7 +21,7 @@ public class Hastebin {
 			HttpResponse response = client.execute(post);
 
 			String result = EntityUtils.toString(response.getEntity());
-			return "http://hastebin.com/" + new JsonParser().parse(result).getAsJsonObject().get("key");
+			return "http://hastebin.com/" + new JsonParser().parse(result).getAsJsonObject().get("key").getAsString();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
