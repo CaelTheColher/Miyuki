@@ -207,7 +207,7 @@ public class Commands {
 			return b.var.toString();
 		};
 		private final BiConsumer<CommandEvent, Map<String, ICommand>> NOT_FOUND_IMPL = (event, map) -> event.getAnswers().invalidargs().queue();
-		private final BiConsumer<CommandEvent, Map<String, ICommand>> NOT_FOUND_REDIRECT = (event, map) -> CommandManager.execute(event.createChild(map.get(""), event.getArg(2, 1)));
+		private final BiConsumer<CommandEvent, Map<String, ICommand>> NOT_FOUND_REDIRECT = (event, map) -> CommandManager.execute(event.createChild(map.get(""), event.getArgs()));
 		private long permRequired = PermissionsModule.RUN_CMDS;
 		private Function<String, String> usageProvider = USAGE_IMPL;
 		private BiConsumer<CommandEvent, Map<String, ICommand>> onNotFound = NOT_FOUND_IMPL;
