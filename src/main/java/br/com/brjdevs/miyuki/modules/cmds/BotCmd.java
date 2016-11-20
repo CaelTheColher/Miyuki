@@ -49,7 +49,7 @@ public class BotCmd {
 					.setAction((event) -> event.getAnswers().bool(TooFast.enabled = !TooFast.enabled).queue()).build()
 			)
 			.addCommand("session",
-				Commands.buildSimple("bot.session.usage").setAction((event) -> event.sendMessage(new MessageBuilder().setEmbed(SessionManager.createEmbed(event)).build()).queue()).build()
+				Commands.buildSimple("bot.session.usage").setAction((event) -> event.awaitTyping(false).sendMessage(new MessageBuilder().setEmbed(SessionManager.createEmbed(event)).build()).queue()).build()
 			)
 			.addCommand("inviteme",
 				Commands.buildSimple("bot.inviteme.usage")

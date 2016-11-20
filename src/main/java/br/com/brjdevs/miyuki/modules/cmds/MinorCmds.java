@@ -23,7 +23,6 @@ public class MinorCmds {
 			.setAction(event -> event.awaitTyping(false).sendMessage(Arrays.toString(StringUtils.advancedSplitArgs(event.getArgs(), 0))).queue())
 			.build();
 	}
-
 	@Command("ping")
 	private static ICommand ping() {
 		return Commands.buildSimple().setAction((event) -> {
