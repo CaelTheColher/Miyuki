@@ -13,21 +13,21 @@ public class MinorCmds {
 	//	@Command("parser")
 //	private static ICommand parser() {
 //		return Commands.buildSimple()
-//			.setAction(event -> event.awaitTyping().sendMessage(Arrays.toString(StringUtils.parse(event.getArgs(0)).entrySet().toArray())).queue())
+//			.setAction(event -> event.awaitTyping(false).sendMessage(Arrays.toString(StringUtils.parse(event.getArgs(0)).entrySet().toArray())).queue())
 //			.build();
 //	}
 //
 	@Command("splitargs")
 	private static ICommand splitargs() {
 		return Commands.buildSimple()
-			.setAction(event -> event.awaitTyping().sendMessage(Arrays.toString(StringUtils.advancedSplitArgs(event.getArgs(), 0))).queue())
+			.setAction(event -> event.awaitTyping(false).sendMessage(Arrays.toString(StringUtils.advancedSplitArgs(event.getArgs(), 0))).queue())
 			.build();
 	}
 
 //	@Command("testcode")
 //	private static ICommand testcode() {
 //		return Commands.buildSimple()
-//			.setAction(event -> event.awaitTyping().sendMessage(
+//			.setAction(event -> event.awaitTyping(false).sendMessage(
 //				CollectionUtils.subListOn(
 //					Arrays.asList(
 //						StringUtils.advancedSplitArgs(event.getArg(2, 1), 0)

@@ -32,13 +32,13 @@ public class UserCmd {
 						if (user == null) continue;
 						any.var = true;
 
-						event.awaitTyping().sendMessage(new MessageBuilder().setEmbed(UserModule.createEmbed(UserModule.fromDiscord(user), event.getJDA(), getLocale(event), event.getGuild().getGuild(event.getJDA()))).build()).queue();
+						event.awaitTyping(false).sendMessage(new MessageBuilder().setEmbed(UserModule.createEmbed(UserModule.fromDiscord(user), event.getJDA(), getLocale(event), event.getGuild().getGuild(event.getJDA()))).build()).queue();
 					}
 
 					if (!any.var) {
 						net.dv8tion.jda.core.entities.User user = event.getAuthor();
 						any.var = true;
-						event.awaitTyping().sendMessage(new MessageBuilder().setEmbed(UserModule.createEmbed(UserModule.fromDiscord(user), event.getJDA(), getLocale(event), event.getGuild().getGuild(event.getJDA()))).build()).queue();
+						event.awaitTyping(false).sendMessage(new MessageBuilder().setEmbed(UserModule.createEmbed(UserModule.fromDiscord(user), event.getJDA(), getLocale(event), event.getGuild().getGuild(event.getJDA()))).build()).queue();
 					}
 
 				}).build()

@@ -194,7 +194,7 @@ public class PushCmd {
 				.setAction(event -> {
 					Set<String> args = new HashSet<>();
 					Collections.addAll(args, event.getArgs(0));
-					event.awaitTyping().getAnswers().bool(subscribe(event.getChannel(), args)).queue();
+					event.awaitTyping(false).getAnswers().bool(subscribe(event.getChannel(), args)).queue();
 				})
 				.build()
 			)
@@ -202,14 +202,14 @@ public class PushCmd {
 				.setAction(event -> {
 					Set<String> args = new HashSet<>();
 					Collections.addAll(args, event.getArgs(0));
-					event.awaitTyping().getAnswers().bool(unsubscribe(event.getChannel(), args)).queue();
+					event.awaitTyping(false).getAnswers().bool(unsubscribe(event.getChannel(), args)).queue();
 				})
 				.build()
 			)
 			.addCommand("send", Commands.buildSimple("push.send.usage", PermissionsModule.PUSH_SEND)
 				.setAction(event -> {
 					pushSimple(event.getArg(2, 0), (channel) -> event.getArg(2, 1));
-					event.awaitTyping().getAnswers().bool(true).queue();
+					event.awaitTyping(false).getAnswers().bool(true).queue();
 				})
 				.build()
 			)
@@ -229,14 +229,14 @@ public class PushCmd {
 						} else {
 							String a = " " + s;
 							if (b.var.length() + a.length() >= 1999) {
-								event.awaitTyping().getAnswers().send(b.var.toString()).queue();
+								event.awaitTyping(false).getAnswers().send(b.var.toString()).queue();
 								b.var = new StringBuilder();
 							}
 							b.var.append(a);
 						}
 					});
 					if (first.var) b.var.append("(").append(I18nModule.getLocalized("push.none", event)).append(")");
-					event.awaitTyping().getAnswers().send(b.var.toString()).queue();
+					event.awaitTyping(false).getAnswers().send(b.var.toString()).queue();
 				})
 				.build()
 			)

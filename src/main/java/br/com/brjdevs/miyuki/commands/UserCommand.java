@@ -41,7 +41,7 @@ public class UserCommand implements ICommand, ITranslatable {
 			if (PermissionsModule.havePermsRequired(event.getGuild(), event.getAuthor(), PermissionsModule.RUN_SCRIPT_CMDS)) {
 				//JS.eval(event.getGuild(), response.substring(5), event.getEvent());
 			} else {
-				event.awaitTyping().getAnswers().noperm().queue();
+				event.awaitTyping(false).getAnswers().noperm().queue();
 			}
 			return;
 		}
@@ -53,7 +53,7 @@ public class UserCommand implements ICommand, ITranslatable {
 		dynamicMap.put("event.mentionUser", event.getAuthor().getAsMention());
 		dynamicMap.put("event.args", event.getArgs());
 		dynamicMap.put("event.guild", event.getGuild().getName());
-		event.awaitTyping().getAnswers().send(I18nModule.dynamicTranslate(response, I18nModule.getLocale(event), Optional.of(dynamicMap))).queue();
+		event.awaitTyping(false).getAnswers().send(I18nModule.dynamicTranslate(response, I18nModule.getLocale(event), Optional.of(dynamicMap))).queue();
 	}
 
 	@Override

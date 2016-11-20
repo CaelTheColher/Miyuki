@@ -14,15 +14,15 @@ public class UtilsCmd {
 		return Commands.buildTree()
 			.addCommand("convert", Commands.buildTree()
 				.addCommand("html2md", Commands.buildSimple("utils.convert.html2md.usage")
-					.setAction(event -> event.awaitTyping().sendMessage(HTML2Discord.toDiscordFormat(event.getArgs())).queue())
+					.setAction(event -> event.awaitTyping(false).sendMessage(HTML2Discord.toDiscordFormat(event.getArgs())).queue())
 					.build()
 				)
 				.addCommand("md2text", Commands.buildSimple("utils.convert.md2text.usage")
-					.setAction(event -> event.awaitTyping().sendMessage(HTML2Discord.toPlainText(event.getArgs())).queue())
+					.setAction(event -> event.awaitTyping(false).sendMessage(HTML2Discord.toPlainText(event.getArgs())).queue())
 					.build()
 				)
 				.addCommand("html2text", Commands.buildSimple("utils.convert.html2text.usage")
-					.setAction(event -> event.awaitTyping().sendMessage(HTML2Discord.toPlainText(HTML2Discord.toDiscordFormat(event.getArgs()))).queue())
+					.setAction(event -> event.awaitTyping(false).sendMessage(HTML2Discord.toPlainText(HTML2Discord.toDiscordFormat(event.getArgs()))).queue())
 					.build()
 				)
 				.build()
@@ -35,15 +35,15 @@ public class UtilsCmd {
 					} else if (event.getArgs(0).length == 2) {
 						r = FeedingUtil.shorten(event.getArg(2, 0), event.getArg(2, 1));
 					} else {
-						event.awaitTyping().getAnswers().invalidargs().queue();
+						event.awaitTyping(false).getAnswers().invalidargs().queue();
 						return;
 					}
-					event.awaitTyping().getAnswers().bool(!r.contains("Error:"), ": " + r).queue();
+					event.awaitTyping(false).getAnswers().bool(!r.contains("Error:"), ": " + r).queue();
 				})
 				.build()
 			)
 			.addCommand("hashcode", Commands.buildSimple("utils.hashcode.usage")
-				.setAction(event -> event.awaitTyping().sendMessage("**HashCode**: " + event.getArgs().hashCode()).queue())
+				.setAction(event -> event.awaitTyping(false).sendMessage("**HashCode**: " + event.getArgs().hashCode()).queue())
 				.build()
 			)
 			.build();

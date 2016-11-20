@@ -58,7 +58,7 @@ public class FastAnswers {
 
 	public RestAction<Message> send(String message) {
 		//Statistics.msgs++;
-		event.awaitTyping();
+		event.awaitTyping(false);
 		return event.getChannel().sendMessage(message);
 	}
 

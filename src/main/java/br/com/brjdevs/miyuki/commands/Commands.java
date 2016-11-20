@@ -19,6 +19,7 @@ import org.apache.logging.log4j.LogManager;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -205,9 +206,11 @@ public class Commands {
 			if (first.var) return null;
 			return b.var.toString();
 		};
+		private final BiConsumer<CommandEvent, Map<String, ICommand>> NOT_FOUND_IMPL = (event, map) -> event.getAnswers().invalidargs().queue();
+		private final BiConsumer<CommandEvent, Map<String, ICommand>> NOT_FOUND_REDIRECT = (event, map) -> CommandManager.execute(event.createChild(map.get(""), event.getArg(2, 1)));
 		private long permRequired = PermissionsModule.RUN_CMDS;
 		private Function<String, String> usageProvider = USAGE_IMPL;
-
+		private BiConsumer<CommandEvent, Map<String, ICommand>> onNotFound = NOT_FOUND_IMPL;
 		public TreeCommandBuilder() {
 			addDefault((ICommand) null);
 		}
@@ -231,6 +234,22 @@ public class Commands {
 			return addCommand(cmd, buildAlias().of(base, alias));
 		}
 
+		public TreeCommandBuilder onNotFound(NotFoundAction action) {
+			switch (action) {
+				case SHOW_OPTIONS:
+					onNotFound = NOT_FOUND_IMPL;
+				case REDIRECT:
+					onNotFound = NOT_FOUND_REDIRECT;
+			}
+
+			return this;
+		}
+
+		public TreeCommandBuilder onNotFound(BiConsumer<CommandEvent, Map<String, ICommand>> action) {
+			onNotFound = action;
+			return this;
+		}
+
 		public TreeCommandBuilder addDefault(String alias) {
 			return addCommand("", alias);
 		}
@@ -244,9 +263,13 @@ public class Commands {
 			return Commands.buildSimple(USAGE_IMPL, permRequired).setAction(event -> {
 				String[] args = event.getArgs(2);
 				ICommand cmd = SUBCMDS.get(args[0].toLowerCase());
-				if (cmd == null) event.getAnswers().invalidargs().queue();
-				else CommandManager.execute(new CommandEvent(event.getEvent(), event.getGuild(), cmd, args[1]));
+				if (cmd == null) onNotFound.accept(event, SUBCMDS);
+				else CommandManager.execute(event.createChild(cmd, args[1]));
 			}).build();
+		}
+
+		public enum NotFoundAction {
+			SHOW_OPTIONS, REDIRECT
 		}
 	}
 }

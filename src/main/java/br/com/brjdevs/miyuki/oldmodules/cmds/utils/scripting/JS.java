@@ -33,9 +33,9 @@ public class JS {
 					event.getArgs() +
 					"}" +
 					"})();");
-			event.awaitTyping().getAnswers().send(out == null ? I18nModule.getLocalized("bot.eval.noOut", event) : out.toString()).queue();
+			event.awaitTyping(false).getAnswers().send(out == null ? I18nModule.getLocalized("bot.eval.noOut", event) : out.toString()).queue();
 		} catch (ScriptException e) {
-			event.awaitTyping().getAnswers().exception(e).queue();
+			event.awaitTyping(false).getAnswers().exception(e).queue();
 		}
 	}
 
@@ -48,9 +48,9 @@ public class JS {
 					event.getArgs() +
 					"}" +
 					"})();");
-			event.awaitTyping().getAnswers().send(out == null ? I18nModule.getLocalized("eval.noOut", event) : out.toString()).queue();
+			event.awaitTyping(false).getAnswers().send(out == null ? I18nModule.getLocalized("eval.noOut", event) : out.toString()).queue();
 		} catch (ScriptException e) {
-			event.awaitTyping().getAnswers().exception(e).queue();
+			event.awaitTyping(false).getAnswers().exception(e).queue();
 		}
 	}
 }

@@ -120,7 +120,7 @@ public class CmdsCmd {
 					if (args[0].isEmpty() | args[1].isEmpty()) event.getAnswers().invalidargs().queue();
 					else {
 						if (Stream.of("loc://", "js://", "aud://").anyMatch(args[1]::startsWith) && !PermissionsModule.havePermsRequired(event.getGuild(), event.getAuthor(), PermissionsModule.MANAGE_SPECIAL_USER_CMDS)) {
-							event.awaitTyping().getAnswers().noperm(PermissionsModule.MANAGE_SPECIAL_USER_CMDS).queue();
+							event.awaitTyping(false).getAnswers().noperm(PermissionsModule.MANAGE_SPECIAL_USER_CMDS).queue();
 							return;
 						}
 

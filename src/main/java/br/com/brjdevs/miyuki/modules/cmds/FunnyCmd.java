@@ -141,11 +141,11 @@ public class FunnyCmd {
 									return "**Minecrosoft**: *" + latestDrama + "*\n  *(Provided by Minecraft Drama Generator)*";
 								});
 								while (!task.isDone()) {
-									event.awaitTyping().sendAwaitableTyping();
+									event.awaitTyping(false).sendAwaitableTyping();
 									sleep(2000);
 								}
 								try {
-									event.awaitTyping().getAnswers().send(task.get()).queue();
+									event.awaitTyping(false).getAnswers().send(task.get()).queue();
 								} catch (Exception e) {
 									LogManager.getLogger("Command: Drama").error("An error ocurred fetching the latest Drama: ", e);
 								}
@@ -157,7 +157,7 @@ public class FunnyCmd {
 			.addCommand("stevenuniverse", Commands.buildTree()
 				.addCommand("theorygenerator", Commands.buildSimple("funny.stevenuniverse.theorygenerator.usage").setAction(event -> {
 					if (!SU_THEORIES_LOADED) {
-						event.awaitTyping().getAnswers().sendTranslated("error.contentmanager").queue();
+						event.awaitTyping(false).getAnswers().sendTranslated("error.contentmanager").queue();
 						return;
 					}
 					for (int i = 0, amount = Statistics.clampIfNotOwner(Statistics.parseInt(event.getArgs(), 1), 0, 10, event.getAuthor()); i < amount; i++) {
@@ -170,7 +170,7 @@ public class FunnyCmd {
 				.addCommand("theorygen", "theorygenerator")
 				.addCommand("stevonnie", Commands.buildSimple("funny.stevenuniverse.stevonnie.usage").setAction(event -> {
 					if (!SU_STEVONNIE_LOADED) {
-						event.awaitTyping().getAnswers().sendTranslated("error.contentmanager").queue();
+						event.awaitTyping(false).getAnswers().sendTranslated("error.contentmanager").queue();
 						return;
 					}
 					for (int i = 0, amount = Statistics.clampIfNotOwner(Statistics.parseInt(event.getArgs(), 1), 0, 10, event.getAuthor()); i < amount; i++)
@@ -182,7 +182,7 @@ public class FunnyCmd {
 			.addCommand("skyrim", Commands.buildTree()
 				.addCommand("guard", Commands.buildSimple("funny.skyrim.guard.usage").setAction(event -> {
 					if (!TESV_GUARDS_LOADED) {
-						event.awaitTyping().getAnswers().sendTranslated("error.contentmanager").queue();
+						event.awaitTyping(false).getAnswers().sendTranslated("error.contentmanager").queue();
 						return;
 					}
 					for (int i = 0, amount = Statistics.clampIfNotOwner(Statistics.parseInt(event.getArgs(), 1), 0, 10, event.getAuthor()); i < amount; i++)
@@ -190,7 +190,7 @@ public class FunnyCmd {
 				}).build())
 				.addCommand("lydia", Commands.buildSimple("funny.skyrim.lydia.usage").setAction(event -> {
 					if (!TESV_LYDIA_LOADED) {
-						event.awaitTyping().getAnswers().sendTranslated("error.contentmanager").queue();
+						event.awaitTyping(false).getAnswers().sendTranslated("error.contentmanager").queue();
 						return;
 					}
 					for (int i = 0, amount = Statistics.clampIfNotOwner(Statistics.parseInt(event.getArgs(), 1), 0, 10, event.getAuthor()); i < amount; i++)

@@ -127,10 +127,11 @@ public class CommandEvent {
 		return new CommandEvent(getEvent(), getGuild(), command, args);
 	}
 
-	public CommandEvent awaitTyping() {
+	public CommandEvent awaitTyping(boolean lazy) {
+		int sleepMilis = lazy ? 200 : 1000;
 		if (awaitableTyping == null) return this;
 		while (awaitableTyping != null && !awaitableTyping.isDone()) {
-			sleep(200);
+			sleep(sleepMilis);
 		}
 		awaitableTyping = null;
 		return this;
@@ -144,7 +145,7 @@ public class CommandEvent {
 			} catch (Exception e) {
 				LogManager.getLogger("CommandEvent - PMs").info("Failure when trying to open private channel for user " + event.getAuthor().toString() + ". User was asked to send a pm.\n" +
 					e.getClass().getSimpleName() + ": " + e.getMessage());
-				awaitTyping().sendMessage(event.getMember().getAsMention() + " I can't send any DM messages to you, please send a DM to me with the message \"!ping\" to resolve the issue.\n" +
+				awaitTyping(true).sendMessage(event.getMember().getAsMention() + " I can't send any DM messages to you, please send a DM to me with the message \"!ping\" to resolve the issue.\n" +
 					"You should receive a \"pong!\" as response\n" +
 					"Your command was ignored because it is required that the user can receive a DM to execute commands.").queue();
 				return false;

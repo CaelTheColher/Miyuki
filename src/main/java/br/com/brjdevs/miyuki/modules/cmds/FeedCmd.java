@@ -67,7 +67,7 @@ public class FeedCmd {
 		return Commands.buildSimple("feed.usage", PermissionsModule.BOT_OWNER)
 			.setAction(event -> {
 				PushCmd.subscribe(event.getChannel(), Sets.newHashSet("feed_" + new FeedCmd.Subscription(event.getArg(2, 0), IOHelper.newURL(event.getArg(2, 1))).pushName));
-				event.awaitTyping().getAnswers().bool(true).queue();
+				event.awaitTyping(false).getAnswers().bool(true).queue();
 			})
 			.build();
 	}

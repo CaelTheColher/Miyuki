@@ -20,7 +20,7 @@ public class GuildCmd {
 		return Commands.buildTree()
 			.addCommand("info",
 				Commands.buildSimple("guild.info.usage")
-					.setAction(event -> event.awaitTyping().sendMessage(new MessageBuilder().setEmbed(GuildModule.createEmbed(event.getGuild(), event.getJDA(), I18nModule.getLocale(event))).build()).queue())
+					.setAction(event -> event.awaitTyping(false).sendMessage(new MessageBuilder().setEmbed(GuildModule.createEmbed(event.getGuild(), event.getJDA(), I18nModule.getLocale(event))).build()).queue())
 					.build()
 			)
 			.addDefault("info")
@@ -28,19 +28,19 @@ public class GuildCmd {
 				Commands.buildSimple("guild.lang.usage", PermissionsModule.SET_GUILD)
 					.setAction(event -> {
 						event.getGuild().setLang(event.getArgs().isEmpty() ? "en_US" : event.getArgs());
-						event.awaitTyping().getAnswers().announce(String.format(I18nModule.getLocalized("guild.lang.set", event), event.getGuild().getLang())).queue();
+						event.awaitTyping(false).getAnswers().announce(String.format(I18nModule.getLocalized("guild.lang.set", event), event.getGuild().getLang())).queue();
 					}).build()
 			)
 			.addCommand("cleanup",
 				Commands.buildSimple("guild.cleanup.usage", PermissionsModule.SET_GUILD)
-					.setAction(event -> event.awaitTyping().getAnswers().bool(event.getGuild().toggleFlag("cleanup")).queue())
+					.setAction(event -> event.awaitTyping(false).getAnswers().bool(event.getGuild().toggleFlag("cleanup")).queue())
 					.build()
 			)
 			.addCommand("prefixes",
 				Commands.buildSimple("guild.prefixes.usage", PermissionsModule.SET_GUILD)
 					.setAction(event -> {
 						if (event.getArgs().trim().isEmpty()) {
-							event.awaitTyping().getAnswers().invalidargs().queue();
+							event.awaitTyping(false).getAnswers().invalidargs().queue();
 							return;
 						}
 						Commitable<List<String>> cmdPrefixesHandler = event.getGuild().modifyCmdPrefixes();
@@ -57,11 +57,11 @@ public class GuildCmd {
 							} else if (each.toLowerCase().equals("clear")) {
 								cmdPrefixes.clear();
 							} else if (each.toLowerCase().equals("list") || each.toLowerCase().equals("get")) {
-								event.awaitTyping().getAnswers().send(Arrays.toString(cmdPrefixes.toArray())).queue();
+								event.awaitTyping(false).getAnswers().send(Arrays.toString(cmdPrefixes.toArray())).queue();
 							}
 						}
 						cmdPrefixesHandler.pushChanges();
-						event.awaitTyping().getAnswers().bool(true).queue();
+						event.awaitTyping(false).getAnswers().bool(true).queue();
 					})
 					.build()
 			)
