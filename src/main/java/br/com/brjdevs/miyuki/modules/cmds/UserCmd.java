@@ -2,6 +2,7 @@ package br.com.brjdevs.miyuki.modules.cmds;
 
 
 import br.com.brjdevs.miyuki.commands.Commands;
+import br.com.brjdevs.miyuki.commands.Commands.TreeCommandBuilder.NotFoundAction;
 import br.com.brjdevs.miyuki.commands.Holder;
 import br.com.brjdevs.miyuki.commands.ICommand;
 import br.com.brjdevs.miyuki.loader.Module;
@@ -17,7 +18,7 @@ import static br.com.brjdevs.miyuki.modules.db.I18nModule.getLocalized;
 public class UserCmd {
 	@Command("user")
 	private static ICommand createCommand() {
-		return Commands.buildTree()
+		return Commands.buildTree().onNotFound(NotFoundAction.REDIRECT)
 			.addCommand("info", Commands.buildSimple("user.info.usage")
 				.setAction(event -> {
 					String[] users = event.getArgs(0);
