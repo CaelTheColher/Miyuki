@@ -168,4 +168,8 @@ public class CommandEvent {
 		if (tryOpenPrivateChannel()) return Optional.ofNullable(answers.forChannel(getAuthor().getPrivateChannel()));
 		return Optional.empty();
 	}
+
+	public CommandEvent awaitTyping() {
+		return awaitTyping(false);
+	}
 }

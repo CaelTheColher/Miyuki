@@ -1,6 +1,7 @@
 package br.com.brjdevs.miyuki.modules.cmds;
 
 import br.com.brjdevs.miyuki.Info;
+import br.com.brjdevs.miyuki.Loader;
 import br.com.brjdevs.miyuki.commands.Commands;
 import br.com.brjdevs.miyuki.commands.ICommand;
 import br.com.brjdevs.miyuki.loader.Module;
@@ -12,11 +13,15 @@ import br.com.brjdevs.miyuki.modules.db.I18nModule;
 import br.com.brjdevs.miyuki.modules.init.BotGreeter;
 import br.com.brjdevs.miyuki.modules.init.InitModule;
 import br.com.brjdevs.miyuki.oldmodules.cmds.utils.scripting.JS;
+import br.com.brjdevs.miyuki.utils.Hastebin;
+import br.com.brjdevs.miyuki.utils.TaskManager;
 import net.dv8tion.jda.core.JDAInfo;
 import net.dv8tion.jda.core.MessageBuilder;
 
 import java.io.File;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 @Module(name = "cmds.bot")
 public class BotCmd {
@@ -39,7 +44,7 @@ public class BotCmd {
 			)
 			.addCommand("administration", Commands.buildTree(PermissionsModule.BOT_OWNER)
 				.addCommand("stop",
-					Commands.buildSimple("bot.stop.usage", PermissionsModule.STOP_BOT)
+					Commands.buildSimple("bot.stop.usage")
 						.setAction(event -> {
 							event.getAnswers().announce(I18nModule.getLocalized("bot.stop", event)).queue();
 							InitModule.stopBot();
@@ -47,7 +52,7 @@ public class BotCmd {
 						.build()
 				)
 				.addCommand("restart",
-					Commands.buildSimple("bot.stop.usage", PermissionsModule.STOP_BOT)
+					Commands.buildSimple("bot.stop.usage")
 						.setAction(event -> {
 							event.getAnswers().announce(I18nModule.getLocalized("bot.stop", event)).queue();
 							InitModule.restartBot();
@@ -55,7 +60,7 @@ public class BotCmd {
 						.build()
 				)
 				.addCommand("toofast",
-					Commands.buildSimple("bot.toofast.usage", PermissionsModule.BOT_OWNER)
+					Commands.buildSimple("bot.toofast.usage")
 						.setAction((event) -> event.getAnswers().bool(TooFast.enabled = !TooFast.enabled).queue()).build()
 				)
 				.addCommand("updatecheck",
@@ -63,8 +68,18 @@ public class BotCmd {
 						.setAction(event -> {
 							boolean exists = new File("/var/updates/Miyuki-r.jar").exists();
 							event.awaitTyping(true).getAnswers().bool(exists, exists ? " Oh, hey. There's an Update waiting!" : " Meh, no new Jars for me.").queue();
-						})
-						.build()
+						}).build()
+				)
+				.addCommand("pastelog",
+					Commands.buildSimple("bot.admin.pastelog.usage")
+						.setAction(event -> {
+							Future<String> stringFuture = TaskManager.getThreadPool().submit(() -> Hastebin.post(Loader.latestLog));
+							try {
+								event.awaitTyping().getAnswers().bool(true, " Latest Log: " + stringFuture.get());
+							} catch (InterruptedException | ExecutionException ignored) {
+								event.awaitTyping().getAnswers().bool(false, " Could not upload the Log :(");
+							}
+						}).build()
 				)
 				.build()
 			)

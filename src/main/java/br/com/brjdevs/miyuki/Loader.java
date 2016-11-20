@@ -5,6 +5,7 @@ import br.com.brjdevs.miyuki.loader.ModuleManager;
 import br.com.brjdevs.miyuki.modules.db.DBModule;
 import br.com.brjdevs.miyuki.utils.Java;
 import br.com.brjdevs.miyuki.utils.Log4jUtils;
+import br.com.brjdevs.miyuki.utils.QueueLogAppender;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -16,35 +17,52 @@ import org.apache.logging.log4j.Logger;
 public class Loader {
 	public static final Logger LOGGER = Log4jUtils.logger();
 	public static String[] args;
+	public static String latestLog;
 
 	public static void main(String[] args) throws Exception {
 		Loader.args = args;
 
-		try {
-		JsonElement src = new JsonParser().parse(resource(Loader.class, "/assets/loader/main.json"));
+		Thread thread = new Thread(() -> {
+			String s;
 
-		if (!src.isJsonArray()) {
-			LOGGER.error("\"/assets/loader/main.json\" is in a incorrect form. Expected \"" + JsonArray.class + "\", got \"" + src.getClass() + "\"");
-			return;
-		}
-
-		src.getAsJsonArray().forEach(element -> {
-			try {
-				ModuleManager.add(Class.forName(element.getAsString()));
-			} catch (Exception e) {
-				LOGGER.error("Failed to load Module " + element, e);
+			while ((s = QueueLogAppender.getNextLogEvent("HastebinPastable")) != null) {
+				latestLog = latestLog.concat(s);
+				if (latestLog.length() >= 30000) {
+					int cutAt = latestLog.indexOf('\n', 30000 - latestLog.length());
+					if (cutAt < 0) cutAt = 30001 - latestLog.length();
+					latestLog = latestLog.substring(cutAt);
+				}
 			}
 		});
+		thread.setName("Hastebin Pastable Log");
+		thread.setDaemon(true);
+		thread.start();
 
-		ModuleManager.firePreReadyEvents();
+		try {
+			JsonElement src = new JsonParser().parse(resource(Loader.class, "/assets/loader/main.json"));
 
-		new JDABuilder(AccountType.BOT)
-			.setToken(DBModule.getConfig().get("token").getAsString())
-			.setEventManager(new AnnotatedEventManager())
-			.addListener(ModuleManager.jdaListeners())
-			.buildBlocking();
+			if (!src.isJsonArray()) {
+				LOGGER.error("\"/assets/loader/main.json\" is in a incorrect form. Expected \"" + JsonArray.class + "\", got \"" + src.getClass() + "\"");
+				return;
+			}
 
-		ModuleManager.firePostReadyEvents();
+			src.getAsJsonArray().forEach(element -> {
+				try {
+					ModuleManager.add(Class.forName(element.getAsString()));
+				} catch (Exception e) {
+					LOGGER.error("Failed to load Module " + element, e);
+				}
+			});
+
+			ModuleManager.firePreReadyEvents();
+
+			new JDABuilder(AccountType.BOT)
+				.setToken(DBModule.getConfig().get("token").getAsString())
+				.setEventManager(new AnnotatedEventManager())
+				.addListener(ModuleManager.jdaListeners())
+				.buildBlocking();
+
+			ModuleManager.firePostReadyEvents();
 		} catch (Exception e) {
 			e.printStackTrace();
 			Java.stopApp();
