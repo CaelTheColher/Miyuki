@@ -15,11 +15,12 @@ import br.com.brjdevs.miyuki.oldmodules.cmds.utils.scripting.JS;
 import net.dv8tion.jda.core.JDAInfo;
 import net.dv8tion.jda.core.MessageBuilder;
 
+import java.io.File;
 import java.util.Optional;
 
 @Module(name = "cmds.bot")
 public class BotCmd {
-    
+
 	@Command("bot")
 	private static ICommand createCommand() {
 		return Commands.buildTree(PermissionsModule.RUN_CMDS)
@@ -28,26 +29,6 @@ public class BotCmd {
 			)
 			.addDefault("info")
 			.addCommand("version", Commands.buildSimple("bot.version.usage").setAction(e -> e.getAnswers().send("**Bot Version:** " + Info.VERSION + "\n**JDA Version** " + JDAInfo.VERSION).queue()).build())
-			.addCommand("stop",
-				Commands.buildSimple("bot.stop.usage", PermissionsModule.STOP_BOT)
-					.setAction(event -> {
-						event.getAnswers().announce(I18nModule.getLocalized("bot.stop", event)).queue();
-						InitModule.stopBot();
-					})
-					.build()
-			)
-			.addCommand("restart",
-				Commands.buildSimple("bot.stop.usage", PermissionsModule.STOP_BOT)
-					.setAction(event -> {
-						event.getAnswers().announce(I18nModule.getLocalized("bot.stop", event)).queue();
-						InitModule.restartBot();
-					})
-					.build()
-			)
-			.addCommand("toofast",
-				Commands.buildSimple("bot.toofast.usage", PermissionsModule.BOT_OWNER)
-					.setAction((event) -> event.getAnswers().bool(TooFast.enabled = !TooFast.enabled).queue()).build()
-			)
 			.addCommand("session",
 				Commands.buildSimple("bot.session.usage").setAction((event) -> event.sendMessage(new MessageBuilder().setEmbed(SessionManager.createEmbed(event)).build()).queue()).build()
 			)
@@ -56,9 +37,38 @@ public class BotCmd {
 					.setAction(event -> event.getAnswers().send("**" + I18nModule.getLocalized("bot.inviteme.link", event) + ":**\nhttps://discordapp.com/oauth2/authorize?client_id=" + event.getJDA().getSelfUser().getId() + "&scope=bot").queue())
 					.build()
 			)
-			.addCommand("administration", Commands.buildTree()
+			.addCommand("administration", Commands.buildTree(PermissionsModule.BOT_OWNER)
+				.addCommand("stop",
+					Commands.buildSimple("bot.stop.usage", PermissionsModule.STOP_BOT)
+						.setAction(event -> {
+							event.getAnswers().announce(I18nModule.getLocalized("bot.stop", event)).queue();
+							InitModule.stopBot();
+						})
+						.build()
+				)
+				.addCommand("restart",
+					Commands.buildSimple("bot.stop.usage", PermissionsModule.STOP_BOT)
+						.setAction(event -> {
+							event.getAnswers().announce(I18nModule.getLocalized("bot.stop", event)).queue();
+							InitModule.restartBot();
+						})
+						.build()
+				)
+				.addCommand("toofast",
+					Commands.buildSimple("bot.toofast.usage", PermissionsModule.BOT_OWNER)
+						.setAction((event) -> event.getAnswers().bool(TooFast.enabled = !TooFast.enabled).queue()).build()
+				)
+				.addCommand("checkUpdates",
+					Commands.buildSimple()
+						.setAction(event -> {
+							boolean exists = new File("/var/updates/Miyuki-r.jar").exists();
+							event.awaitTyping(true).getAnswers().bool(exists, exists ? "Oh, hey. There's an Update waiting!" : "Meh, no Jars for me.");
+						})
+						.build()
+				)
 				.build()
 			)
+			.addCommand("admin", "administration")
 			.addCommand("eval",
 				Commands.buildSimple("bot.eval.usage", PermissionsModule.SCRIPTS | PermissionsModule.RUN_SCRIPT_CMDS | PermissionsModule.SCRIPTS_UNSAFEENV)
 					.setAction(JS::eval)
