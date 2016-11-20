@@ -117,6 +117,7 @@ public class Commands {
 		private Consumer<CommandEvent> action = null;
 		private long permRequired = PermissionsModule.RUN_CMDS;
 		private Function<String, String> usageProvider = DEFAULT_NOOP_PROVIDER;
+		private boolean sendTyping = true;
 
 		public CommandBuilder() {
 		}
@@ -148,6 +149,11 @@ public class Commands {
 			return this;
 		}
 
+		public CommandBuilder sendStartTyping(boolean value) {
+			sendTyping = value;
+			return this;
+		}
+
 		private CommandBuilder setPermRequired(long value) {
 			permRequired = value;
 			return this;
@@ -176,6 +182,11 @@ public class Commands {
 				@Override
 				public long retrievePerm() {
 					return permRequired;
+				}
+
+				@Override
+				public boolean sendStartTyping() {
+					return sendTyping;
 				}
 
 				@Override

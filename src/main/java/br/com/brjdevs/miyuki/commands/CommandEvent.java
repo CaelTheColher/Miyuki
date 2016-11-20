@@ -128,8 +128,9 @@ public class CommandEvent {
 		return getChannel().sendTyping();
 	}
 
-	public void sendAwaitableTyping() {
+	public CommandEvent sendAwaitableTyping() {
 		awaitableTyping = TaskManager.getThreadPool().submit(() -> sendTyping().block());
+		return this;
 	}
 
 	public CommandEvent createChild(ICommand command, String args) {
