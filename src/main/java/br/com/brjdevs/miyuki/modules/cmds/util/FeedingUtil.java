@@ -8,6 +8,7 @@ import br.com.brjdevs.miyuki.utils.HTML2Discord;
 import br.com.brjdevs.miyuki.utils.PatternCollection;
 import br.com.brjdevs.miyuki.utils.StringUtils;
 import com.rometools.rome.feed.synd.SyndEntry;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.net.URL;
@@ -35,7 +36,7 @@ public class FeedingUtil {
 		return IOHelper.newURL(shorten(url.toString(), shorturl));
 	}
 
-	public static Function<TextChannel, String> handleEntry(final Subscription subscription, final SyndEntry feed) {
+	public static Function<TextChannel, Message> handleEntry(final Subscription subscription, final SyndEntry feed) {
 		//Compile static things
 		Function<TextChannel, String> chunk2, chunk4, chunk6, chunk7;
 		String chunk1 = "***:envelope_with_arrow: - ";
