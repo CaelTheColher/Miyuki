@@ -15,12 +15,14 @@ package br.com.brjdevs.miyuki.commands;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
 import br.com.brjdevs.miyuki.oldmodules.init.Statistics;
-import br.com.brjdevs.miyuki.utils.Formatter;
-import br.com.brjdevs.miyuki.utils.Log4jUtils;
-import br.com.brjdevs.miyuki.utils.StringUtils;
+import br.com.brjdevs.miyuki.utils.*;
+import com.google.common.base.Throwables;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.requests.RestAction;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 
 public class FastAnswers {
@@ -41,10 +43,17 @@ public class FastAnswers {
 	}
 
 	public RestAction<Message> exception(Exception e) {
+		Future<String> stringFuture = TaskManager.getThreadPool().submit(() -> Hastebin.post(Throwables.getStackTraceAsString(e)));
 		dear("uma exceção ocorreu durante a execução do comando:");
 		Log4jUtils.logger().error("Exception occurred during command \"" + event.getMessage().getContent() + "\": ", e);
 		Statistics.crashes++;
-		return sendCased(StringUtils.limit(e.toString(), 500), "java");
+		String s;
+		try {
+			s = "Full StackTrace: " + stringFuture.get();
+		} catch (InterruptedException | ExecutionException ignored) {
+			s = "Could not upload the StackTrace";
+		}
+		return sendCased(StringUtils.limit(e.toString(), 500) + "\n" + s, "java");
 	}
 
 	public RestAction<Message> toofast() {
