@@ -49,9 +49,9 @@ public class FastAnswers {
 		SessionManager.crashes++;
 		String s;
 		try {
-			s = "Full StackTrace: " + stringFuture.get();
+			s = "//Full StackTrace: " + stringFuture.get();
 		} catch (InterruptedException | ExecutionException ignored) {
-			s = "Could not upload the StackTrace";
+			s = "//Could not upload the StackTrace :(";
 		}
 		return sendCased(StringUtils.limit(e.toString(), 500) + "\n" + s, "java");
 	}

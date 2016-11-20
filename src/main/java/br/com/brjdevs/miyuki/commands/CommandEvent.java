@@ -14,6 +14,7 @@ package br.com.brjdevs.miyuki.commands;
 
 import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 import br.com.brjdevs.miyuki.modules.db.GuildModule.Data;
+import br.com.brjdevs.miyuki.modules.db.I18nModule;
 import br.com.brjdevs.miyuki.utils.TaskManager;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
@@ -113,6 +114,14 @@ public class CommandEvent {
 
 	public RestAction<Message> sendFile(File file, Message message) throws IOException {
 		return getChannel().sendFile(file, message);
+	}
+
+	public String getLocalized(String unlocalized) {
+		return I18nModule.getLocalized(unlocalized, this);
+	}
+
+	public String getLocalized(String unlocalized, Object... format) {
+		return String.format(I18nModule.getLocalized(unlocalized, this), format);
 	}
 
 	public RestAction<Void> sendTyping() {
