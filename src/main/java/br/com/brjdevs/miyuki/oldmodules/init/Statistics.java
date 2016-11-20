@@ -103,7 +103,7 @@ public class Statistics {
 		int mb = 1024 * 1024;
 		Runtime instance = Runtime.getRuntime();
 		EmbedBuilder builder = new EmbedBuilder();
-        builder.setColor(event.getMember().getColor() == null ? Color.decode("#f1c40f") : event.getMember().getColor());
+        builder.setColor(event.getOriginGuild().getSelfMember().getColor() == null ? Color.decode("#f1c40f") : event.getOriginGuild().getSelfMember().getColor());
 		builder.setFooter("Requested by " + event.getAuthor().getName() + " at " + DataFormatter.format(Instant.now().atOffset(ZoneOffset.UTC)), UserModule.getAvatarUrl(event.getAuthor()));
 		builder.addField(I18nModule.getLocalized("bot.session.uptime", lang), Statistics.calculate(Statistics.startDate, new Date(), lang), false);
         builder.addField(I18nModule.getLocalized("bot.session.users", lang), jda.getUsers().size() + "", true);
