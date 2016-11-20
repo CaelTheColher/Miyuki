@@ -2,10 +2,7 @@ package br.com.brjdevs.miyuki.modules.db;
 
 import br.com.brjdevs.miyuki.commands.CommandEvent;
 import br.com.brjdevs.miyuki.loader.Module;
-import br.com.brjdevs.miyuki.loader.Module.JDAInstance;
-import br.com.brjdevs.miyuki.loader.Module.PostReady;
-import br.com.brjdevs.miyuki.loader.Module.Resource;
-import br.com.brjdevs.miyuki.loader.Module.ResourceManager;
+import br.com.brjdevs.miyuki.loader.Module.*;
 import br.com.brjdevs.miyuki.loader.entities.ModuleResourceManager;
 import br.com.brjdevs.miyuki.modules.cmds.PushCmd;
 import br.com.brjdevs.miyuki.utils.Log4jUtils;
@@ -19,9 +16,12 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import static br.com.brjdevs.miyuki.modules.db.DBModule.onDB;
 import static br.com.brjdevs.miyuki.utils.AsyncUtils.asyncSleepThen;
 import static br.com.brjdevs.miyuki.utils.CollectionUtils.iterate;
 import static br.com.brjdevs.miyuki.utils.StringUtils.notNullOrDefault;
+import static br.com.brjdevs.miyuki.utils.data.DBUtils.encode;
+import static com.rethinkdb.RethinkDB.r;
 
 @Module(name = "i18n")
 public class I18nModule {
@@ -36,11 +36,8 @@ public class I18nModule {
 	private static Map<String, Map<String, String>> locales = new HashMap<>();
 	private static Map<String, String> parents = new HashMap<>();
 
-	@PostReady
+	@PreReady
 	private static void load() {
-		localizeLocal("botname", jda.getSelfUser().getName());
-		localizeLocal("mention", jda.getSelfUser().getAsMention());
-
 		JsonObject mainFile = new JsonParser().parse(i18nMain).getAsJsonObject();
 		mainFile.entrySet().forEach(entry -> {
 			//Before Load, Parse Contents
@@ -52,6 +49,12 @@ public class I18nModule {
 
 			loadFile(entry.getKey(), new JsonParser().parse(resource));
 		});
+	}
+
+	@Ready
+	private static void ready() {
+		localizeLocal("botname", jda.getSelfUser().getName());
+		localizeLocal("mention", jda.getSelfUser().getAsMention());
 	}
 
 	private static void loadFile(String lang, JsonElement src) {
@@ -173,9 +176,9 @@ public class I18nModule {
 	public static void pushTranslation(String unlocalized, String locale, String localized) {
 		String localeId = unlocalized + ":" + locale;
 		if (syncedLocalizations.contains(localeId)) {
-//			r.table("i18n").get(localeId).update(arg -> r.hashMap("type", encode(localized))).runNoReply(conn);
+			onDB(r.table("i18n").get(localeId).update(arg -> r.hashMap("type", encode(localized)))).noReply();
 		} else {
-//			r.table("i18n").insert(r.hashMap("id", localeId).with("type", encode(localized)).with("moderated", moderated.contains(localeId))).runNoReply(conn);
+			onDB(r.table("i18n").insert(r.hashMap("id", localeId).with("type", encode(localized)).with("moderated", moderated.contains(localeId)))).noReply();
 			syncedLocalizations.add(localeId);
 		}
 
@@ -192,7 +195,7 @@ public class I18nModule {
 		}
 
 		if (syncedLocalizations.contains(localeId)) {
-//			r.table("i18n").get(localeId).update(arg -> r.hashMap("moderated", flag)).runNoReply(conn);
+			onDB(r.table("i18n").get(localeId).update(arg -> r.hashMap("moderated", flag))).noReply();
 		}
 	}
 
