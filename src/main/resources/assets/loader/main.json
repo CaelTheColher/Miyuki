@@ -18,7 +18,6 @@
   "br.com.brjdevs.miyuki.modules.cmds.FeedCmd",
   "br.com.brjdevs.miyuki.modules.cmds.FunnyCmd",
   "br.com.brjdevs.miyuki.modules.cmds.GuildCmd",
-  "br.com.brjdevs.miyuki.modules.cmds.MinorCmds",
   "br.com.brjdevs.miyuki.modules.cmds.PushCmd",
   "br.com.brjdevs.miyuki.modules.cmds.UserCmd",
   "br.com.brjdevs.miyuki.modules.cmds.UtilsCmd",

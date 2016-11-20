@@ -46,6 +46,16 @@ public class UtilsCmd {
 				.setAction(event -> event.awaitTyping(false).sendMessage("**HashCode**: " + event.getArgs().hashCode()).queue())
 				.build()
 			)
+			.addCommand("ping", Commands.buildSimple()
+				.setAction((event) -> {
+					long time = System.currentTimeMillis();
+					event.sendMessage("Hmm.. Let me check...")
+						.queue(
+							msg -> event.awaitTyping(true).sendMessage("Found out that it took " + (System.currentTimeMillis() - time) + "ms.").queue(),
+							t -> {
+							}
+						);
+				}).build())
 			.build();
 	}
 }
