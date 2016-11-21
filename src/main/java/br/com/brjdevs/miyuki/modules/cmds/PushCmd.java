@@ -46,7 +46,7 @@ public class PushCmd {
 		registerType("start", "bot");
 		registerType("update", "*");
 		registerType("changelog", "update");
-		registerType("get", "*");
+		registerType("log", "*");
 		registerType("owner", "*");
 		registerType("guild", "*");
 		registerType("i18n", "*");

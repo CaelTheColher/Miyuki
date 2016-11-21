@@ -119,5 +119,4 @@ public class BotCmd {
 		if (ping < 900) return "which is bad.";
 		return "which is slow af";
 	}
-
 }

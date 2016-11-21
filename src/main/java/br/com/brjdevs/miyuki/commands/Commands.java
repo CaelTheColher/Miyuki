@@ -12,9 +12,11 @@
 
 package br.com.brjdevs.miyuki.commands;
 
+import br.com.brjdevs.miyuki.modules.cmds.PushCmd;
 import br.com.brjdevs.miyuki.modules.cmds.manager.CommandManager;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
+import com.google.common.base.Throwables;
 import org.apache.logging.log4j.LogManager;
 
 import java.util.HashMap;
@@ -22,6 +24,8 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import static br.com.brjdevs.miyuki.utils.StringUtils.removeLines;
 
 
 public class Commands {
@@ -170,7 +174,9 @@ public class Commands {
 
 		public ICommand build() {
 			if (usageProvider == DEFAULT_NOOP_PROVIDER) {
-				LogManager.getLogger("CommandBuilder - Unsafe").warn("No Usage was provided to the Command being built! Please set a Usage to it!", new Throwable("Stacktrace:"));
+				Throwable throwable = new Throwable("Stacktrace:");
+				LogManager.getLogger("CommandBuilder - Unsafe").warn("No Usage was provided to the Command being built! Please set a Usage to it!", throwable);
+				PushCmd.pushSimple("i18n", "No Usage was provided to the Command:" + removeLines(removeLines(Throwables.getStackTraceAsString(throwable), 1, 2), 6, Integer.MAX_VALUE));
 			}
 
 			return new ICommand() {

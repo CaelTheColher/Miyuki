@@ -1,13 +1,12 @@
 package br.com.brjdevs.miyuki.modules.init;
 
+import br.com.brjdevs.miyuki.commands.Holder;
 import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.*;
+import br.com.brjdevs.miyuki.modules.cmds.PushCmd;
 import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 import br.com.brjdevs.miyuki.modules.db.DBModule;
-import br.com.brjdevs.miyuki.utils.CollectionUtils;
-import br.com.brjdevs.miyuki.utils.DiscordUtils;
-import br.com.brjdevs.miyuki.utils.Java;
-import br.com.brjdevs.miyuki.utils.Log4jUtils;
+import br.com.brjdevs.miyuki.utils.*;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.SelfUser;
@@ -19,6 +18,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Set;
+
+import static br.com.brjdevs.miyuki.utils.StringUtils.limit;
 
 @Module(name = "init", isListener = true)
 public class InitModule {
@@ -55,6 +56,15 @@ public class InitModule {
 		SessionManager.startDate = new Date();
 		logger.info("Bot: " + user.getName() + " (#" + jda.getSelfUser().getId() + ")");
 		jda.getPresence().setGame(Game.of("mention me for help"));
+
+		new ThreadBuilder().setDaemon(true).setName("Log4j2Discord").build(() -> new Thread(() -> {
+			System.out.println("Log4j2Discord Enabled!");
+			Holder<String> s = new Holder<>();
+			while ((s.var = QueueLogAppender.getNextLogEvent("DiscordLogListeners")) != null) {
+				PushCmd.pushSimple("log", channel -> "**[LOG]** " + limit(s.var, 1990));
+			}
+			System.out.println("Log4j2Discord Disabled...");
+		})).start();
 	}
 
 	@PostReady

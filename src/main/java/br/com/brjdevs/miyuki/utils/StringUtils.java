@@ -1,5 +1,7 @@
 package br.com.brjdevs.miyuki.utils;
 
+import java.io.BufferedReader;
+import java.io.StringReader;
 import java.util.*;
 
 public class StringUtils {
@@ -95,5 +97,30 @@ public class StringUtils {
 		}
 
 		return buf.toString();
+	}
+
+	public static String removeLines(String str, int startline, int numlines) {
+		try (BufferedReader br = new BufferedReader(new StringReader(str))) {
+			//String buffer to store contents of the file
+			StringBuilder builder = new StringBuilder("");
+
+			//Keep track of the line number
+			int linenumber = 1;
+			numlines--;
+			String line;
+
+			while ((line = br.readLine()) != null) {
+				//Store each valid line in the string buffer
+				if (linenumber < startline || linenumber >= startline + numlines)
+					builder.append(line).append("\n");
+				linenumber++;
+			}
+
+			return builder.toString();
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

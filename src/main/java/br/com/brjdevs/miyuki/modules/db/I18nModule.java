@@ -11,6 +11,8 @@ import br.com.brjdevs.miyuki.utils.Hastebin;
 import com.google.gson.JsonObject;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.User;
+import org.apache.commons.codec.digest.Md5Crypt;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -18,6 +20,7 @@ import java.util.regex.Pattern;
 import static br.com.brjdevs.miyuki.modules.db.DBModule.onDB;
 import static br.com.brjdevs.miyuki.utils.AsyncUtils.asyncSleepThen;
 import static br.com.brjdevs.miyuki.utils.CollectionUtils.iterate;
+import static br.com.brjdevs.miyuki.utils.StringUtils.advancedSplitArgs;
 import static br.com.brjdevs.miyuki.utils.StringUtils.notNullOrDefault;
 import static br.com.brjdevs.miyuki.utils.data.DBUtils.decode;
 import static br.com.brjdevs.miyuki.utils.data.DBUtils.encode;
@@ -35,6 +38,17 @@ public class I18nModule {
 	private static List<String> syncedLocalizations = new ArrayList<>(), moderated = new ArrayList<>();
 	private static Map<String, Map<String, String>> locales = new HashMap<>();
 	private static Map<String, String> parents = new HashMap<>();
+	private static Map<String, Suggestion> suggestions = new HashMap<>();
+
+	public static void acceptSuggestion(String key) {
+		if (!suggestions.containsKey(key)) throw new IllegalStateException("Key does not exist");
+		suggestions.remove(key).accept();
+	}
+
+	public static void reject(String key) {
+		if (!suggestions.containsKey(key)) throw new IllegalStateException("Key does not exist");
+		suggestions.remove(key).reject();
+	}
 
 	@PreReady
 	private static void load() {
@@ -58,23 +72,59 @@ public class I18nModule {
 	@Command("i18n") //TODO Escrito nos Comentários
 	private static ICommand generateCommand() {
 		return Commands.buildTree()
-			.addCommand("suggest", Commands.buildSimple()
-				// Args: <unlocalized> <locale> <[base64:]valor>
-				// Esse comando deverá funcionar igual ao Localize
-				// Porém quando alguem executa o comando
-				// Um I18nSuggestion é criado e adicionado
-				// A um HashMap como Valor da Chave
-				// ToString -> Hashcode -> Base64 -> 5 digitos -> Fill com zero
-				// e é Pushado ao "i18n" o comando
-				// "!bot moderation i18n accept/reject <key>"
-				// Automaticamente rejeitado se a flag moderation
-				// Existe na tradução
+			.addCommand("suggest", Commands.buildSimple("i18n.suggest.usage")
+				.setAction(event -> {
+					String[] values = advancedSplitArgs(event.getArgs(), 3);
+					String unlocalized = values[0], locale = values[1], value = values[2];
+					if (unlocalized.isEmpty() || locale.isEmpty() || value.isEmpty()) {
+						event.awaitTyping(true).getAnswers().invalidargs();
+						return;
+					}
+
+					if (value.length() > 7 && value.startsWith("base64:")) {
+						value = decode(value.substring(7));
+					}
+
+					if (moderated.contains(unlocalized + ":" + locale)) {
+						//TODO Mensagem fofa
+						return;
+					}
+
+					//TODO Create I18n bans and check for ban
+
+					Suggestion suggestion = new Suggestion(unlocalized, locale, value, event.getAuthor());
+
+					String suggestMiniMd5 = Md5Crypt.md5Crypt(suggestion.toString().getBytes()).subSequence(0, 5).toString();
+
+					suggestions.put(suggestMiniMd5, suggestion);
+
+					event.awaitTyping(true).getAnswers().bool(true);
+
+					PushCmd.pushSimple(
+						"i18n",
+						"User " + event.getAuthor().getName() + "#" + event.getAuthor().getDiscriminator() +
+							" suggests the translation `" + unlocalized + "` in locale `" + locale + "` to:\n```\n" + value + "\n```\n" +
+							"To accept: `bot mod i18n accept " + suggestMiniMd5 + "`\n" +
+							"To reject: `bot mod i18n reject " + suggestMiniMd5 + "`"
+					);
+				})
 				.build()
 			)
 			.addCommand("localize", Commands.buildSimple()
-				// Args: <unlocalized> <locale> <[base64:]valor>
-				// localize()
-				// return bool(true)
+				.setAction(event -> {
+					String[] values = advancedSplitArgs(event.getArgs(), 3);
+					String unlocalized = values[0], locale = values[1], value = values[2];
+					if (unlocalized.isEmpty() || locale.isEmpty() || value.isEmpty()) {
+						event.awaitTyping(true).getAnswers().invalidargs();
+						return;
+					}
+
+					boolean moderated = unlocalized.startsWith("!");
+					if (moderated) unlocalized = unlocalized.substring(1);
+					pushTranslation(unlocalized, locale, value);
+					setModerated(unlocalized, locale, moderated);
+					event.awaitTyping(true).getAnswers().bool(true);
+				})
 				.build()
 			)
 			.addCommand("suggestCommand", Commands.buildSimple()
@@ -246,5 +296,39 @@ public class I18nModule {
 		}
 
 		return localized;
+	}
+
+	private static class Suggestion {
+		private final String unlocalized;
+		private final String locale;
+		private final String value;
+		private final User author;
+
+		public Suggestion(String unlocalized, String locale, String value, User author) {
+			this.unlocalized = unlocalized;
+			this.locale = locale;
+			this.value = value;
+			this.author = author;
+		}
+
+		public void accept() {
+			String unlocalizedVar = unlocalized;
+			boolean moderated = unlocalizedVar.startsWith("!");
+			if (moderated) unlocalizedVar = unlocalized.substring(1);
+			pushTranslation(unlocalizedVar, locale, value);
+			setModerated(unlocalizedVar, locale, moderated);
+			//TODO GIB XP (PROFILES)
+			suggestions.values().removeIf(this::equals);
+		}
+
+		public void reject() {
+			//TODO TAKE XP (PROFILES)
+			suggestions.values().removeIf(this::equals);
+		}
+
+		@Override
+		public String toString() {
+			return author.toString() + "(" + unlocalized + ":" + locale + "=" + value;
+		}
 	}
 }
