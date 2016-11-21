@@ -55,9 +55,64 @@ public class I18nModule {
 		localizeLocal("mention", jda.getSelfUser().getAsMention());
 	}
 
-	@Command("i18n")
+	@Command("i18n") //TODO Escrito nos Comentários
 	private static ICommand generateCommand() {
 		return Commands.buildTree()
+			.addCommand("suggest", Commands.buildSimple()
+				// Args: <unlocalized> <locale> <[base64:]valor>
+				// Esse comando deverá funcionar igual ao Localize
+				// Porém quando alguem executa o comando
+				// Um I18nSuggestion é criado e adicionado
+				// A um HashMap como Valor da Chave
+				// ToString -> Hashcode -> Base64 -> 5 digitos -> Fill com zero
+				// e é Pushado ao "i18n" o comando
+				// "!bot moderation i18n accept/reject <key>"
+				// Automaticamente rejeitado se a flag moderation
+				// Existe na tradução
+				.build()
+			)
+			.addCommand("localize", Commands.buildSimple()
+				// Args: <unlocalized> <locale> <[base64:]valor>
+				// localize()
+				// return bool(true)
+				.build()
+			)
+			.addCommand("suggestCommand", Commands.buildSimple()
+				// Args: <command> <locale> <[base64:]desc> <params> <info>
+				// Esse comando deverá funcionar igual ao suggest
+				// Mas com os argumentos do localizeCommand
+				.build()
+			)
+			.addCommand("remove", Commands.buildSimple()
+				// Args: <unlocalized> <locale|"all">
+				// Apaga a tradução
+				.build()
+			)
+			.addCommand("suggestRemove", Commands.buildSimple()
+				// Args: <unlocalized> <locale|"all">
+				// Esse comando deverá funcionar igual ao suggest
+				// Mas com os argumentos do remove
+				.build()
+			)
+			.addCommand("localizeCommand", Commands.buildSimple()
+				// <command> <locale> <[base64:]desc> <params> <info>
+				// paramsMeta, noParams, noDesc <= localized(%s,locale)
+				// localize(genCmdUsage())
+				// return bool(true)
+				.build()
+			)
+			.addCommand("list", Commands.buildSimple()
+				// Args: [page]
+				// TODO-ADRIAN Gerar a lista
+				// TODO-STEVEN Sistema de Lista baseado em page
+				// Lista as traduções
+				.build()
+			)
+			.addCommand("about", Commands.buildSimple()
+				// NoArgs
+				// Explicar o sistema de traduções
+				.build()
+			)
 			.build();
 	}
 

@@ -86,7 +86,7 @@ public class BotCmd {
 			)
 			.addCommand("admin", "administration")
 			.addCommand("eval",
-				Commands.buildSimple("bot.eval.usage", PermissionsModule.SCRIPTS | PermissionsModule.RUN_SCRIPT_CMDS | PermissionsModule.SCRIPTS_UNSAFEENV)
+				Commands.buildSimple("bot.eval.usage", PermissionsModule.BOT_ADMIN)
 					.setAction(JS::eval)
 					.build()
 			)

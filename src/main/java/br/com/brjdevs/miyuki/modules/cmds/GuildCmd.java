@@ -25,19 +25,19 @@ public class GuildCmd {
 			)
 			.addDefault("info")
 			.addCommand("lang",
-				Commands.buildSimple("guild.lang.usage", PermissionsModule.SET_GUILD)
+				Commands.buildSimple("guild.lang.usage", PermissionsModule.MANAGE_GUILD)
 					.setAction(event -> {
 						event.getGuild().setLang(event.getArgs().isEmpty() ? "en_US" : event.getArgs());
 						event.awaitTyping(false).getAnswers().announce(String.format(I18nModule.getLocalized("guild.lang.set", event), event.getGuild().getLang())).queue();
 					}).build()
 			)
 			.addCommand("cleanup",
-				Commands.buildSimple("guild.cleanup.usage", PermissionsModule.SET_GUILD)
+				Commands.buildSimple("guild.cleanup.usage", PermissionsModule.MANAGE_GUILD)
 					.setAction(event -> event.awaitTyping(false).getAnswers().bool(event.getGuild().toggleFlag("cleanup")).queue())
 					.build()
 			)
 			.addCommand("prefixes",
-				Commands.buildSimple("guild.prefixes.usage", PermissionsModule.SET_GUILD)
+				Commands.buildSimple("guild.prefixes.usage", PermissionsModule.MANAGE_GUILD)
 					.setAction(event -> {
 						if (event.getArgs().trim().isEmpty()) {
 							event.awaitTyping(false).getAnswers().invalidargs().queue();

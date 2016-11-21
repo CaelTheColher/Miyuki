@@ -190,7 +190,7 @@ public class PushCmd {
 	@Command("push")
 	private static ICommand createCommand() {
 		return Commands.buildTree()
-			.addCommand("subscribe", Commands.buildSimple("push.subscribe.usage", PermissionsModule.PUSH_SUBSCRIBE)
+			.addCommand("subscribe", Commands.buildSimple("push.subscribe.usage", PermissionsModule.MANAGE_PUSH)
 				.setAction(event -> {
 					Set<String> args = new HashSet<>();
 					Collections.addAll(args, event.getArgs(0));
@@ -198,7 +198,7 @@ public class PushCmd {
 				})
 				.build()
 			)
-			.addCommand("unsubscribe", Commands.buildSimple("push.unsubscribe.usage", PermissionsModule.PUSH_SUBSCRIBE)
+			.addCommand("unsubscribe", Commands.buildSimple("push.unsubscribe.usage", PermissionsModule.MANAGE_PUSH)
 				.setAction(event -> {
 					Set<String> args = new HashSet<>();
 					Collections.addAll(args, event.getArgs(0));
@@ -206,7 +206,7 @@ public class PushCmd {
 				})
 				.build()
 			)
-			.addCommand("send", Commands.buildSimple("push.send.usage", PermissionsModule.PUSH_SEND)
+			.addCommand("send", Commands.buildSimple("push.send.usage", PermissionsModule.BOT_ADMIN)
 				.setAction(event -> {
 					pushSimple(event.getArg(2, 0), (channel) -> event.getArg(2, 1));
 					event.awaitTyping(false).getAnswers().bool(true).queue();

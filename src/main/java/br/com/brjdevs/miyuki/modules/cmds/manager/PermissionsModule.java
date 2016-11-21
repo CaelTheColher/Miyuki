@@ -31,7 +31,7 @@ Guia de Referência:
 	- [!] = Bits reservados para nunca serem usados (Eles podem deixar o valor do Long grande demais...)
 	- [0-9] = Bits relacionados a execução de comandos e sistema de permissão.
 	- [a-z] = Bits para permissões especiais menores (Comandos específicos em geral).
-	- [A-Z] = Bits para permissões especiais maiores (Opções geralmente perigosas/insegurasS).
+	- [A-Z] = Bits para permissões especiais maiores (Opções geralmente perigosas/inseguras).
 Permissões:
 	(0)		RUN_CMDS
 				Basic Permission. If took from User, the Bot will ignore any commands.
@@ -61,7 +61,7 @@ Permissões:
 				Use Interfaces (Currently broken)
 	(37/B)	SCRIPTS_UNSAFEENV
 				Run Commands in a unsafe environiment (Disabled until proper Sandboxing)
-	(62/Z)	STOP_BOT
+	(62/Z)	BOT_ADMIN
 				Stops/Resets the Bot
  */
 @Module(name = "permissions")
@@ -69,26 +69,25 @@ public class PermissionsModule {
 	public static final long
 		RUN_CMDS = bits(0),
 		RUN_USER_CMDS = bits(1),
-		RUN_SCRIPT_CMDS = bits(2), //SCripT
-		SET_PERMS = bits(3),
-		GUILD_PASS = bits(4),
-		MANAGE_USER_CMDS = bits(5),
-		MANAGE_SPECIAL_USER_CMDS = bits(6),
-		PERMSYS_GM = bits(7),
-		PERMSYS_GO = bits(8),
+		SET_PERMS = bits(2),
+		GUILD_PASS = bits(3),
+		MANAGE_USER_CMDS = bits(4),
+		MANAGE_SPECIAL_USER_CMDS = bits(5),
+		PERMSYS_GM = bits(6),
+		PERMSYS_GO = bits(7),
+		PERMSYS_BM = bits(8),
 		PERMSYS_BO = bits(9),
-		PUSH_SUBSCRIBE = bits(10),
-		SCRIPTS = bits(11),
-		SET_GUILD = bits(12),
-		PUSH_SEND = bits(13),
-		USE_INTERFACES = bits(36),
-		SCRIPTS_UNSAFEENV = bits(37),
-		STOP_BOT = bits(62);
+		MANAGE_PUSH = bits(36), //A
+		MANAGE_FEEDS = bits(37), //B
+		MANAGE_I18N = bits(38), //C
+		MANAGE_GUILD = bits(39), //D
+		BOT_ADMIN = bits(62);
 	public static final long
-		BASE_USER = RUN_CMDS | RUN_USER_CMDS | GUILD_PASS | USE_INTERFACES,
-		GUILD_MOD = BASE_USER | MANAGE_USER_CMDS | MANAGE_SPECIAL_USER_CMDS | SET_PERMS | PERMSYS_GM | PUSH_SUBSCRIBE,
-		GUILD_OWNER = GUILD_MOD | SCRIPTS | SET_GUILD | PERMSYS_GO,
-		BOT_OWNER = GUILD_OWNER | SCRIPTS_UNSAFEENV | PUSH_SEND | STOP_BOT | PERMSYS_BO | RUN_SCRIPT_CMDS;
+		BASE_USER = RUN_CMDS | RUN_USER_CMDS | GUILD_PASS,
+		GUILD_MOD = BASE_USER | MANAGE_USER_CMDS | MANAGE_SPECIAL_USER_CMDS | SET_PERMS | PERMSYS_GM | MANAGE_PUSH | MANAGE_FEEDS | MANAGE_GUILD,
+		GUILD_OWNER = GUILD_MOD | PERMSYS_GO,
+		BOT_MOD = BASE_USER | MANAGE_FEEDS | MANAGE_PUSH | MANAGE_I18N | PERMSYS_BM,
+		BOT_OWNER = GUILD_OWNER | BOT_MOD | BOT_ADMIN | PERMSYS_BO;
 	public static Map<String, Long> perms = new HashMap<>();
 	@JDAInstance
 	private static JDA jda = null;
@@ -104,11 +103,9 @@ public class PermissionsModule {
 			});
 	}
 
-	private static long bits(long... bits) {
+	private static long bits(int... bits) {
 		long mask = 0;
-		for (long bit : bits) {
-			mask |= (long) Math.pow(2, bit);
-		}
+		for (long bit : bits) mask |= (long) Math.pow(2, bit);
 		return mask;
 	}
 
@@ -128,9 +125,9 @@ public class PermissionsModule {
 	}
 
 	private static boolean checkPerms(long senderPerm, long targetPerm) {
-		long perms = bits(7, 8, 9);
+		long perms = bits(6, 7, 8, 9);
 		senderPerm &= perms;
-		targetPerm &= perms; //Select bits 7 8 9
+		targetPerm &= perms; //Select bits 6 7 8 9
 		targetPerm = previousPowerOfTwo(roundToPowerOf2(targetPerm));
 		senderPerm = previousPowerOfTwo(roundToPowerOf2(senderPerm)); //Get the biggest
 		return targetPerm <= senderPerm;
