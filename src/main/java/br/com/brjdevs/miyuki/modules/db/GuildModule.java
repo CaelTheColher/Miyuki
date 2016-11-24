@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 
 @Module(id = "db.guild", isListener = true)
 public class GuildModule {
-	public static final String[] DEFAULT_PREFIXES = {"&", "!"};
+	public static final String[] DEFAULT_PREFIXES = {"&", "?"};
 	public static Data GLOBAL;
 	private static List<Data> all = new ArrayList<>();
 	private static Map<Guild, Data> guildMap = new HashMap<Guild, Data>() {

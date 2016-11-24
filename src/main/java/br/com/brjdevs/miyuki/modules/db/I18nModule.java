@@ -97,7 +97,7 @@ public class I18nModule {
 
 					suggestions.put(suggestMiniMd5, suggestion);
 
-					event.awaitTyping(true).getAnswers().bool(true);
+					event.awaitTyping(true).getAnswers().bool(true).queue();
 
 					PushCmd.pushSimple(
 						"i18n",
@@ -122,7 +122,7 @@ public class I18nModule {
 					if (moderated) unlocalized = unlocalized.substring(1);
 					pushTranslation(unlocalized, locale, value);
 					setModerated(unlocalized, locale, moderated);
-					event.awaitTyping(true).getAnswers().bool(true);
+					event.awaitTyping(true).getAnswers().bool(true).queue();
 				})
 				.build()
 			)
@@ -203,9 +203,9 @@ public class I18nModule {
 	public static void pushTranslation(String unlocalized, String locale, String localized) {
 		String localeId = unlocalized + ":" + locale;
 		if (syncedLocalizations.contains(localeId)) {
-			onDB(r.table("i18n").get(localeId).update(arg -> r.hashMap("type", encode(localized)))).noReply();
+			onDB(r.table("i18n").get(localeId).update(arg -> r.hashMap("value", encode(localized)))).noReply();
 		} else {
-			onDB(r.table("i18n").insert(r.hashMap("id", localeId).with("type", encode(localized)).with("moderated", moderated.contains(localeId)))).noReply();
+			onDB(r.table("i18n").insert(r.hashMap("id", localeId).with("value", encode(localized)).with("moderated", moderated.contains(localeId)))).noReply();
 			syncedLocalizations.add(localeId);
 		}
 
