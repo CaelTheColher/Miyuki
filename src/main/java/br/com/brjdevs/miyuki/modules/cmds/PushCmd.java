@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static br.com.brjdevs.miyuki.modules.db.DBModule.onDB;
+import static br.com.brjdevs.miyuki.utils.StringUtils.limit;
 import static com.rethinkdb.RethinkDB.r;
 
 @Module(id = "cmds.push", name = "PushCommand")
@@ -77,7 +78,7 @@ public class PushCmd {
 			List<Runnable> runnables = awaiting;
 			awaiting = null;
 			logger.info(runnables.size() + " Pre-Ready events being re-processed.");
-			PushCmd.pushSimple("log", "**[PushInit]**" + runnables.size() + " Pre-Ready events being re-processed.");
+			PushCmd.pushSimple("log", "**[PushInit]** " + runnables.size() + " Pre-Ready events being re-processed.");
 			runnables.forEach(Runnable::run);
 		}
 
@@ -190,7 +191,7 @@ public class PushCmd {
 			return;
 		}
 
-		pushMessage(type, channel -> new MessageBuilder().appendString(pushMessage).build());
+		pushMessage(type, channel -> new MessageBuilder().appendString(limit(pushMessage, 1999)).build());
 	}
 
 	public static Set<TextChannel> resolveTextChannels(String type) {
