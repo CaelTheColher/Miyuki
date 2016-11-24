@@ -25,12 +25,13 @@ public class Pastee {
 		HttpPost post = new HttpPost("https://paste.ee/api");
 
 		try {
+
 			post.setEntity(
 				new StringEntity(
 					implode(
 						new ImmutableMap.Builder<String, Object>()
 							.put("key", DBModule.getConfig().get("pasteeKey").getAsString())
-							.put("description", desc)
+							.put("description", desc == null ? "Unnamed" : desc)
 							.put("paste", paste)
 							.put("format", "simple")
 							.build()

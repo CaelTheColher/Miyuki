@@ -21,3 +21,4 @@ br.com.brjdevs.miyuki.modules.cmds.UserCmd
 br.com.brjdevs.miyuki.modules.cmds.UtilsCmd
 
 br.com.brjdevs.miyuki.modules.rest.RESTInterface
+br.com.brjdevs.miyuki.utils.log.DiscordLogBack
