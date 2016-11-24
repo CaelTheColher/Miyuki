@@ -50,6 +50,14 @@
         </encoder>
     </appender>
 
+    <appender name="DISCORD" class="br.com.brjdevs.miyuki.utils.log.DiscordLogBack"/>
+
+    <logger name="br.com.brjdevs.miyuki" level="DEBUG" additivity="true">
+        <appender-ref ref="DEBUG"/>
+        <appender-ref ref="ERROR"/>
+        <appender-ref ref="DISCORD"/>
+    </logger>
+
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
