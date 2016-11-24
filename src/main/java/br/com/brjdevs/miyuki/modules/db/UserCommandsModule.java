@@ -6,7 +6,7 @@ import br.com.brjdevs.miyuki.loader.Module;
 import java.nio.charset.Charset;
 import java.util.*;
 
-@Module(name = "db.usercmds")
+@Module(id = "db.usercmds")
 public class UserCommandsModule {
 	private static Map<UserCommand, String> cachedCommands = new HashMap<>();
 	private static Map<GuildModule.Data, Map<String, UserCommand>> guildCommands = new HashMap<>();

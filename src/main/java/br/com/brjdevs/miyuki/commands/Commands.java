@@ -16,8 +16,9 @@ import br.com.brjdevs.miyuki.modules.cmds.PushCmd;
 import br.com.brjdevs.miyuki.modules.cmds.manager.CommandManager;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
+import br.com.brjdevs.miyuki.utils.log.LogUtils;
 import com.google.common.base.Throwables;
-import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +30,7 @@ import static br.com.brjdevs.miyuki.utils.StringUtils.removeLines;
 
 
 public class Commands {
+	private static Logger logger = LogUtils.logger("CommandBuilders");
 	public static CommandBuilder buildSimple() {
 		return new CommandBuilder();
 	}
@@ -175,8 +177,8 @@ public class Commands {
 		public ICommand build() {
 			if (usageProvider == DEFAULT_NOOP_PROVIDER) {
 				Throwable throwable = new Throwable("Stacktrace:");
-				LogManager.getLogger("CommandBuilder - Unsafe").warn("No Usage was provided to the Command being built! Please set a Usage to it!", throwable);
-				PushCmd.pushSimple("i18n", "No Usage was provided to the Command:" + removeLines(removeLines(Throwables.getStackTraceAsString(throwable), 1, 2), 6, Integer.MAX_VALUE));
+				logger.warn("No Usage was provided to the Command being built! Please set a Usage to it!", throwable);
+				PushCmd.pushSimple("i18n", "No Usage was provided to the Command:" + removeLines(removeLines(Throwables.getStackTraceAsString(throwable), 1, 1), 6, Integer.MAX_VALUE));
 			}
 
 			return new ICommand() {
@@ -254,9 +256,9 @@ public class Commands {
 		public TreeCommandBuilder onNotFound(NotFoundAction action) {
 			switch (action) {
 				case SHOW_OPTIONS:
-					onNotFound = NOT_FOUND_IMPL;
+					return onNotFound(NOT_FOUND_IMPL);
 				case REDIRECT:
-					onNotFound = NOT_FOUND_REDIRECT;
+					return onNotFound(NOT_FOUND_REDIRECT);
 			}
 
 			return this;

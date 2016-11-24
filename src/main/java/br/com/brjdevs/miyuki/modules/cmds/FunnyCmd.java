@@ -10,8 +10,7 @@ import br.com.brjdevs.miyuki.utils.Formatter;
 import br.com.brjdevs.miyuki.utils.TaskManager;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +21,7 @@ import static br.com.brjdevs.miyuki.utils.AsyncUtils.async;
 import static br.com.brjdevs.miyuki.utils.AsyncUtils.sleep;
 import static br.com.brjdevs.miyuki.utils.CollectionUtils.random;
 
-@Module(name = "cmds.funny")
+@Module(id = "cmds.funny", name = "FunnyCommand")
 public class FunnyCmd {
 	@LoggerInstance
 	private static Logger logger;
@@ -147,7 +146,7 @@ public class FunnyCmd {
 								try {
 									event.awaitTyping(false).getAnswers().send(task.get()).queue();
 								} catch (Exception e) {
-									LogManager.getLogger("Command: Drama").error("An error ocurred fetching the latest Drama: ", e);
+									logger.error("An error ocurred fetching the latest Drama: ", e);
 								}
 							}).run();
 					}).build()

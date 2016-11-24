@@ -13,7 +13,7 @@ import net.dv8tion.jda.core.MessageBuilder;
 import java.util.Arrays;
 import java.util.List;
 
-@Module(name = "cmds.guild")
+@Module(id = "cmds.guild", name = "GuildCommand")
 public class GuildCmd {
 	@Command("guild")
 	private static ICommand createCommand() {

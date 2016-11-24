@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Module(name = "db.guild", isListener = true)
+@Module(id = "db.guild", isListener = true)
 public class GuildModule {
 	public static final String[] DEFAULT_PREFIXES = {"&", "!"};
 	public static Data GLOBAL;

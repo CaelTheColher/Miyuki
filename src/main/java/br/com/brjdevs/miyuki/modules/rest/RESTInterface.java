@@ -12,7 +12,7 @@ import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomi
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 
-@Module(name = "rest", type = Type.STATIC)
+@Module(id = "rest", type = Type.STATIC)
 @Controller
 @SpringBootApplication
 public class RESTInterface {

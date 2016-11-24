@@ -8,7 +8,6 @@ import br.com.brjdevs.miyuki.loader.Module.*;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
-import br.com.brjdevs.miyuki.utils.Log4jUtils;
 import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.SetMultimap;
 import com.google.gson.JsonElement;
@@ -17,7 +16,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.util.*;
 import java.util.function.Function;
@@ -28,7 +27,7 @@ import java.util.stream.StreamSupport;
 import static br.com.brjdevs.miyuki.modules.db.DBModule.onDB;
 import static com.rethinkdb.RethinkDB.r;
 
-@Module(name = "cmds.push")
+@Module(id = "cmds.push", name = "PushCommand")
 public class PushCmd {
 	@LoggerInstance
 	private static Logger logger;
@@ -37,6 +36,11 @@ public class PushCmd {
 	private static Map<String, String> pushParenting = new HashMap<>();
 	private static Map<Supplier<Set<String>>, String> dynamicParenting = Collections.synchronizedMap(new HashMap<>());
 	private static SetMultimap<TextChannel, String> subscriptions = MultimapBuilder.hashKeys().hashSetValues().build();
+	private static List<Runnable> awaiting = new ArrayList<>();
+
+	private static boolean isReady() {
+		return awaiting == null;
+	}
 
 	@OnEnabled
 	private static void enabled() {
@@ -56,7 +60,7 @@ public class PushCmd {
 	}
 
 	@Ready
-	private static void ready() {
+	private static void onReady() {
 		onDB(r.table("pushSubs")).run().cursorExpected().forEach(json -> {
 			JsonObject subscription = json.getAsJsonObject();
 			TextChannel channel = jda.getTextChannelById(subscription.get("id").getAsString());
@@ -68,9 +72,19 @@ public class PushCmd {
 
 			subscriptions.putAll(channel, StreamSupport.stream(subscription.get("types").getAsJsonArray().spliterator(), false).map(JsonElement::getAsString).collect(Collectors.toSet()));
 		});
+
+		if (awaiting.size() > 0)
+			PushCmd.pushSimple("log", "**[PushInit]**" + awaiting.size() + " Pre-Ready events being re-processed.");
+		awaiting.forEach(Runnable::run);
+		awaiting = null;
 	}
 
 	public static boolean subscribe(TextChannel channel, Set<String> typesToAdd) {
+		if (!isReady()) {
+			Set<String> finalTypesToAdd = typesToAdd;
+			awaiting.add(() -> subscribe(channel, finalTypesToAdd));
+			return true;
+		}
 		typesToAdd = new HashSet<>(typesToAdd);
 		Set<String> valid = resolveTypeSet();
 		typesToAdd.removeIf(s -> !valid.contains(s));
@@ -94,6 +108,11 @@ public class PushCmd {
 	}
 
 	public static boolean unsubscribe(TextChannel channel, Set<String> typesToRemove) {
+		if (!isReady()) {
+			awaiting.add(() -> subscribe(channel, typesToRemove));
+			return true;
+		}
+
 		if (!subscriptions.containsKey(channel)) return false;
 
 		Set<String> currentSubs = subscriptions.get(channel);
@@ -113,11 +132,21 @@ public class PushCmd {
 	}
 
 	public static void unsubscribeAll(Set<String> typesToRemove) {
+		if (!isReady()) {
+			awaiting.add(() -> unsubscribeAll(typesToRemove));
+			return;
+		}
+
 		jda.getTextChannels().parallelStream().forEach(c -> unsubscribe(c, typesToRemove));
 	}
 
-	public static void subscribeAll(Set<String> typesToRemove) {
-		jda.getTextChannels().parallelStream().forEach(c -> subscribe(c, typesToRemove));
+	public static void subscribeAll(Set<String> typesToAdd) {
+		if (!isReady()) {
+			awaiting.add(() -> subscribeAll(typesToAdd));
+			return;
+		}
+
+		jda.getTextChannels().parallelStream().forEach(c -> subscribe(c, typesToAdd));
 	}
 
 	public static void registerType(String type, String parent) {
@@ -133,14 +162,29 @@ public class PushCmd {
 	}
 
 	public static void pushMessage(String type, Function<TextChannel, Message> pushSupplier) {
+		if (!isReady()) {
+			awaiting.add(() -> pushMessage(type, pushSupplier));
+			return;
+		}
+
 		resolveTextChannels(type).forEach(channel -> channel.sendMessage(pushSupplier.apply(channel)).queue());
 	}
 
 	public static void pushSimple(String type, Function<TextChannel, String> pushSupplier) {
+		if (!isReady()) {
+			awaiting.add(() -> pushSimple(type, pushSupplier));
+			return;
+		}
+
 		pushMessage(type, channel -> new MessageBuilder().appendString(pushSupplier.apply(channel)).build());
 	}
 
 	public static void pushSimple(String type, String pushMessage) {
+		if (!isReady()) {
+			awaiting.add(() -> pushSimple(type, pushMessage));
+			return;
+		}
+
 		pushMessage(type, channel -> new MessageBuilder().appendString(pushMessage).build());
 	}
 
@@ -158,7 +202,7 @@ public class PushCmd {
 			try {
 				supplier.get().forEach(s1 -> resolvedMap.put(s1, s));
 			} catch (Exception e) {
-				Log4jUtils.logger().error("Error while resolving dynamic type: ", e);
+				logger.error("Error while resolving dynamic type: ", e);
 			}
 		});
 		return resolvedMap;

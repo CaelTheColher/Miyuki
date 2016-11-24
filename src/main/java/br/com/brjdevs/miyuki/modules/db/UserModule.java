@@ -27,7 +27,7 @@ import java.util.*;
 import java.util.List;
 import java.util.function.Function;
 
-@Module(name = "db.user")
+@Module(id = "db.user")
 public class UserModule {
 	@JDAInstance
 	private static JDA jda = null;

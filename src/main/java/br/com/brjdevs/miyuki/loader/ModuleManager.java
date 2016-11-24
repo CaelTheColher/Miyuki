@@ -7,12 +7,11 @@ import br.com.brjdevs.miyuki.loader.entities.ModuleResourceManager;
 import br.com.brjdevs.miyuki.loader.entities.impl.ModuleContainerImpl;
 import br.com.brjdevs.miyuki.loader.entities.impl.ModuleResourceManagerImpl;
 import br.com.brjdevs.miyuki.modules.cmds.manager.CommandManager;
-import br.com.brjdevs.miyuki.utils.Log4jUtils;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.ReconnectedEvent;
 import net.dv8tion.jda.core.events.ResumedEvent;
 import net.dv8tion.jda.core.hooks.SubscribeEvent;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -21,9 +20,10 @@ import java.util.*;
 import java.util.function.Function;
 
 import static br.com.brjdevs.miyuki.utils.StringUtils.limit;
+import static br.com.brjdevs.miyuki.utils.log.LogUtils.logger;
 
 public class ModuleManager {
-	private static final Logger LOGGER = Log4jUtils.logger();
+	private static final Logger LOGGER = logger("ModuleManager");
 	private static Map<Class, ModuleContainer> INSTANCE_MAP = new HashMap<>();
 	private static Set<Object> JDA_LISTENERS = new HashSet<>();
 	private static boolean firedPre = false;

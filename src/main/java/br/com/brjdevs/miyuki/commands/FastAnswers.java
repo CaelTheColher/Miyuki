@@ -15,17 +15,24 @@ package br.com.brjdevs.miyuki.commands;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
-import br.com.brjdevs.miyuki.utils.*;
+import br.com.brjdevs.miyuki.utils.Formatter;
+import br.com.brjdevs.miyuki.utils.Pastee;
+import br.com.brjdevs.miyuki.utils.StringUtils;
+import br.com.brjdevs.miyuki.utils.TaskManager;
 import com.google.common.base.Throwables;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.requests.RestAction;
+import org.slf4j.Logger;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import static br.com.brjdevs.miyuki.utils.log.LogUtils.logger;
+
 
 public class FastAnswers {
+	private static Logger logger = logger("FastAnswers");
 	public final MessageChannel channel;
 	public final CommandEvent event;
 
@@ -43,9 +50,9 @@ public class FastAnswers {
 	}
 
 	public RestAction<Message> exception(Exception e) {
-		Future<String> stringFuture = TaskManager.getThreadPool().submit(() -> Hastebin.post(Throwables.getStackTraceAsString(e)));
+		Future<String> stringFuture = TaskManager.getThreadPool().submit(() -> Pastee.post(Throwables.getStackTraceAsString(e)));
 		dear("uma exceção ocorreu durante a execução do comando:");
-		Log4jUtils.logger().error("Exception occurred during command \"" + event.getMessage().getContent() + "\": ", e);
+		logger.error("Exception occurred during command \"" + event.getMessage().getContent() + "\": ", e);
 		SessionManager.crashes++;
 		String s;
 		try {

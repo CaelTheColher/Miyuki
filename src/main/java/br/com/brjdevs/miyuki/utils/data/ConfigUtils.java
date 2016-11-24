@@ -1,8 +1,8 @@
 package br.com.brjdevs.miyuki.utils.data;
 
+import br.com.brjdevs.miyuki.utils.log.LogUtils;
 import com.google.gson.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 
 public class ConfigUtils {
 	private static final Charset UTF8 = Charset.forName("UTF-8");
-	private static final Logger LOGGER = LogManager.getLogger("ConfigUtils");
+	private static final Logger LOGGER = LogUtils.logger("ConfigUtils");
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
 
 	static {
@@ -47,9 +47,9 @@ public class ConfigUtils {
 				if (generateFileOnError) {
 					try {
 						Files.write(path, GSON.toJson(defaultObj).getBytes(Charset.forName("UTF-8")));
-						LOGGER.error("Configuration File generated at "+path.toAbsolutePath()+".");
+						LOGGER.error("Configuration File generated at " + path.toAbsolutePath() + ".");
 					} catch (Exception ex) {
-						LOGGER.error("Configuration File could not be generated at "+path.toAbsolutePath()+". Please fix the permissions.");
+						LOGGER.error("Configuration File could not be generated at " + path.toAbsolutePath() + ". Please fix the permissions.");
 					}
 				}
 

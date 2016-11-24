@@ -15,12 +15,10 @@ package br.com.brjdevs.miyuki.commands;
 import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 import br.com.brjdevs.miyuki.modules.db.GuildModule.Data;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
-import br.com.brjdevs.miyuki.utils.TaskManager;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.requests.RestAction;
-import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +26,7 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 
 import static br.com.brjdevs.miyuki.utils.AsyncUtils.sleep;
+import static br.com.brjdevs.miyuki.utils.DiscordUtils.submit;
 import static br.com.brjdevs.miyuki.utils.StringUtils.splitArgs;
 
 
@@ -129,7 +128,7 @@ public class CommandEvent {
 	}
 
 	public CommandEvent sendAwaitableTyping() {
-		awaitableTyping = TaskManager.getThreadPool().submit(() -> sendTyping().block());
+		awaitableTyping = submit(sendTyping());
 		return this;
 	}
 
@@ -153,8 +152,8 @@ public class CommandEvent {
 				event.getAuthor().openPrivateChannel().block();
 				return true;
 			} catch (Exception e) {
-				LogManager.getLogger("CommandEvent - PMs").info("Failure when trying to open private channel for user " + event.getAuthor().toString() + ". User was asked to send a pm.\n" +
-					e.getClass().getSimpleName() + ": " + e.getMessage());
+				//LogManager.getLogger("CommandEvent - PMs").info("Failure when trying to open private channel for user " + event.getAuthor().toString() + ". User was asked to send a pm.\n" +
+				//	e.getClass().getSimpleName() + ": " + e.getMessage());
 				awaitTyping(true).sendMessage(event.getMember().getAsMention() + " I can't send any DM messages to you, please send a DM to me with the message \"!ping\" to resolve the issue.\n" +
 					"You should receive a \"pong!\" as response\n" +
 					"Your command was ignored because it is required that the user can receive a DM to execute commands.").queue();

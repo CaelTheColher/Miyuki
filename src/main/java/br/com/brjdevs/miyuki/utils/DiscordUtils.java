@@ -1,14 +1,12 @@
 package br.com.brjdevs.miyuki.utils;
 
+import br.com.brjdevs.miyuki.utils.log.SimpleLogToSLF4JAdapter;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.requests.RestAction;
 import net.dv8tion.jda.core.utils.SimpleLog;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class DiscordUtils {
 	public static String guessGuildLanguage(Guild guild) {
@@ -58,46 +56,13 @@ public class DiscordUtils {
 	}
 
 	public static void hackJDALog() {
-		SimpleLog.addListener(new SimpleLog.LogListener() {
-			private Map<String, Logger> logs = new HashMap<>();
-
-			private Level convert(SimpleLog.Level level) {
-				switch (level) {
-					case ALL:
-						return Level.ALL;
-					case TRACE:
-						return Level.TRACE;
-					case DEBUG:
-						return Level.DEBUG;
-					case INFO:
-						return Level.INFO;
-					case WARNING:
-						return Level.WARN;
-					case FATAL:
-						return Level.FATAL;
-					case OFF:
-						return Level.OFF;
-					default:
-						return Level.OFF;
-				}
-			}
-
-			private Logger getLogger(String name) {
-				if (!logs.containsKey(name)) logs.put(name, LogManager.getLogger(name));
-				return logs.get(name);
-			}
-
-			@Override
-			public void onLog(SimpleLog log, SimpleLog.Level logLevel, Object message) {
-				getLogger(log.name).log(convert(logLevel), message);
-			}
-
-			@Override
-			public void onError(SimpleLog log, Throwable err) {
-				getLogger(log.name).error(err);
-			}
-		});
-
+		SimpleLog.addListener(new SimpleLogToSLF4JAdapter());
 		SimpleLog.LEVEL = SimpleLog.Level.OFF;
+	}
+
+	public static <T> CompletableFuture<T> submit(RestAction<T> restAction) {
+		CompletableFuture<T> future = new CompletableFuture<T>();
+		restAction.queue(future::complete, future::completeExceptionally);
+		return future;
 	}
 }

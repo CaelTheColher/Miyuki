@@ -14,7 +14,7 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.SubscribeEvent;
 import net.dv8tion.jda.core.utils.PermissionUtil;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ import static br.com.brjdevs.miyuki.utils.AsyncUtils.asyncSleepThen;
 import static br.com.brjdevs.miyuki.utils.CollectionUtils.concatMaps;
 import static br.com.brjdevs.miyuki.utils.StringUtils.splitArgs;
 
-@Module(name = "cmdmanager", isListener = true)
+@Module(id = "cmdmanager", isListener = true)
 public class CommandManager {
 	private static final Map<String, ICommand> COMMANDS = new HashMap<>();
 	@LoggerInstance

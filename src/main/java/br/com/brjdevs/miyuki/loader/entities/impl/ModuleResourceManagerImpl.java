@@ -5,16 +5,16 @@ import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.entities.ModuleResourceManager;
 
 public class ModuleResourceManagerImpl implements ModuleResourceManager {
-	private final String moduleName;
+	private final String moduleID;
 	private final Class clazz;
 
 	public ModuleResourceManagerImpl(Module module, Class clazz) {
-		this.moduleName = module.name().replace('.', '/');
+		this.moduleID = module.id().replace('.', '/');
 		this.clazz = clazz;
 	}
 
 	@Override
 	public String get(String path) {
-		return Loader.resource(clazz, "/assets/" + moduleName + "/" + path);
+		return Loader.resource(clazz, "/assets/" + moduleID + "/" + path);
 	}
 }

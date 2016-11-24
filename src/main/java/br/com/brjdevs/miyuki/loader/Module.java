@@ -6,7 +6,9 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Inherited
 public @interface Module {
-	String name();
+	String id();
+
+	String name() default "";
 
 	Type[] type() default {Type.STATIC};
 

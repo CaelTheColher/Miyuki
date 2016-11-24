@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@Module(name = "db", type = {Type.STATIC, Type.INSTANCE})
+@Module(id = "db", type = {Type.STATIC, Type.INSTANCE})
 public class DBModule {
 	public static final Gson
 		GSON_TO_FILES = new GsonBuilder().setPrettyPrinting().serializeNulls().create(),
@@ -48,11 +48,13 @@ public class DBModule {
 			ImmutableMap.<String, java.util.function.Predicate<JsonElement>>builder()
 				.put("owners", JsonElement::isJsonArray)
 				.put("token", ConfigUtils::isJsonString)
+				.put("pasteeKey", ConfigUtils::isJsonString)
 				.build(),
 			() -> {
 				JsonObject object = new JsonObject();
 				object.add("owners", null);
 				object.add("token", null);
+				object.add("pasteeKey", null);
 				return object;
 			},
 			false,

@@ -23,13 +23,13 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import net.dv8tion.jda.core.entities.TextChannel;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.net.URL;
 import java.util.*;
 import java.util.function.Function;
 
-@Module(name = "cmds.feed")
+@Module(id = "cmds.feed", name = "FeedCommand")
 public class FeedCmd {
 	private static final Set<Subscription> ALL = Collections.synchronizedSet(new HashSet<>());
 	private static final Set<String> ALL_TYPES = Collections.synchronizedSet(new HashSet<>());
@@ -120,8 +120,8 @@ public class FeedCmd {
 		public final URL url;
 		public final String pushName, id;
 		private List<Function<TextChannel, String>> compiledPushes = Collections.synchronizedList(new ArrayList<>());
-		private int lastHashCode = 0;
-		private boolean active = true, loadedOnce = false;
+		private Integer lastHashCode = null;
+		private boolean active = true;
 
 		public Subscription(String pushName, URL url) {
 			this(pushName, url, DBModule.onDB(r -> r.table("feeds").insert(
@@ -144,23 +144,13 @@ public class FeedCmd {
 			//ignoreHashCode = true -> FALSE
 			//ignoreHashCode = false -> getLastHashCode() == newestHashCode
 			// - IntelliJ
-			v = !ignoreHashCode() && (getLastHashCode() == newestHashCode);
-			logger.trace(v);
+			v = lastHashCode != null && lastHashCode == newestHashCode;
 			return v;
-		}
-
-		public int getLastHashCode() {
-			return lastHashCode;
 		}
 
 		public void setLastHashCode(int lastHashCode) {
 			this.lastHashCode = lastHashCode;
-			this.loadedOnce = true;
 			DBModule.onDB(r -> r.table("feeds").get(id).update(r.hashMap("lastHashCode", lastHashCode))).noReply();
-		}
-
-		public boolean ignoreHashCode() {
-			return !loadedOnce;
 		}
 
 		public boolean isActive() {

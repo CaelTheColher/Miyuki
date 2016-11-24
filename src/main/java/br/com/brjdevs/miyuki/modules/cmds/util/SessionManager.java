@@ -8,13 +8,13 @@ import br.com.brjdevs.miyuki.modules.db.I18nModule;
 import br.com.brjdevs.miyuki.modules.db.UserModule;
 import br.com.brjdevs.miyuki.utils.DataFormatter;
 import br.com.brjdevs.miyuki.utils.TaskManager;
+import br.com.brjdevs.miyuki.utils.log.LogUtils;
 import com.sun.management.OperatingSystemMXBean;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.requests.RestAction;
-import org.apache.logging.log4j.LogManager;
 
 import java.awt.*;
 import java.lang.management.ManagementFactory;
@@ -44,7 +44,7 @@ public class SessionManager {
 			modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
 			field.set(null, RestAction.DEFAULT_SUCCESS.andThen(o -> SessionManager.restActions++));
 		} catch (Exception e) {
-			LogManager.getLogger("Statistics-BruteReflections").error("The hacky heavy reflection static code block crashed. #BlameSpong and #BlameMinn", e);
+			LogUtils.logger("Statistics-BruteReflections").error("The hacky heavy reflection static code block crashed. #BlameSpong and #BlameMinn", e);
 		}
 
 		final OperatingSystemMXBean os = ((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean());
@@ -102,7 +102,7 @@ public class SessionManager {
 		int mb = 1024 * 1024;
 		Runtime instance = Runtime.getRuntime();
 		EmbedBuilder builder = new EmbedBuilder();
-        builder.setColor(event.getOriginGuild().getSelfMember().getColor() == null ? Color.decode("#f1c40f") : event.getOriginGuild().getSelfMember().getColor());
+		builder.setColor(event.getOriginGuild().getSelfMember().getColor() == null ? Color.decode("#f1c40f") : event.getOriginGuild().getSelfMember().getColor());
 		builder.setFooter("Requested by " + event.getAuthor().getName() + " at " + DataFormatter.format(Instant.now().atOffset(ZoneOffset.UTC)), UserModule.getAvatarUrl(event.getAuthor()));
 		builder.addField(I18nModule.getLocalized("bot.session.uptime", lang), SessionManager.calculate(SessionManager.startDate, new Date(), lang), false);
 		builder.addField(I18nModule.getLocalized("bot.session.users", lang), jda.getUsers().size() + "", true);

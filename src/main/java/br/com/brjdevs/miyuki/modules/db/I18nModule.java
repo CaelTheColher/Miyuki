@@ -7,7 +7,6 @@ import br.com.brjdevs.miyuki.loader.Module;
 import br.com.brjdevs.miyuki.loader.Module.*;
 import br.com.brjdevs.miyuki.loader.entities.ModuleResourceManager;
 import br.com.brjdevs.miyuki.modules.cmds.PushCmd;
-import br.com.brjdevs.miyuki.utils.Hastebin;
 import com.google.gson.JsonObject;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -26,7 +25,7 @@ import static br.com.brjdevs.miyuki.utils.data.DBUtils.decode;
 import static br.com.brjdevs.miyuki.utils.data.DBUtils.encode;
 import static com.rethinkdb.RethinkDB.r;
 
-@Module(name = "i18n")
+@Module(id = "i18n")
 public class I18nModule {
 	private static final Pattern compiledPattern = Pattern.compile("\\$\\([A-Za-z.]+?\\)");
 	@ResourceManager
@@ -183,23 +182,23 @@ public class I18nModule {
 		setModerated("dynamic." + untranslated, "en_US", true);
 	}
 
-	public static String generateJsonDump() {
-		System.out.println();
-		JsonObject json = new JsonObject();
-		JsonObject parentsJson = new JsonObject();
-		JsonObject localizations = new JsonObject();
-
-		parents.forEach(parentsJson::addProperty);
-		locales.forEach((k, v) -> {
-			JsonObject localization = new JsonObject();
-			v.forEach(localization::addProperty);
-			localizations.add(k, localization);
-		});
-
-		json.add("parents", parentsJson);
-		json.add("localizations", localizations);
-		return Hastebin.post(json.toString());
-	}
+//	public static String generateJsonDump() {
+//		System.out.println();
+//		JsonObject json = new JsonObject();
+//		JsonObject parentsJson = new JsonObject();
+//		JsonObject localizations = new JsonObject();
+//
+//		parents.forEach(parentsJson::addProperty);
+//		locales.forEach((k, v) -> {
+//			JsonObject localization = new JsonObject();
+//			v.forEach(localization::addProperty);
+//			localizations.add(k, localization);
+//		});
+//
+//		json.add("parents", parentsJson);
+//		json.add("localizations", localizations);
+//		return Pastee.post(json.toString());
+//	}
 
 	public static void pushTranslation(String unlocalized, String locale, String localized) {
 		String localeId = unlocalized + ":" + locale;

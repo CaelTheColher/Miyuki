@@ -1,7 +1,6 @@
 package br.com.brjdevs.miyuki.modules.cmds;
 
 import br.com.brjdevs.miyuki.Info;
-import br.com.brjdevs.miyuki.Loader;
 import br.com.brjdevs.miyuki.commands.Commands;
 import br.com.brjdevs.miyuki.commands.ICommand;
 import br.com.brjdevs.miyuki.loader.Module;
@@ -13,8 +12,9 @@ import br.com.brjdevs.miyuki.modules.db.I18nModule;
 import br.com.brjdevs.miyuki.modules.init.BotGreeter;
 import br.com.brjdevs.miyuki.modules.init.InitModule;
 import br.com.brjdevs.miyuki.oldmodules.cmds.utils.scripting.JS;
-import br.com.brjdevs.miyuki.utils.Hastebin;
+import br.com.brjdevs.miyuki.utils.Pastee;
 import br.com.brjdevs.miyuki.utils.TaskManager;
+import br.com.brjdevs.miyuki.utils.log.DiscordLogBack;
 import net.dv8tion.jda.core.JDAInfo;
 import net.dv8tion.jda.core.MessageBuilder;
 
@@ -23,7 +23,7 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-@Module(name = "cmds.bot")
+@Module(id = "cmds.bot", name = "BotCommand")
 public class BotCmd {
 
 	@Command("bot")
@@ -73,7 +73,7 @@ public class BotCmd {
 				.addCommand("pastelog",
 					Commands.buildSimple("bot.admin.pastelog.usage")
 						.setAction(event -> {
-							Future<String> stringFuture = TaskManager.getThreadPool().submit(() -> Hastebin.post(Loader.latestLog));
+							Future<String> stringFuture = TaskManager.getThreadPool().submit(() -> Pastee.post(DiscordLogBack.latestLog));
 							try {
 								event.awaitTyping().getAnswers().bool(true, " Latest Log: " + stringFuture.get()).queue();
 							} catch (InterruptedException | ExecutionException ignored) {

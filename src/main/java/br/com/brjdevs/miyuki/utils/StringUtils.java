@@ -105,7 +105,7 @@ public class StringUtils {
 			StringBuilder builder = new StringBuilder("");
 
 			//Keep track of the line number
-			int linenumber = 1;
+			int linenumber = 0;
 			numlines--;
 			String line;
 

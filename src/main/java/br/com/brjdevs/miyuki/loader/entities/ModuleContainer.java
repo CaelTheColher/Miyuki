@@ -1,7 +1,7 @@
 package br.com.brjdevs.miyuki.loader.entities;
 
 import br.com.brjdevs.miyuki.loader.Module.Type;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -18,6 +18,8 @@ public interface ModuleContainer {
 	Object getRealInstance();
 
 	Logger getLogger();
+
+	String getID();
 
 	String getName();
 

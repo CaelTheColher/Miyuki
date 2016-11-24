@@ -7,7 +7,7 @@ import br.com.brjdevs.miyuki.loader.Module.Command;
 import br.com.brjdevs.miyuki.modules.cmds.util.FeedingUtil;
 import br.com.brjdevs.miyuki.utils.HTML2Discord;
 
-@Module(name = "cmds.utils")
+@Module(id = "cmds.utils", name = "UtilsCommand")
 public class UtilsCmd {
 	@Command("utils")
 	private static ICommand utils() {
