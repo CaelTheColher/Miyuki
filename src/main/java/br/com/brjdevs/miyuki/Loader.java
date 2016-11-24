@@ -24,7 +24,7 @@ public class Loader {
 		DiscordUtils.hackJDALog();
 
 		try {
-			Stream.of(resource(Loader.class, "/assets/modules.miyuki").split("\\r?\\n"))
+			Stream.of(resource(Loader.class, "/modules.miyuki").split("\\r?\\n"))
 				.map(String::trim)
 				.filter(s -> !s.startsWith("#"))
 				.forEach(s -> {
