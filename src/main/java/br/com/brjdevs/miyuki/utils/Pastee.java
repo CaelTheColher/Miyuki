@@ -2,7 +2,6 @@ package br.com.brjdevs.miyuki.utils;
 
 import br.com.brjdevs.miyuki.modules.db.DBModule;
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.JsonParser;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -15,25 +14,23 @@ import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 
 public class Pastee {
 	public static String post(String paste) {
-		return post(paste, Optional.empty());
+		return post(paste, null);
 	}
 
-	public static String post(String paste, Optional<String> desc) {
+	public static String post(String paste, String desc) {
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpPost post = new HttpPost("https://paste.ee/api");
 
 		try {
-
 			post.setEntity(
 				new StringEntity(
 					implode(
 						new ImmutableMap.Builder<String, Object>()
 							.put("key", DBModule.getConfig().get("pasteeKey").getAsString())
-							.put("description", desc.orElse(null))
+							.put("description", desc)
 							.put("paste", paste)
 							.put("format", "simple")
 							.build()
@@ -43,8 +40,7 @@ public class Pastee {
 
 			HttpResponse response = client.execute(post);
 
-			String result = EntityUtils.toString(response.getEntity());
-			return new JsonParser().parse(result).getAsJsonObject().get("paste").getAsJsonObject().get("raw").getAsString();
+			return EntityUtils.toString(response.getEntity());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -56,11 +52,11 @@ public class Pastee {
 		Iterator<Entry<String, Object>> iterator = values.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Entry<String, Object> entry = iterator.next();
-			builder.append(entry.getKey());
 
-			if (entry.getValue() != null) {
-				builder.append("=").append(URLEncoder.encode(entry.getValue().toString(), "UTF-8"));
-			}
+			if (entry.getValue() == null) continue;
+
+			builder.append(entry.getKey()).append("=").append(URLEncoder.encode(entry.getValue().toString(), "UTF-8"));
+
 			if (iterator.hasNext())
 				builder.append("&");
 		}
