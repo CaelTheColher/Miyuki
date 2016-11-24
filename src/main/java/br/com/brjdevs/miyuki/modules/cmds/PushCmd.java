@@ -73,10 +73,15 @@ public class PushCmd {
 			subscriptions.putAll(channel, StreamSupport.stream(subscription.get("types").getAsJsonArray().spliterator(), false).map(JsonElement::getAsString).collect(Collectors.toSet()));
 		});
 
-		if (awaiting.size() > 0)
-			PushCmd.pushSimple("log", "**[PushInit]**" + awaiting.size() + " Pre-Ready events being re-processed.");
-		awaiting.forEach(Runnable::run);
-		awaiting = null;
+		if (awaiting.size() > 0) {
+			List<Runnable> runnables = awaiting;
+			awaiting = null;
+			logger.info(runnables.size() + " Pre-Ready events being re-processed.");
+			PushCmd.pushSimple("log", "**[PushInit]**" + runnables.size() + " Pre-Ready events being re-processed.");
+			runnables.forEach(Runnable::run);
+		}
+
+
 	}
 
 	public static boolean subscribe(TextChannel channel, Set<String> typesToAdd) {

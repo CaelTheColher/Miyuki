@@ -26,7 +26,7 @@ public class Loader {
 		try {
 			Stream.of(resource(Loader.class, "/modules.miyuki").split("\\r?\\n"))
 				.map(String::trim)
-				.filter(s -> !s.startsWith("#"))
+				.filter(s -> !s.isEmpty() && !s.startsWith("#"))
 				.forEach(s -> {
 					try {
 						ModuleManager.add(Class.forName(s));
