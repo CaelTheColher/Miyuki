@@ -5,13 +5,12 @@ import br.com.brjdevs.miyuki.loader.ModuleManager;
 import br.com.brjdevs.miyuki.modules.db.DBModule;
 import br.com.brjdevs.miyuki.utils.DiscordUtils;
 import br.com.brjdevs.miyuki.utils.Java;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.hooks.AnnotatedEventManager;
 import org.slf4j.Logger;
+
+import java.util.stream.Stream;
 
 import static br.com.brjdevs.miyuki.utils.log.LogUtils.logger;
 
@@ -25,20 +24,17 @@ public class Loader {
 		DiscordUtils.hackJDALog();
 
 		try {
-			JsonElement src = new JsonParser().parse(resource(Loader.class, "/assets/loader/main.json"));
+			Stream.of(resource(Loader.class, "/assets/modules.miyuki").split("\\r?\\n"))
+				.map(String::trim)
+				.filter(s -> !s.startsWith("#"))
+				.forEach(s -> {
+					try {
+						ModuleManager.add(Class.forName(s));
+					} catch (Exception e) {
+						LOGGER.error("Failed to load Module " + s, e);
+					}
+				});
 
-			if (!src.isJsonArray()) {
-				LOGGER.error("\"/assets/loader/main.json\" is in a incorrect form. Expected \"" + JsonArray.class + "\", got \"" + src.getClass() + "\"");
-				return;
-			}
-
-			src.getAsJsonArray().forEach(element -> {
-				try {
-					ModuleManager.add(Class.forName(element.getAsString()));
-				} catch (Exception e) {
-					LOGGER.error("Failed to load Module " + element, e);
-				}
-			});
 
 			ModuleManager.firePreReadyEvents();
 

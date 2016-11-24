@@ -48,12 +48,12 @@ processResources {
     inputs.property "version", project.version
 
     from(sourceSets.main.resources) {
-        include 'miyuki.version'
+        include 'version.miyuki'
         expand 'version': project.version
     }
 
     from(sourceSets.main.resources) {
-        exclude 'miyuki.version'
+        exclude 'version.miyuki'
     }
 }
 

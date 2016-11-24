@@ -51,7 +51,7 @@ public class Pastee {
 		return null;
 	}
 
-	public static String implode(Map<String, Object> values) throws IOException {
+	private static String implode(Map<String, Object> values) throws IOException {
 		StringBuilder builder = new StringBuilder();
 		Iterator<Entry<String, Object>> iterator = values.entrySet().iterator();
 		while (iterator.hasNext()) {
