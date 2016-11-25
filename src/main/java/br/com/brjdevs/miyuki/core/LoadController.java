@@ -78,6 +78,9 @@ public class LoadController {
 			setFields(module, JDAInstance.class, event.getJDA());
 			setFields(module, SelfUserInstance.class, event.getJDA().getSelfUser());
 
+			logger.error(module + ".Methods = " + Arrays.toString(module.getModuleClass().getDeclaredMethods()));
+			logger.error(module + ".Methods.Command = " + Arrays.toString(module.getMethodsForAnnotation(Command.class).toArray()));
+
 			module.getMethodsForAnnotation(Command.class).forEach(m -> {
 				try {
 					m.setAccessible(true);
