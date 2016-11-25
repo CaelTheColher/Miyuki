@@ -79,7 +79,7 @@ public class BotCmd {
 								.sendMessage(ModuleManager.getModules().stream()
 									.map(ModuleContainer::getName)
 									.reduce(" - ", (s1, s2) -> s1 + "\n - " + s2)
-								);
+								).queue();
 						}).build()
 				)
 				.addCommand("pastelog",
