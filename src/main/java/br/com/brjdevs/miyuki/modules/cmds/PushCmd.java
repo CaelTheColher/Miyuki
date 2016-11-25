@@ -28,7 +28,7 @@ import static br.com.brjdevs.miyuki.lib.StringUtils.limit;
 import static br.com.brjdevs.miyuki.modules.db.DBModule.onDB;
 import static com.rethinkdb.RethinkDB.r;
 
-@Module(id = "cmds.push", name = "PushCommand", order = 21)
+@Module(id = "cmds.push", name = "PushCommand", order = 26)
 public class PushCmd {
 	@LoggerInstance
 	private static Logger logger;
