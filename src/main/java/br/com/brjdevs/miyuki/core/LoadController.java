@@ -68,7 +68,6 @@ public class LoadController {
 				.map(ModuleContainer::getInstance)
 				.toArray()
 		);
-		logger.error("Listeners being used in JDA: " + Arrays.toString(list.toArray()));
 		return list.toArray();
 	}
 

@@ -71,8 +71,6 @@ public class CommandManager {
 			}
 		}
 
-		logger.info("isCmd = " + isCmd);
-
 		if (isCmd) {
 			String baseCmd = splitArgs(cmd, 2)[0];
 			//GuildWorksTM

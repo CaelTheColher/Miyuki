@@ -4,6 +4,7 @@ import br.com.brjdevs.miyuki.core.Module;
 import br.com.brjdevs.miyuki.core.Module.*;
 import br.com.brjdevs.miyuki.lib.CollectionUtils;
 import br.com.brjdevs.miyuki.lib.Java;
+import br.com.brjdevs.miyuki.modules.cmds.manager.CommandManager;
 import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 import br.com.brjdevs.miyuki.modules.db.DBModule;
 import net.dv8tion.jda.core.JDA;
@@ -15,6 +16,7 @@ import org.slf4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Set;
 
@@ -60,6 +62,8 @@ public class InitModule {
 		} else {
 			logger.info("Owner(s) recognized: " + CollectionUtils.toString(owners, (user -> user.getName() + "#" + user.getDiscriminator() + " (ID: " + user.getId() + ")"), ", "));
 		}
+
+		logger.info("Base Commands Loaded: " + Arrays.toString(CommandManager.getBaseCommands().entrySet().toArray()));
 
 		//Pushes.pushSimple("start", channel -> I18nModule.getLocalized("bot.startup", channel));
 	}
