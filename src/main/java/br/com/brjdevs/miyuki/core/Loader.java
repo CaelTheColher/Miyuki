@@ -7,9 +7,8 @@ import br.com.brjdevs.miyuki.modules.db.DBModule;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.hooks.AnnotatedEventManager;
+import org.reflections.Reflections;
 import org.slf4j.Logger;
-import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.core.type.filter.AnnotationTypeFilter;
 
 import static br.com.brjdevs.miyuki.lib.log.LogUtils.logger;
 
@@ -23,16 +22,11 @@ public class Loader {
 		DiscordUtils.hackJDALog();
 
 		try {
-			ClassPathScanningCandidateComponentProvider scanner =
-				new ClassPathScanningCandidateComponentProvider(false);
-
-			scanner.addIncludeFilter(new AnnotationTypeFilter(Module.class));
-
-			scanner.findCandidateComponents("br.com.brjdevs.miyuki.core.modules").forEach(bean -> {
+			new Reflections("br.com.brjdevs.miyuki.modules").getTypesAnnotatedWith(Module.class).forEach(c -> {
 				try {
-					ModuleManager.add(Class.forName(bean.getBeanClassName()));
+					ModuleManager.add(c);
 				} catch (Exception e) {
-					LOGGER.error("Failed to load Module " + bean.getBeanClassName(), e);
+					LOGGER.error("Failed to load Module from " + c, e);
 				}
 			});
 
