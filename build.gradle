@@ -21,7 +21,7 @@ apply plugin: 'application'
 
 group 'br.com.brjdevs.miyuki'
 version '1.0.' + (env.containsKey('DRONE_BUILD_NUMBER') ? 'BUILD_' + env['DRONE_BUILD_NUMBER'] : 'DEV')
-mainClassName = "br.com.brjdevs.miyuki.core.Loader"
+mainClassName = "br.com.brjdevs.miyuki.core.LoadController"
 
 println System.getProperty("java.home")
 
