@@ -7,10 +7,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public interface ModuleContainer {
+public interface ModuleContainer extends Comparable<ModuleContainer> {
 	Class<?> getModuleClass();
 
 	Object getInstance();
@@ -27,19 +25,11 @@ public interface ModuleContainer {
 
 	ModuleResourceManager getResourceManager();
 
-	default Set<Field> getFieldsForAnnotation(Class<? extends Annotation> annotation) {
-		return Stream.of(getModuleClass().getDeclaredFields()).filter(f -> f.isAnnotationPresent(annotation)).collect(Collectors.toSet());
-	}
+	Set<Field> getFieldsForAnnotation(Class<? extends Annotation> annotation);
 
-	default Set<Method> getMethodsForAnnotation(Class<? extends Annotation> annotation) {
-		return Stream.of(getModuleClass().getDeclaredMethods()).filter(f -> f.isAnnotationPresent(annotation)).collect(Collectors.toSet());
-	}
+	Set<Method> getMethodsForAnnotation(Class<? extends Annotation> annotation);
 
-	default boolean isAnnotationPresent(Class<? extends Annotation> annotation) {
-		return getModuleClass().isAnnotationPresent(annotation);
-	}
+	boolean isAnnotationPresent(Class<? extends Annotation> annotation);
 
-	default <A extends Annotation> A getAnnotation(Class<A> annotationClass) {
-		return getModuleClass().getAnnotation(annotationClass);
-	}
+	<A extends Annotation> A getAnnotation(Class<A> annotationClass);
 }

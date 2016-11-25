@@ -11,7 +11,7 @@ import ch.qos.logback.core.AppenderBase;
 
 import static br.com.brjdevs.miyuki.lib.StringUtils.limit;
 
-@Module(id = "discordLog")
+@Module(id = "discordLog", order = 9)
 public class DiscordLogBack extends AppenderBase<ILoggingEvent> {
 	public static String latestLog = "";
 	private static StringBuilder preInit = new StringBuilder();

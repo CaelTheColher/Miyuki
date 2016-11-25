@@ -1,9 +1,9 @@
 package br.com.brjdevs.miyuki.modules.cmds;
 
-import br.com.brjdevs.miyuki.core.Info;
+import br.com.brjdevs.miyuki.core.BotInfo;
+import br.com.brjdevs.miyuki.core.LoadController;
 import br.com.brjdevs.miyuki.core.Module;
 import br.com.brjdevs.miyuki.core.Module.Command;
-import br.com.brjdevs.miyuki.core.ModuleManager;
 import br.com.brjdevs.miyuki.core.commands.Commands;
 import br.com.brjdevs.miyuki.core.commands.ICommand;
 import br.com.brjdevs.miyuki.core.entities.ModuleContainer;
@@ -25,7 +25,7 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-@Module(id = "cmds.bot", name = "BotCommand")
+@Module(id = "cmds.bot", name = "BotCommand", order = 7)
 public class BotCmd {
 
 	@Command("bot")
@@ -35,7 +35,7 @@ public class BotCmd {
 				Commands.buildSimple("bot.info.usage").setAction((event) -> BotGreeter.greet(event.getChannel(), Optional.of(event.getAuthor()))).build()
 			)
 			.addDefault("info")
-			.addCommand("version", Commands.buildSimple("bot.version.usage").setAction(e -> e.getAnswers().send("**Bot Version:** " + Info.VERSION + "\n**JDA Version** " + JDAInfo.VERSION).queue()).build())
+			.addCommand("version", Commands.buildSimple("bot.version.usage").setAction(e -> e.getAnswers().send("**Bot Version:** " + BotInfo.VERSION + "\n**JDA Version** " + JDAInfo.VERSION).queue()).build())
 			.addCommand("session",
 				Commands.buildSimple("bot.session.usage").setAction((event) -> event.awaitTyping(false).sendMessage(new MessageBuilder().setEmbed(SessionManager.createEmbed(event)).build()).queue()).build()
 			)
@@ -76,9 +76,9 @@ public class BotCmd {
 					Commands.buildSimple("bot.admin.modules.usage")
 						.setAction(event -> {
 							event
-								.sendMessage(ModuleManager.getModules().stream()
+								.sendMessage(LoadController.modules().stream()
 									.map(ModuleContainer::getName)
-									.reduce(" - ", (s1, s2) -> s1 + "\n - " + s2)
+									.reduce("**Modules Loaded:**", (s1, s2) -> s1 + "\n - " + s2)
 								).queue();
 						}).build()
 				)

@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Set;
 
-@Module(id = "init", isListener = true)
+@Module(id = "init", isListener = true, order = 0)
 public class InitModule {
 	@JDAInstance
 	private static JDA jda = null;

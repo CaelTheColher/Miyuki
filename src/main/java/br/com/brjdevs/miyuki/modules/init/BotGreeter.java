@@ -16,7 +16,7 @@ import net.dv8tion.jda.core.hooks.SubscribeEvent;
 
 import java.util.Optional;
 
-@Module(id = "greeter", isListener = true)
+@Module(id = "greeter", isListener = true, order = 2)
 public class BotGreeter {
 	public static void greet(TextChannel channel, Optional<User> optionalUser) {
 		Holder<String> lang = new Holder<>(GuildModule.fromDiscord(channel.getGuild()).getLang());

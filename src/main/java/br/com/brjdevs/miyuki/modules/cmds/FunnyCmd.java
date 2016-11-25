@@ -21,7 +21,7 @@ import static br.com.brjdevs.miyuki.lib.AsyncUtils.async;
 import static br.com.brjdevs.miyuki.lib.AsyncUtils.sleep;
 import static br.com.brjdevs.miyuki.lib.CollectionUtils.random;
 
-@Module(id = "cmds.funny", name = "FunnyCommand")
+@Module(id = "cmds.funny", name = "FunnyCommand", order = 7)
 public class FunnyCmd {
 	@LoggerInstance
 	private static Logger logger;

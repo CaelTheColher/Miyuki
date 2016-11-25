@@ -26,7 +26,7 @@ import static br.com.brjdevs.miyuki.lib.AsyncUtils.asyncSleepThen;
 import static br.com.brjdevs.miyuki.lib.CollectionUtils.concatMaps;
 import static br.com.brjdevs.miyuki.lib.StringUtils.splitArgs;
 
-@Module(id = "cmdmanager", isListener = true)
+@Module(id = "cmdmanager", isListener = true, order = 1)
 public class CommandManager {
 	private static final Map<String, ICommand> COMMANDS = new HashMap<>();
 	@LoggerInstance

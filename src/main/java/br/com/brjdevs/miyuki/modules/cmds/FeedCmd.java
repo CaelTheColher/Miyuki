@@ -29,7 +29,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.function.Function;
 
-@Module(id = "cmds.feed", name = "FeedCommand")
+@Module(id = "cmds.feed", name = "FeedCommand", order = 7)
 public class FeedCmd {
 	private static final Set<Subscription> ALL = Collections.synchronizedSet(new HashSet<>());
 	private static final Set<String> ALL_TYPES = Collections.synchronizedSet(new HashSet<>());

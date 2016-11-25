@@ -14,6 +14,8 @@ public @interface Module {
 
 	boolean isListener() default false;
 
+	int order();
+
 	enum Type {
 		STATIC, INSTANCE
 	}

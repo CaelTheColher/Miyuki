@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 
 import static br.com.brjdevs.miyuki.modules.db.I18nModule.getLocalized;
 
-@Module(id = "cmds.cmds", name = "CmdsCommand")
+@Module(id = "cmds.cmds", name = "CmdsCommand", order = 7)
 public class CmdsCmd {
 	@Command("cmds")
 	private static ICommand createCommand() {

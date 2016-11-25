@@ -64,7 +64,7 @@ Permissões:
 	(62/Z)	BOT_ADMIN
 				Stops/Resets the Bot
  */
-@Module(id = "permissions")
+@Module(id = "permissions", order = 6)
 public class PermissionsModule {
 	public static final long
 		RUN_CMDS = bits(0),

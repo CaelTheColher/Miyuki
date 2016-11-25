@@ -25,7 +25,7 @@ import static br.com.brjdevs.miyuki.lib.data.DBUtils.encode;
 import static br.com.brjdevs.miyuki.modules.db.DBModule.onDB;
 import static com.rethinkdb.RethinkDB.r;
 
-@Module(id = "i18n")
+@Module(id = "i18n", order = 4)
 public class I18nModule {
 	private static final Pattern compiledPattern = Pattern.compile("\\$\\([A-Za-z.]+?\\)");
 	@ResourceManager

@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@Module(id = "db", type = {Type.STATIC, Type.INSTANCE})
+@Module(id = "db", type = {Type.STATIC, Type.INSTANCE}, order = 3)
 public class DBModule {
 	public static final Gson
 		GSON_TO_FILES = new GsonBuilder().setPrettyPrinting().serializeNulls().create(),

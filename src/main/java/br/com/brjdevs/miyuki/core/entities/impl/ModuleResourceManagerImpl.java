@@ -1,8 +1,10 @@
 package br.com.brjdevs.miyuki.core.entities.impl;
 
-import br.com.brjdevs.miyuki.core.Loader;
+import br.com.brjdevs.miyuki.core.LoadController;
 import br.com.brjdevs.miyuki.core.Module;
 import br.com.brjdevs.miyuki.core.entities.ModuleResourceManager;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 public class ModuleResourceManagerImpl implements ModuleResourceManager {
 	private final String moduleID;
@@ -15,6 +17,11 @@ public class ModuleResourceManagerImpl implements ModuleResourceManager {
 
 	@Override
 	public String get(String path) {
-		return Loader.resource(clazz, "/assets/" + moduleID + "/" + path);
+		return LoadController.resource(clazz, "/assets/" + moduleID + "/" + path);
+	}
+
+	@Override
+	public JsonElement getAsJson(String path) {
+		return new JsonParser().parse(get(path));
 	}
 }
