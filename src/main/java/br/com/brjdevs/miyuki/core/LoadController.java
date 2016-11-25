@@ -66,6 +66,7 @@ public class LoadController {
 			modules().stream()
 				.filter(container -> container.getAnnotation(Module.class).isListener())
 				.map(ModuleContainer::getInstance)
+				.sorted()
 				.toArray()
 		);
 		logger.error("Listeners being used in JDA: " + Arrays.toString(list.toArray()));

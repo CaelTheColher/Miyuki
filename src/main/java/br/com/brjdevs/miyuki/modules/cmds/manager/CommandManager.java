@@ -34,6 +34,7 @@ public class CommandManager {
 
 	@SubscribeEvent
 	private static void onMessageReceived(GuildMessageReceivedEvent msgEvent) {
+		logger.info(msgEvent.toString());
 		if (!PermissionUtil.checkPermission(msgEvent.getChannel(), msgEvent.getGuild().getSelfMember(), Permission.MESSAGE_WRITE))
 			return;
 
@@ -68,6 +69,8 @@ public class CommandManager {
 				break;
 			}
 		}
+
+		logger.info("isCmd = " + isCmd);
 
 		if (isCmd) {
 			String baseCmd = splitArgs(cmd, 2)[0];
