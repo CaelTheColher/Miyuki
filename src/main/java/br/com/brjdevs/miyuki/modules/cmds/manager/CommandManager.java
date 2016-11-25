@@ -34,7 +34,6 @@ public class CommandManager {
 
 	@SubscribeEvent
 	private static void onMessageReceived(GuildMessageReceivedEvent msgEvent) {
-		logger.info(msgEvent.toString());
 		if (!PermissionUtil.checkPermission(msgEvent.getChannel(), msgEvent.getGuild().getSelfMember(), Permission.MESSAGE_WRITE))
 			return;
 
@@ -84,7 +83,7 @@ public class CommandManager {
 			}
 
 			ICommand command = getCommands(target).get(baseCmd.toLowerCase());
-			
+
 			if (command != null) {
 				CommandEvent event = new CommandEvent(msgEvent, target, command, splitArgs(cmd, 2)[1]);
 				if (!PermissionsModule.canRunCommand(target, event)) event.getAnswers().noperm().queue();
