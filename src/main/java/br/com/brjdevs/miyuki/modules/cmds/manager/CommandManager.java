@@ -52,6 +52,7 @@ public class CommandManager {
 	}
 
 	private static void onCommand(GuildMessageReceivedEvent msgEvent) {
+		Thread.currentThread().setName(msgEvent.getAuthor().getName() + ">[unknown]");
 		GuildModule.Data local = GuildModule.fromDiscord(msgEvent.getGuild()), global = GuildModule.GLOBAL, target = local;
 		if (!PermissionsModule.havePermsRequired(global, msgEvent.getAuthor(), PermissionsModule.RUN_CMDS) || !PermissionsModule.havePermsRequired(local, msgEvent.getAuthor(), PermissionsModule.RUN_CMDS))
 			return;
@@ -84,8 +85,9 @@ public class CommandManager {
 					target = guild;
 			}
 
+			logger.info("baseCmd = " + baseCmd + "; target = " + target.getName());
 			ICommand command = getCommands(target).get(baseCmd.toLowerCase());
-
+			logger.info("command = " + command);
 			if (command != null) {
 				CommandEvent event = new CommandEvent(msgEvent, target, command, splitArgs(cmd, 2)[1]);
 				if (!PermissionsModule.canRunCommand(target, event)) event.getAnswers().noperm().queue();
