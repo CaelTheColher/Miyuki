@@ -50,6 +50,7 @@ public class LoadController {
 	}
 
 	private static void createJDA() throws Exception {
+		logger.error("Modules: " + Arrays.toString(modules().toArray()));
 		new JDABuilder(AccountType.BOT)
 			.setToken(DBModule.getConfig().get("token").getAsString())
 			.setEventManager(new AnnotatedEventManager())
@@ -67,6 +68,7 @@ public class LoadController {
 				.map(ModuleContainer::getInstance)
 				.toArray()
 		);
+		logger.error("Listeners being used in JDA: " + Arrays.toString(list.toArray()));
 		return list.toArray();
 	}
 

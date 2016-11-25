@@ -100,4 +100,13 @@ public class ModuleContainerImpl implements ModuleContainer {
 			container.getAnnotation(Module.class).order()
 		);
 	}
+
+	@Override
+	public String toString() {
+		return "ModuleContainerImpl{" +
+			"moduleClass=" + moduleClass +
+			", moduleID='" + moduleID + '\'' +
+			", moduleName='" + moduleName + '\'' +
+			'}';
+	}
 }
