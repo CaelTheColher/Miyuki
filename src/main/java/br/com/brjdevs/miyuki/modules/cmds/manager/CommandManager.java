@@ -83,9 +83,8 @@ public class CommandManager {
 					target = guild;
 			}
 
-			logger.info("baseCmd = " + baseCmd + "; target = " + target.getName());
 			ICommand command = getCommands(target).get(baseCmd.toLowerCase());
-			logger.info("command = " + command);
+			
 			if (command != null) {
 				CommandEvent event = new CommandEvent(msgEvent, target, command, splitArgs(cmd, 2)[1]);
 				if (!PermissionsModule.canRunCommand(target, event)) event.getAnswers().noperm().queue();
