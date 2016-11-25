@@ -1,13 +1,13 @@
 package br.com.brjdevs.miyuki.modules.cmds;
 
-import br.com.brjdevs.miyuki.commands.Commands;
-import br.com.brjdevs.miyuki.commands.ICommand;
-import br.com.brjdevs.miyuki.loader.Module;
-import br.com.brjdevs.miyuki.loader.Module.Command;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.Command;
+import br.com.brjdevs.miyuki.core.commands.Commands;
+import br.com.brjdevs.miyuki.core.commands.ICommand;
+import br.com.brjdevs.miyuki.lib.data.Commitable;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
-import br.com.brjdevs.miyuki.utils.data.Commitable;
 import net.dv8tion.jda.core.MessageBuilder;
 
 import java.util.Arrays;

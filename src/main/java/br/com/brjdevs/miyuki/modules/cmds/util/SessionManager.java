@@ -1,14 +1,14 @@
 package br.com.brjdevs.miyuki.modules.cmds.util;
 
 
-import br.com.brjdevs.miyuki.commands.CommandEvent;
+import br.com.brjdevs.miyuki.core.commands.CommandEvent;
+import br.com.brjdevs.miyuki.lib.DataFormatter;
+import br.com.brjdevs.miyuki.lib.TaskManager;
+import br.com.brjdevs.miyuki.lib.log.LogUtils;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
 import br.com.brjdevs.miyuki.modules.db.UserModule;
-import br.com.brjdevs.miyuki.utils.DataFormatter;
-import br.com.brjdevs.miyuki.utils.TaskManager;
-import br.com.brjdevs.miyuki.utils.log.LogUtils;
 import com.sun.management.OperatingSystemMXBean;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;

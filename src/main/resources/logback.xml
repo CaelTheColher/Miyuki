@@ -50,7 +50,7 @@
         </encoder>
     </appender>
 
-    <appender name="DISCORD" class="br.com.brjdevs.miyuki.utils.log.DiscordLogBack"/>
+    <appender name="DISCORD" class="br.com.brjdevs.miyuki.lib.log.DiscordLogBack"/>
 
     <logger name="br.com.brjdevs.miyuki" level="DEBUG" additivity="true">
         <appender-ref ref="DEBUG"/>

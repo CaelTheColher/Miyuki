@@ -1,11 +1,11 @@
 package br.com.brjdevs.miyuki.modules.cmds;
 
-import br.com.brjdevs.miyuki.commands.Commands;
-import br.com.brjdevs.miyuki.commands.ICommand;
-import br.com.brjdevs.miyuki.loader.Module;
-import br.com.brjdevs.miyuki.loader.Module.Command;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.Command;
+import br.com.brjdevs.miyuki.core.commands.Commands;
+import br.com.brjdevs.miyuki.core.commands.ICommand;
+import br.com.brjdevs.miyuki.lib.HTML2Discord;
 import br.com.brjdevs.miyuki.modules.cmds.util.FeedingUtil;
-import br.com.brjdevs.miyuki.utils.HTML2Discord;
 
 @Module(id = "cmds.utils", name = "UtilsCommand")
 public class UtilsCmd {

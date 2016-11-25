@@ -1,11 +1,11 @@
 package br.com.brjdevs.miyuki.modules.db;
 
-import br.com.brjdevs.miyuki.loader.Module;
-import br.com.brjdevs.miyuki.loader.Module.OnEnabled;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.OnEnabled;
+import br.com.brjdevs.miyuki.lib.CollectionUtils;
+import br.com.brjdevs.miyuki.lib.TaskManager;
+import br.com.brjdevs.miyuki.lib.data.Commitable;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
-import br.com.brjdevs.miyuki.utils.CollectionUtils;
-import br.com.brjdevs.miyuki.utils.TaskManager;
-import br.com.brjdevs.miyuki.utils.data.Commitable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.rethinkdb.RethinkDB;

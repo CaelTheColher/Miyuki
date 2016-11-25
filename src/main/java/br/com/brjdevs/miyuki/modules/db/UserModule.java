@@ -1,12 +1,12 @@
 package br.com.brjdevs.miyuki.modules.db;
 
-import br.com.brjdevs.miyuki.loader.Module;
-import br.com.brjdevs.miyuki.loader.Module.JDAInstance;
-import br.com.brjdevs.miyuki.loader.Module.PreReady;
-import br.com.brjdevs.miyuki.loader.Module.Ready;
-import br.com.brjdevs.miyuki.utils.StringUtils;
-import br.com.brjdevs.miyuki.utils.TaskManager;
-import br.com.brjdevs.miyuki.utils.data.ConfigUtils;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.JDAInstance;
+import br.com.brjdevs.miyuki.core.Module.PreReady;
+import br.com.brjdevs.miyuki.core.Module.Ready;
+import br.com.brjdevs.miyuki.lib.StringUtils;
+import br.com.brjdevs.miyuki.lib.TaskManager;
+import br.com.brjdevs.miyuki.lib.data.ConfigUtils;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.rethinkdb.RethinkDB;

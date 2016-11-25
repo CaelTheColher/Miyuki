@@ -1,11 +1,11 @@
 package br.com.brjdevs.miyuki.modules.db;
 
-import br.com.brjdevs.miyuki.commands.CommandEvent;
-import br.com.brjdevs.miyuki.commands.Commands;
-import br.com.brjdevs.miyuki.commands.ICommand;
-import br.com.brjdevs.miyuki.loader.Module;
-import br.com.brjdevs.miyuki.loader.Module.*;
-import br.com.brjdevs.miyuki.loader.entities.ModuleResourceManager;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.*;
+import br.com.brjdevs.miyuki.core.commands.CommandEvent;
+import br.com.brjdevs.miyuki.core.commands.Commands;
+import br.com.brjdevs.miyuki.core.commands.ICommand;
+import br.com.brjdevs.miyuki.core.entities.ModuleResourceManager;
 import br.com.brjdevs.miyuki.modules.cmds.PushCmd;
 import com.google.gson.JsonObject;
 import net.dv8tion.jda.core.JDA;
@@ -16,13 +16,13 @@ import org.apache.commons.codec.digest.Md5Crypt;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import static br.com.brjdevs.miyuki.lib.AsyncUtils.asyncSleepThen;
+import static br.com.brjdevs.miyuki.lib.CollectionUtils.iterate;
+import static br.com.brjdevs.miyuki.lib.StringUtils.advancedSplitArgs;
+import static br.com.brjdevs.miyuki.lib.StringUtils.notNullOrDefault;
+import static br.com.brjdevs.miyuki.lib.data.DBUtils.decode;
+import static br.com.brjdevs.miyuki.lib.data.DBUtils.encode;
 import static br.com.brjdevs.miyuki.modules.db.DBModule.onDB;
-import static br.com.brjdevs.miyuki.utils.AsyncUtils.asyncSleepThen;
-import static br.com.brjdevs.miyuki.utils.CollectionUtils.iterate;
-import static br.com.brjdevs.miyuki.utils.StringUtils.advancedSplitArgs;
-import static br.com.brjdevs.miyuki.utils.StringUtils.notNullOrDefault;
-import static br.com.brjdevs.miyuki.utils.data.DBUtils.decode;
-import static br.com.brjdevs.miyuki.utils.data.DBUtils.encode;
 import static com.rethinkdb.RethinkDB.r;
 
 @Module(id = "i18n")

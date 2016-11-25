@@ -1,20 +1,22 @@
 package br.com.brjdevs.miyuki.modules.cmds;
 
-import br.com.brjdevs.miyuki.Info;
-import br.com.brjdevs.miyuki.commands.Commands;
-import br.com.brjdevs.miyuki.commands.ICommand;
-import br.com.brjdevs.miyuki.loader.Module;
-import br.com.brjdevs.miyuki.loader.Module.Command;
+import br.com.brjdevs.miyuki.core.Info;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.Command;
+import br.com.brjdevs.miyuki.core.ModuleManager;
+import br.com.brjdevs.miyuki.core.commands.Commands;
+import br.com.brjdevs.miyuki.core.commands.ICommand;
+import br.com.brjdevs.miyuki.core.entities.ModuleContainer;
+import br.com.brjdevs.miyuki.lib.Pastee;
+import br.com.brjdevs.miyuki.lib.TaskManager;
+import br.com.brjdevs.miyuki.lib.log.DiscordLogBack;
 import br.com.brjdevs.miyuki.modules.cmds.manager.CommandManager.TooFast;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
+import br.com.brjdevs.miyuki.modules.cmds.utils.scripting.JS;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
 import br.com.brjdevs.miyuki.modules.init.BotGreeter;
 import br.com.brjdevs.miyuki.modules.init.InitModule;
-import br.com.brjdevs.miyuki.oldmodules.cmds.utils.scripting.JS;
-import br.com.brjdevs.miyuki.utils.Pastee;
-import br.com.brjdevs.miyuki.utils.TaskManager;
-import br.com.brjdevs.miyuki.utils.log.DiscordLogBack;
 import net.dv8tion.jda.core.JDAInfo;
 import net.dv8tion.jda.core.MessageBuilder;
 
@@ -68,6 +70,16 @@ public class BotCmd {
 						.setAction(event -> {
 							boolean exists = new File("/var/updates/Miyuki-r.jar").exists();
 							event.awaitTyping(true).getAnswers().bool(exists, exists ? " Oh, hey. There's an Update waiting!" : " Meh, no new Jars for me.").queue();
+						}).build()
+				)
+				.addCommand("modules",
+					Commands.buildSimple("bot.admin.modules.usage")
+						.setAction(event -> {
+							event
+								.sendMessage(ModuleManager.getModules().stream()
+									.map(ModuleContainer::getName)
+									.reduce(" - ", (s1, s2) -> s1 + "\n - " + s2)
+								);
 						}).build()
 				)
 				.addCommand("pastelog",

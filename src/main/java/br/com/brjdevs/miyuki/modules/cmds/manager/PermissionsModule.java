@@ -1,12 +1,12 @@
 package br.com.brjdevs.miyuki.modules.cmds.manager;
 
-import br.com.brjdevs.miyuki.commands.CommandEvent;
-import br.com.brjdevs.miyuki.loader.Module;
-import br.com.brjdevs.miyuki.loader.Module.JDAInstance;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.JDAInstance;
+import br.com.brjdevs.miyuki.core.commands.CommandEvent;
+import br.com.brjdevs.miyuki.lib.DiscordUtils;
 import br.com.brjdevs.miyuki.modules.db.DBModule;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.GuildModule.Data;
-import br.com.brjdevs.miyuki.utils.DiscordUtils;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.User;
 

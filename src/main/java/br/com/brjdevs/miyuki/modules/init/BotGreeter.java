@@ -1,13 +1,13 @@
 package br.com.brjdevs.miyuki.modules.init;
 
-import br.com.brjdevs.miyuki.commands.Holder;
-import br.com.brjdevs.miyuki.loader.Module;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.commands.Holder;
+import br.com.brjdevs.miyuki.lib.DiscordUtils;
+import br.com.brjdevs.miyuki.lib.StringUtils;
 import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
 import br.com.brjdevs.miyuki.modules.db.UserModule;
-import br.com.brjdevs.miyuki.utils.DiscordUtils;
-import br.com.brjdevs.miyuki.utils.StringUtils;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;

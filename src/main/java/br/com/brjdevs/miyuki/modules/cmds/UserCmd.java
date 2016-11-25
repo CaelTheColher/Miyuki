@@ -1,14 +1,14 @@
 package br.com.brjdevs.miyuki.modules.cmds;
 
 
-import br.com.brjdevs.miyuki.commands.Commands;
-import br.com.brjdevs.miyuki.commands.Commands.TreeCommandBuilder.NotFoundAction;
-import br.com.brjdevs.miyuki.commands.Holder;
-import br.com.brjdevs.miyuki.commands.ICommand;
-import br.com.brjdevs.miyuki.loader.Module;
-import br.com.brjdevs.miyuki.loader.Module.Command;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.Command;
+import br.com.brjdevs.miyuki.core.commands.Commands;
+import br.com.brjdevs.miyuki.core.commands.Commands.TreeCommandBuilder.NotFoundAction;
+import br.com.brjdevs.miyuki.core.commands.Holder;
+import br.com.brjdevs.miyuki.core.commands.ICommand;
+import br.com.brjdevs.miyuki.lib.DiscordUtils;
 import br.com.brjdevs.miyuki.modules.db.UserModule;
-import br.com.brjdevs.miyuki.utils.DiscordUtils;
 import net.dv8tion.jda.core.MessageBuilder;
 
 import static br.com.brjdevs.miyuki.modules.db.I18nModule.getLocale;

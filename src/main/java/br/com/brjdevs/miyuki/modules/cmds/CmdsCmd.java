@@ -1,16 +1,16 @@
 package br.com.brjdevs.miyuki.modules.cmds;
 
-import br.com.brjdevs.miyuki.commands.Commands;
-import br.com.brjdevs.miyuki.commands.Holder;
-import br.com.brjdevs.miyuki.commands.ICommand;
-import br.com.brjdevs.miyuki.commands.UserCommand;
-import br.com.brjdevs.miyuki.loader.Module;
-import br.com.brjdevs.miyuki.loader.Module.Command;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.Command;
+import br.com.brjdevs.miyuki.core.commands.Commands;
+import br.com.brjdevs.miyuki.core.commands.Holder;
+import br.com.brjdevs.miyuki.core.commands.ICommand;
+import br.com.brjdevs.miyuki.core.commands.UserCommand;
+import br.com.brjdevs.miyuki.lib.Formatter;
 import br.com.brjdevs.miyuki.modules.cmds.manager.CommandManager;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
 import br.com.brjdevs.miyuki.modules.db.UserCommandsModule;
-import br.com.brjdevs.miyuki.utils.Formatter;
 import net.dv8tion.jda.core.entities.MessageChannel;
 
 import java.util.ArrayList;

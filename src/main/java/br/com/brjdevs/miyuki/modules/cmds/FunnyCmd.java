@@ -1,13 +1,13 @@
 package br.com.brjdevs.miyuki.modules.cmds;
 
 import br.com.brjdevs.java.lib.IOHelper;
-import br.com.brjdevs.miyuki.commands.Commands;
-import br.com.brjdevs.miyuki.commands.ICommand;
-import br.com.brjdevs.miyuki.loader.Module;
-import br.com.brjdevs.miyuki.loader.Module.*;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.*;
+import br.com.brjdevs.miyuki.core.commands.Commands;
+import br.com.brjdevs.miyuki.core.commands.ICommand;
+import br.com.brjdevs.miyuki.lib.Formatter;
+import br.com.brjdevs.miyuki.lib.TaskManager;
 import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
-import br.com.brjdevs.miyuki.utils.Formatter;
-import br.com.brjdevs.miyuki.utils.TaskManager;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
@@ -17,9 +17,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Future;
 
-import static br.com.brjdevs.miyuki.utils.AsyncUtils.async;
-import static br.com.brjdevs.miyuki.utils.AsyncUtils.sleep;
-import static br.com.brjdevs.miyuki.utils.CollectionUtils.random;
+import static br.com.brjdevs.miyuki.lib.AsyncUtils.async;
+import static br.com.brjdevs.miyuki.lib.AsyncUtils.sleep;
+import static br.com.brjdevs.miyuki.lib.CollectionUtils.random;
 
 @Module(id = "cmds.funny", name = "FunnyCommand")
 public class FunnyCmd {

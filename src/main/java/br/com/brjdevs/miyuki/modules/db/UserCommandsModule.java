@@ -1,7 +1,7 @@
 package br.com.brjdevs.miyuki.modules.db;
 
-import br.com.brjdevs.miyuki.commands.UserCommand;
-import br.com.brjdevs.miyuki.loader.Module;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.commands.UserCommand;
 
 import java.nio.charset.Charset;
 import java.util.*;

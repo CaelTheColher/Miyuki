@@ -1,14 +1,14 @@
 package br.com.brjdevs.miyuki.modules.cmds.manager;
 
-import br.com.brjdevs.miyuki.commands.CommandEvent;
-import br.com.brjdevs.miyuki.commands.ICommand;
-import br.com.brjdevs.miyuki.commands.UserCommand;
-import br.com.brjdevs.miyuki.loader.Module;
-import br.com.brjdevs.miyuki.loader.Module.LoggerInstance;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.LoggerInstance;
+import br.com.brjdevs.miyuki.core.commands.CommandEvent;
+import br.com.brjdevs.miyuki.core.commands.ICommand;
+import br.com.brjdevs.miyuki.core.commands.UserCommand;
+import br.com.brjdevs.miyuki.lib.TaskManager;
 import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.UserCommandsModule;
-import br.com.brjdevs.miyuki.utils.TaskManager;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
@@ -21,10 +21,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static br.com.brjdevs.miyuki.utils.AsyncUtils.async;
-import static br.com.brjdevs.miyuki.utils.AsyncUtils.asyncSleepThen;
-import static br.com.brjdevs.miyuki.utils.CollectionUtils.concatMaps;
-import static br.com.brjdevs.miyuki.utils.StringUtils.splitArgs;
+import static br.com.brjdevs.miyuki.lib.AsyncUtils.async;
+import static br.com.brjdevs.miyuki.lib.AsyncUtils.asyncSleepThen;
+import static br.com.brjdevs.miyuki.lib.CollectionUtils.concatMaps;
+import static br.com.brjdevs.miyuki.lib.StringUtils.splitArgs;
 
 @Module(id = "cmdmanager", isListener = true)
 public class CommandManager {

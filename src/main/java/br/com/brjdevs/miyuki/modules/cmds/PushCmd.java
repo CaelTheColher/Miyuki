@@ -1,10 +1,10 @@
 package br.com.brjdevs.miyuki.modules.cmds;
 
-import br.com.brjdevs.miyuki.commands.Commands;
-import br.com.brjdevs.miyuki.commands.Holder;
-import br.com.brjdevs.miyuki.commands.ICommand;
-import br.com.brjdevs.miyuki.loader.Module;
-import br.com.brjdevs.miyuki.loader.Module.*;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.*;
+import br.com.brjdevs.miyuki.core.commands.Commands;
+import br.com.brjdevs.miyuki.core.commands.Holder;
+import br.com.brjdevs.miyuki.core.commands.ICommand;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
@@ -24,8 +24,8 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static br.com.brjdevs.miyuki.lib.StringUtils.limit;
 import static br.com.brjdevs.miyuki.modules.db.DBModule.onDB;
-import static br.com.brjdevs.miyuki.utils.StringUtils.limit;
 import static com.rethinkdb.RethinkDB.r;
 
 @Module(id = "cmds.push", name = "PushCommand")

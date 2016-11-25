@@ -1,12 +1,12 @@
 package br.com.brjdevs.miyuki.modules.init;
 
-import br.com.brjdevs.miyuki.loader.Module;
-import br.com.brjdevs.miyuki.loader.Module.*;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.*;
+import br.com.brjdevs.miyuki.lib.CollectionUtils;
+import br.com.brjdevs.miyuki.lib.DiscordUtils;
+import br.com.brjdevs.miyuki.lib.Java;
 import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 import br.com.brjdevs.miyuki.modules.db.DBModule;
-import br.com.brjdevs.miyuki.utils.CollectionUtils;
-import br.com.brjdevs.miyuki.utils.DiscordUtils;
-import br.com.brjdevs.miyuki.utils.Java;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.SelfUser;

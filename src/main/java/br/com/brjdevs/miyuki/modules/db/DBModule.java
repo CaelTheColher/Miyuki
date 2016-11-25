@@ -1,12 +1,12 @@
 package br.com.brjdevs.miyuki.modules.db;
 
-import br.com.brjdevs.miyuki.loader.Module;
-import br.com.brjdevs.miyuki.loader.Module.Instance;
-import br.com.brjdevs.miyuki.loader.Module.JDAInstance;
-import br.com.brjdevs.miyuki.loader.Module.Type;
-import br.com.brjdevs.miyuki.utils.data.ConfigUtils;
-import br.com.brjdevs.miyuki.utils.data.ReturnHandler;
-import br.com.brjdevs.miyuki.utils.data.ReturnHandler.HandlerInstance;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.Instance;
+import br.com.brjdevs.miyuki.core.Module.JDAInstance;
+import br.com.brjdevs.miyuki.core.Module.Type;
+import br.com.brjdevs.miyuki.lib.data.ConfigUtils;
+import br.com.brjdevs.miyuki.lib.data.ReturnHandler;
+import br.com.brjdevs.miyuki.lib.data.ReturnHandler.HandlerInstance;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

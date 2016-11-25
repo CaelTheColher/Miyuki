@@ -1,19 +1,19 @@
 package br.com.brjdevs.miyuki.modules.cmds.util;
 
 import br.com.brjdevs.java.lib.IOHelper;
+import br.com.brjdevs.miyuki.lib.EncodingUtil;
+import br.com.brjdevs.miyuki.lib.HTML2Discord;
+import br.com.brjdevs.miyuki.lib.PatternCollection;
+import br.com.brjdevs.miyuki.lib.StringUtils;
 import br.com.brjdevs.miyuki.modules.cmds.FeedCmd.Subscription;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
-import br.com.brjdevs.miyuki.utils.EncodingUtil;
-import br.com.brjdevs.miyuki.utils.HTML2Discord;
-import br.com.brjdevs.miyuki.utils.PatternCollection;
-import br.com.brjdevs.miyuki.utils.StringUtils;
 import com.rometools.rome.feed.synd.SyndEntry;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.net.URL;
 import java.util.function.Function;
 
-import static br.com.brjdevs.miyuki.utils.PatternCollection.compileReplace;
+import static br.com.brjdevs.miyuki.lib.PatternCollection.compileReplace;
 
 @SuppressWarnings("ConstantConditions")
 public class FeedingUtil {
