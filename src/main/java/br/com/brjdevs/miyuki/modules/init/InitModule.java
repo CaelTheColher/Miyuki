@@ -3,7 +3,6 @@ package br.com.brjdevs.miyuki.modules.init;
 import br.com.brjdevs.miyuki.core.Module;
 import br.com.brjdevs.miyuki.core.Module.*;
 import br.com.brjdevs.miyuki.lib.CollectionUtils;
-import br.com.brjdevs.miyuki.lib.DiscordUtils;
 import br.com.brjdevs.miyuki.lib.Java;
 import br.com.brjdevs.miyuki.modules.cmds.util.SessionManager;
 import br.com.brjdevs.miyuki.modules.db.DBModule;
@@ -44,8 +43,6 @@ public class InitModule {
 			logger.error("Error while trying to define TMPDir: ", e);
 		}
 		logger.info("TMP Directory: " + System.getProperty("java.io.tmpdir"));
-
-		DiscordUtils.hackJDALog();
 	}
 
 	@Ready

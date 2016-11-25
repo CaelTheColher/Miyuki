@@ -25,7 +25,7 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-@Module(id = "cmds.bot", name = "BotCommand", order = 7)
+@Module(id = "cmds.bot", name = "BotCommand", order = 21)
 public class BotCmd {
 
 	@Command("bot")

@@ -14,7 +14,7 @@ import net.dv8tion.jda.core.MessageBuilder;
 import static br.com.brjdevs.miyuki.modules.db.I18nModule.getLocale;
 import static br.com.brjdevs.miyuki.modules.db.I18nModule.getLocalized;
 
-@Module(id = "cmds.user", name = "UserCommand", order = 7)
+@Module(id = "cmds.user", name = "UserCommand", order = 21)
 public class UserCmd {
 	@Command("user")
 	private static ICommand createCommand() {
