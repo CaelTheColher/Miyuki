@@ -32,7 +32,7 @@ def versionObj = new Version(major: 1, minor: 0, revision: "BETA")
 group 'br.com.brjdevs.miyuki'
 version versionObj.toString()
 
-mainClassName = "br.com.brjdevs.miyuki.core.LoadController"
+mainClassName = "br.com.brjdevs.miyuki.framework.LoadController"
 
 //Tasks
 task sourcesForRelease(type: Copy) {
