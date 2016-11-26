@@ -65,8 +65,8 @@ public class I18nModule {
 
 	@PostReady
 	private static void postReady() {
-		localizeLocal("botname", jda.getSelfUser().getName());
-		localizeLocal("mention", jda.getSelfUser().getAsMention());
+		localizeDynamic("botname", jda.getSelfUser().getName());
+		localizeDynamic("mention", jda.getSelfUser().getAsMention());
 	}
 
 	@Command("i18n") //TODO Escrito nos Comentários
@@ -158,10 +158,7 @@ public class I18nModule {
 					pushTranslation(
 						unlocalized, locale,
 						genCmdUsage(
-							desc, params, info,
-							getLocalized("meta.noDesc", locale),
-							getLocalized("meta.noParams", locale),
-							getLocalized("meta.paramsMeta", locale)
+							desc, params, info
 						)
 					);
 
@@ -196,21 +193,16 @@ public class I18nModule {
 			.build();
 	}
 
-	private static String genCmdUsage(String desc, String params, String info, String noDesc, String noParams, String paramsMeta) {
-		desc = desc != null ? desc : noDesc != null ? noDesc : "null";
-		params = params != null ? params : noParams != null ? noParams : "null";
+	private static String genCmdUsage(String desc, String params, String info) {
+		desc = desc != null ? desc : "$(meta.noDesc)";
+		params = params != null ? params : "$(meta.noParams)";
 		info = info != null ? "\n  " + info.replace("\n", "\n  ") : "";
-		return desc + "\n" + (paramsMeta != null ? paramsMeta : "null") + ": " + params + info;
+		return desc + "\n" + "$(meta.noDesc)" + ": " + params + info;
 	}
 
-	private static void localize(String lang, String untranslated, String translated) {
-		pushTranslation(untranslated, lang, translated);
-		setModerated(untranslated, lang, true);
-	}
-
-	private static void localizeLocal(String untranslated, String translated) {
-		setLocalTranslation("dynamic." + untranslated, "en_US", translated);
-		setModerated("dynamic." + untranslated, "en_US", true);
+	private static void localizeDynamic(String untranslated, String translated) {
+		setLocalTranslation("dynamic." + untranslated, "root", translated);
+		setModerated("dynamic." + untranslated, "root", true);
 	}
 
 //	public static String generateJsonDump() {
@@ -270,6 +262,11 @@ public class I18nModule {
 		parents.put(locale, parent);
 	}
 
+	public static String parentOf(String locale) {
+		if (locale == null || locale.equals("root")) return null;
+		return parents.getOrDefault(locale, "root");
+	}
+
 	public static String getLocalized(String unlocalized, String locale) {
 		return dynamicTranslate(getBaseLocalized(unlocalized, locale), locale, null);
 	}
@@ -309,7 +306,7 @@ public class I18nModule {
 		Map<String, String> currentLocales = locales.get(unlocalizing);
 		while (unlocalizing.equals(localized) && localed != null) {
 			localized = currentLocales != null ? currentLocales.getOrDefault(localed, unlocalizing) : unlocalizing;
-			if (unlocalizing.equals(localized)) localed = parents.get(localed);
+			if (unlocalizing.equals(localized)) localed = parentOf(localed);
 			else if (localized.length() > 1 && localized.startsWith("$$=") && localized.endsWith(";")) { //This won't change the parent
 				localized = localized.substring(3, localized.length() - 1); //Substring localized
 				if (unlocalizing.equals(localized)) {//unlocalized = localized -> LOOP
