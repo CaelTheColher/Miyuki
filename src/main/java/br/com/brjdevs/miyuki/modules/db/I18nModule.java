@@ -194,9 +194,9 @@ public class I18nModule {
 	}
 
 	private static String genCmdUsage(String desc, String params, String info) {
-		desc = desc != null ? desc : "$(meta.noDesc)";
-		params = params != null ? params : "$(meta.noParams)";
-		info = info != null ? "\n  " + info.replace("\n", "\n  ") : "";
+		desc = (desc != null && !desc.isEmpty()) ? desc : "$(meta.noDesc)";
+		params = (params != null && !params.isEmpty()) ? params : "$(meta.noParams)";
+		info = (info != null && info.isEmpty()) ? ("\n  " + info.replace("\n", "\n  ")) : "";
 		return desc + "\n" + "$(meta.noDesc)" + ": " + params + info;
 	}
 
