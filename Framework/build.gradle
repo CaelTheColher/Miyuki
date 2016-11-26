@@ -2,21 +2,6 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 //Repositories
-buildscript {
-    repositories {
-        maven {
-            url 'http://maven.ej-technologies.com/repository'
-        }
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-    dependencies {
-        classpath 'com.github.edwgiz:maven-shade-plugin.log4j2-cachefile-transformer:2.6.1'
-        classpath "com.github.jengelman.gradle.plugins:shadow:1.2.3"
-    }
-}
-
 repositories {
     mavenCentral()
     jcenter()
@@ -24,25 +9,21 @@ repositories {
 
 //Plugins
 apply plugin: 'java'
-apply plugin: 'application'
-apply plugin: "com.github.johnrengelman.shadow"
 
 //Versions
 def versionObj = new Version(major: 1, minor: 0, revision: "BETA")
 group 'br.com.brjdevs.miyuki'
 version versionObj.toString()
 
-mainClassName = "br.com.brjdevs.miyuki.core.LoadController"
-
 //Tasks
 task sourcesForRelease(type: Copy) {
     from 'src/main/java'
     into 'build/filteredSrc'
     filter(ReplaceTokens, tokens: [
-            rootVersionMajor: versionObj.major.toString(),
-            rootVersionMinor: versionObj.minor.toString(),
-            rootVersionRevision: versionObj.revision.toString(),
-            rootVersionBuild: versionObj.build.toString()
+            frameworkVersionMajor: versionObj.major.toString(),
+            frameworkVersionMinor: versionObj.minor.toString(),
+            frameworkVersionRevision: versionObj.revision.toString(),
+            frameworkVersionBuild: versionObj.build.toString()
     ])
 }
 
@@ -58,22 +39,12 @@ compileJava {
 build {
     dependsOn clean
     dependsOn jar
-    dependsOn shadowJar
 
     jar.mustRunAfter clean
-    shadowJar.mustRunAfter jar
 }
 
 dependencies {
-    compile project("Modules")
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.2'
-}
-
-artifacts {
-    archives shadowJar
+    compile project(":Libs")
 }
 
 //Classes
