@@ -231,12 +231,12 @@ public class GuildModule {
 			pushUpdate(this, r -> r.hashMap("userPerms", this.userPerms));
 		}
 
-		public boolean getFlag(String s) {
-			return flags.getOrDefault(s, false);
+		public boolean getFlag(String flag) {
+			return flags.getOrDefault(flag, false);
 		}
 
-		public void setFlag(String s, Boolean flag) {
-			this.flags.put(s, flag);
+		public void setFlag(String flag, Boolean value) {
+			this.flags.put(flag, value);
 			pushUpdate(this, r -> r.hashMap("flags", flags));
 		}
 

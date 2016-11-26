@@ -7,11 +7,12 @@ import br.com.brjdevs.miyuki.core.commands.Commands;
 import br.com.brjdevs.miyuki.core.commands.ICommand;
 import br.com.brjdevs.miyuki.core.entities.ModuleResourceManager;
 import br.com.brjdevs.miyuki.modules.cmds.PushCmd;
+import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import com.google.gson.JsonObject;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
-import org.apache.commons.codec.digest.Md5Crypt;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -70,7 +71,7 @@ public class I18nModule {
 
 	@Command("i18n") //TODO Escrito nos Comentários
 	private static ICommand generateCommand() {
-		return Commands.buildTree()
+		return Commands.buildTree(PermissionsModule.BOT_ADMIN)
 			.addCommand("suggest", Commands.buildSimple("i18n.suggest.usage")
 				.setAction(event -> {
 					String[] values = advancedSplitArgs(event.getArgs(), 3);
@@ -80,9 +81,9 @@ public class I18nModule {
 						return;
 					}
 
-					if (value.length() > 7 && value.startsWith("base64:")) {
-						value = decode(value.substring(7));
-					}
+					if (unlocalized.startsWith("!")) unlocalized = unlocalized.substring(1);
+
+					if (value.length() > 7 && value.startsWith("base64:")) value = decode(value.substring(7));
 
 					if (moderated.contains(unlocalized + ":" + locale)) {
 						//TODO Mensagem fofa
@@ -93,7 +94,7 @@ public class I18nModule {
 
 					Suggestion suggestion = new Suggestion(unlocalized, locale, value, event.getAuthor());
 
-					String suggestMiniMd5 = Md5Crypt.md5Crypt(suggestion.toString().getBytes()).subSequence(0, 5).toString();
+					String suggestMiniMd5 = DigestUtils.md5Hex(suggestion.toString().getBytes()).substring(0, 5);
 
 					suggestions.put(suggestMiniMd5, suggestion);
 
@@ -118,6 +119,8 @@ public class I18nModule {
 						return;
 					}
 
+					if (value.length() > 7 && value.startsWith("base64:")) value = decode(value.substring(7));
+
 					boolean moderated = unlocalized.startsWith("!");
 					if (moderated) unlocalized = unlocalized.substring(1);
 					pushTranslation(unlocalized, locale, value);
@@ -132,6 +135,41 @@ public class I18nModule {
 				// Mas com os argumentos do localizeCommand
 				.build()
 			)
+			.addCommand("localizeCommand", Commands.buildSimple()
+				// <command> <locale> <[base64:]desc> <[base64:]params> <[base64:]info>
+				// paramsMeta, noParams, noDesc <= localized(%s,locale)
+				// localize(genCmdUsage())
+				// return bool(true)
+				.setAction(event -> {
+					String[] values = advancedSplitArgs(event.getArgs(), 5);
+					String unlocalized = values[0], locale = values[1], desc = values[2], params = values[3], info = values[4];
+					if (unlocalized.isEmpty() || locale.isEmpty()) {
+						event.awaitTyping(true).getAnswers().invalidargs();
+						return;
+					}
+
+					if (desc.length() > 7 && desc.startsWith("base64:")) desc = decode(desc.substring(7));
+					if (params.length() > 7 && params.startsWith("base64:")) params = decode(params.substring(7));
+					if (info.length() > 7 && info.startsWith("base64:")) info = decode(info.substring(7));
+
+					boolean moderated = unlocalized.startsWith("!");
+					if (moderated) unlocalized = unlocalized.substring(1);
+
+					pushTranslation(
+						unlocalized, locale,
+						genCmdUsage(
+							desc, params, info,
+							getLocalized("meta.noDesc", locale),
+							getLocalized("meta.noParams", locale),
+							getLocalized("meta.paramsMeta", locale)
+						)
+					);
+
+					setModerated(unlocalized, locale, moderated);
+					event.awaitTyping(true).getAnswers().bool(true).queue();
+				})
+				.build()
+			)
 			.addCommand("remove", Commands.buildSimple()
 				// Args: <unlocalized> <locale|"all">
 				// Apaga a tradução
@@ -141,13 +179,6 @@ public class I18nModule {
 				// Args: <unlocalized> <locale|"all">
 				// Esse comando deverá funcionar igual ao suggest
 				// Mas com os argumentos do remove
-				.build()
-			)
-			.addCommand("localizeCommand", Commands.buildSimple()
-				// <command> <locale> <[base64:]desc> <params> <info>
-				// paramsMeta, noParams, noDesc <= localized(%s,locale)
-				// localize(genCmdUsage())
-				// return bool(true)
 				.build()
 			)
 			.addCommand("list", Commands.buildSimple()
@@ -165,11 +196,11 @@ public class I18nModule {
 			.build();
 	}
 
-	private static String genCmdUsage(String desc, String params, String info, Optional<String> noDesc, Optional<String> noParams, Optional<String> paramsMeta) {
-		desc = desc != null ? desc : noDesc.orElse("null");
-		params = params != null ? params : noParams.orElse("null");
-		info = params != null ? "\n  " + info.replace("\n", "\n  ") : "";
-		return desc + "\n" + paramsMeta.orElse("null") + ": " + params + info;
+	private static String genCmdUsage(String desc, String params, String info, String noDesc, String noParams, String paramsMeta) {
+		desc = desc != null ? desc : noDesc != null ? noDesc : "null";
+		params = params != null ? params : noParams != null ? noParams : "null";
+		info = info != null ? "\n  " + info.replace("\n", "\n  ") : "";
+		return desc + "\n" + (paramsMeta != null ? paramsMeta : "null") + ": " + params + info;
 	}
 
 	private static void localize(String lang, String untranslated, String translated) {
@@ -311,11 +342,7 @@ public class I18nModule {
 		}
 
 		public void accept() {
-			String unlocalizedVar = unlocalized;
-			boolean moderated = unlocalizedVar.startsWith("!");
-			if (moderated) unlocalizedVar = unlocalized.substring(1);
-			pushTranslation(unlocalizedVar, locale, value);
-			setModerated(unlocalizedVar, locale, moderated);
+			pushTranslation(unlocalized, locale, value);
 			//TODO GIB XP (PROFILES)
 			suggestions.values().removeIf(this::equals);
 		}
