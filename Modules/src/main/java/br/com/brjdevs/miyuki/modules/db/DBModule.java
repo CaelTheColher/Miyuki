@@ -1,5 +1,6 @@
 package br.com.brjdevs.miyuki.modules.db;
 
+import br.com.brjdevs.miyuki.framework.LoadController;
 import br.com.brjdevs.miyuki.framework.Module;
 import br.com.brjdevs.miyuki.framework.Module.Instance;
 import br.com.brjdevs.miyuki.framework.Module.JDAInstance;
@@ -78,6 +79,7 @@ public class DBModule {
 		);
 
 		conn = r.connection().hostname(dbConfig.get("hostname").getAsString()).port(dbConfig.get("port").getAsInt()).db("bot").connect();
+		LoadController.token = mainConfig.get("tokens").getAsString();
 	}
 
 	public static DBModule getInstance() {

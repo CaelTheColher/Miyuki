@@ -24,6 +24,7 @@ import static br.com.brjdevs.miyuki.framework.LoadControllerUtils.*;
 import static br.com.brjdevs.miyuki.lib.log.LogUtils.logger;
 
 public class LoadController {
+	public static final Reflections REFLECTIONS = new Reflections("");
 	private static final Logger logger = logger("LoadController");
 	public static String[] args;
 	public static String token = null;
@@ -193,8 +194,7 @@ public class LoadController {
 	}
 
 	private static Set<Class<?>> scanClasspath() {
-		return new Reflections("br.com.brjdevs.miyuki")
-			.getTypesAnnotatedWith(Module.class);
+		return REFLECTIONS.getTypesAnnotatedWith(Module.class);
 	}
 
 	public static String resource(Class c, String file) {
