@@ -193,7 +193,7 @@ public class GuildModule {
 		private List<String> cmdPrefixes = new ArrayList<>(Arrays.asList(DEFAULT_PREFIXES));
 
 		private Data() {
-			flags.put("cleanup", true);
+			flags.put("cleanup", false);
 			flags.put("vip", true);
 			userPerms.put("default", PermissionsModule.BASE_USER);
 			all.add(this);
