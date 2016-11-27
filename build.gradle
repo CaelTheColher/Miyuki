@@ -28,11 +28,11 @@ apply plugin: 'application'
 apply plugin: "com.github.johnrengelman.shadow"
 
 //Versions
-def versionObj = new Version(major: 1, minor: 0, revision: "BETA")
+def versionObj = new Version(major: 1, minor: 1, revision: "BETA")
 group 'br.com.brjdevs.miyuki'
 version versionObj.toString()
 
-mainClassName = "br.com.brjdevs.miyuki.framework.LoadController"
+mainClassName = "br.com.brjdevs.miyuki.core.LoadController"
 
 //Tasks
 task sourcesForRelease(type: Copy) {

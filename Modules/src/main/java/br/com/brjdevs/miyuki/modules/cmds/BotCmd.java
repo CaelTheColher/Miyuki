@@ -1,12 +1,13 @@
 package br.com.brjdevs.miyuki.modules.cmds;
 
-import br.com.brjdevs.miyuki.core.FrameworkInfo;
+import br.com.brjdevs.miyuki.core.CoreInfo;
 import br.com.brjdevs.miyuki.core.LoadController;
 import br.com.brjdevs.miyuki.core.Module;
 import br.com.brjdevs.miyuki.core.Module.Command;
 import br.com.brjdevs.miyuki.core.Module.SelfUserInstance;
 import br.com.brjdevs.miyuki.core.entities.ModuleContainer;
 import br.com.brjdevs.miyuki.lib.*;
+import br.com.brjdevs.miyuki.lib.core.CoreLibInfo;
 import br.com.brjdevs.miyuki.modules.ModuleInfo;
 import br.com.brjdevs.miyuki.modules.cmds.manager.CommandManager.TooFast;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
@@ -62,11 +63,12 @@ public class BotCmd {
 					builder.setThumbnail(getAvatarUrl(selfUser));
 					builder.setColor(event.getOriginGuild().getSelfMember().getColor() == null ? Color.decode("#f1c40f") : event.getOriginGuild().getSelfMember().getColor());
 					builder.setFooter("Requested by " + event.getAuthor().getName() + " at " + DataFormatter.format(Instant.now().atOffset(ZoneOffset.UTC)), getAvatarUrl(event.getAuthor()));
-					builder.addField("Bot Version", ROOT_VERSION, false);
-					builder.addField("Bot Modules", ModuleInfo.VERSION, false);
-					builder.addField("Bot Framework", FrameworkInfo.VERSION, false);
-					builder.addField("Bot Library", LibInfo.VERSION, false);
-					builder.addField("JDA Version", JDAInfo.VERSION, false);
+					builder.addField("**Bot Version**", ROOT_VERSION, false);
+					builder.addField("**Bot Modules Version**", ModuleInfo.VERSION, false);
+					builder.addField("**Bot Core Version**", CoreInfo.VERSION, false);
+					builder.addField("**Bot Core Library Version**", CoreLibInfo.VERSION, false);
+					builder.addField("**Bot Library Version**", LibInfo.VERSION, false);
+					builder.addField("**JDA Version**", JDAInfo.VERSION, false);
 					event.awaitTyping(true).sendMessage(builder.build()).queue();
 				})
 				.build()

@@ -1,6 +1,6 @@
 package br.com.brjdevs.miyuki.core;
 
-public class FrameworkInfo {
+public class CoreInfo {
 	public static final String VERSION_MAJOR = "@frameworkVersionMajor@";
 	public static final String VERSION_MINOR = "@frameworkVersionMinor@";
 	public static final String VERSION_REVISION = "@frameworkVersionRevision@";
