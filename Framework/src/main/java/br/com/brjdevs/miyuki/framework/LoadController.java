@@ -94,7 +94,7 @@ public class LoadController {
 					modules.forEach(container -> container.getMethodsForAnnotation(CommandRegister.class).forEach(method -> {
 						try {
 							method.setAccessible(true);
-							method.invoke(registerEvent);
+							method.invoke(container.getRealInstance(), registerEvent);
 						} catch (Exception e) {
 							logger.error("Error while registering command \"" + m.getAnnotation(Command.class).value() + "\" from " + m + " into " + method + ":", e);
 						}
