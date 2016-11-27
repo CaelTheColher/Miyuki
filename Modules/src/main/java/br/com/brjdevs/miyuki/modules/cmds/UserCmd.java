@@ -1,10 +1,10 @@
 package br.com.brjdevs.miyuki.modules.cmds;
 
 
-import br.com.brjdevs.miyuki.framework.Module;
-import br.com.brjdevs.miyuki.framework.Module.Command;
-import br.com.brjdevs.miyuki.lib.DiscordUtils;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.Command;
 import br.com.brjdevs.miyuki.lib.Holder;
+import br.com.brjdevs.miyuki.lib.core.DiscordUtils;
 import br.com.brjdevs.miyuki.modules.cmds.manager.entities.Commands;
 import br.com.brjdevs.miyuki.modules.cmds.manager.entities.Commands.TreeCommandBuilder.NotFoundAction;
 import br.com.brjdevs.miyuki.modules.cmds.manager.entities.ICommand;

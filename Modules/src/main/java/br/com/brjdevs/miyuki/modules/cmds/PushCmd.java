@@ -1,7 +1,7 @@
 package br.com.brjdevs.miyuki.modules.cmds;
 
-import br.com.brjdevs.miyuki.framework.Module;
-import br.com.brjdevs.miyuki.framework.Module.*;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.*;
 import br.com.brjdevs.miyuki.lib.Holder;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.cmds.manager.entities.Commands;

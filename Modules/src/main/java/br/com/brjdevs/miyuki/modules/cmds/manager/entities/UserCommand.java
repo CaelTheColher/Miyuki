@@ -12,7 +12,7 @@
 
 package br.com.brjdevs.miyuki.modules.cmds.manager.entities;
 
-import br.com.brjdevs.miyuki.lib.DiscordUtils;
+import br.com.brjdevs.miyuki.lib.core.DiscordUtils;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
 

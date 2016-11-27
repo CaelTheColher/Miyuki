@@ -1,10 +1,10 @@
 package br.com.brjdevs.miyuki.modules.cmds;
 
 import br.com.brjdevs.java.lib.IOHelper;
-import br.com.brjdevs.miyuki.framework.Module;
-import br.com.brjdevs.miyuki.framework.Module.Command;
-import br.com.brjdevs.miyuki.framework.Module.LoggerInstance;
-import br.com.brjdevs.miyuki.framework.Module.PostReady;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.Command;
+import br.com.brjdevs.miyuki.core.Module.LoggerInstance;
+import br.com.brjdevs.miyuki.core.Module.PostReady;
 import br.com.brjdevs.miyuki.lib.*;
 import br.com.brjdevs.miyuki.lib.data.ConfigUtils;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;

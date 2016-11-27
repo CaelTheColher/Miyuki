@@ -1,7 +1,7 @@
 package br.com.brjdevs.miyuki.modules.init;
 
-import br.com.brjdevs.miyuki.framework.Module;
-import br.com.brjdevs.miyuki.framework.Module.PostReady;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.PostReady;
 import br.com.brjdevs.miyuki.lib.Pastee;
 import br.com.brjdevs.miyuki.modules.cmds.PushCmd;
 import ch.qos.logback.classic.Level;

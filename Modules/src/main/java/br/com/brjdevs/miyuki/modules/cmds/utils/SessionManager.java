@@ -3,7 +3,7 @@ package br.com.brjdevs.miyuki.modules.cmds.utils;
 
 import br.com.brjdevs.miyuki.lib.DataFormatter;
 import br.com.brjdevs.miyuki.lib.TaskManager;
-import br.com.brjdevs.miyuki.lib.log.LogUtils;
+import br.com.brjdevs.miyuki.lib.core.log.LogUtils;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.cmds.manager.entities.CommandEvent;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;

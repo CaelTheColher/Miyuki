@@ -44,7 +44,8 @@ build {
 }
 
 dependencies {
-    compile project(":Framework")
+    compile project(":Core")
+    compile project(":Libs")
 }
 
 sourceCompatibility = 1.8

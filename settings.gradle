@@ -1,1 +1,1 @@
-include 'Modules', 'Framework', 'Libs'
+include 'Modules', 'Core', 'Libs', 'CoreLibs'

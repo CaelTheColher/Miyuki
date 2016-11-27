@@ -1,8 +1,8 @@
 package br.com.brjdevs.miyuki.modules.db;
 
-import br.com.brjdevs.miyuki.framework.Module;
-import br.com.brjdevs.miyuki.framework.Module.*;
-import br.com.brjdevs.miyuki.framework.entities.ModuleResourceManager;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.*;
+import br.com.brjdevs.miyuki.core.entities.ModuleResourceManager;
 import br.com.brjdevs.miyuki.modules.cmds.PushCmd;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;
 import br.com.brjdevs.miyuki.modules.cmds.manager.entities.CommandEvent;

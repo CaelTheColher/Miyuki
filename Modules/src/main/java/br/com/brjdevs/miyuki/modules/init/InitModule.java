@@ -1,9 +1,9 @@
 package br.com.brjdevs.miyuki.modules.init;
 
-import br.com.brjdevs.miyuki.framework.Module;
-import br.com.brjdevs.miyuki.framework.Module.*;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.*;
 import br.com.brjdevs.miyuki.lib.CollectionUtils;
-import br.com.brjdevs.miyuki.lib.Java;
+import br.com.brjdevs.miyuki.lib.core.Java;
 import br.com.brjdevs.miyuki.modules.cmds.manager.CommandManager;
 import br.com.brjdevs.miyuki.modules.cmds.utils.SessionManager;
 import br.com.brjdevs.miyuki.modules.db.DBModule;

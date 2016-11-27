@@ -1,0 +1,68 @@
+//Imports
+import org.apache.tools.ant.filters.ReplaceTokens
+
+//Repositories
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+//Plugins
+apply plugin: 'java'
+
+//Versions
+def versionObj = new Version(major: 1, minor: 0, revision: "BETA")
+group 'br.com.brjdevs.miyuki'
+version versionObj.toString()
+
+//Tasks
+task sourcesForRelease(type: Copy) {
+    from 'src/main/java'
+    into 'build/filteredSrc'
+    filter(ReplaceTokens, tokens: [
+            corelibVersionMajor: versionObj.major.toString(),
+            corelibVersionMinor: versionObj.minor.toString(),
+            corelibVersionRevision: versionObj.revision.toString(),
+            corelibVersionBuild: versionObj.build.toString()
+    ])
+}
+
+compileJava {
+    source = sourcesForRelease.destinationDir
+    classpath = sourceSets.main.compileClasspath
+
+    options.encoding = 'UTF-8'
+
+    dependsOn sourcesForRelease
+}
+
+build {
+    dependsOn clean
+    dependsOn jar
+
+    jar.mustRunAfter clean
+}
+
+dependencies {
+    compile 'net.dv8tion:JDA:3.0.BETA_95'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '0.9.26'
+    compile "org.reflections:reflections:0.9.10"
+    compile group: 'com.google.code.gson', name: 'gson', version: '1.7.2'
+    compile group: 'org.apache.commons', name: 'commons-io', version: '1.3.2'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+//Classes
+class Version {
+    String major, minor, revision
+
+    String getBuild() {
+        System.getenv("DRONE_BUILD_NUMBER") ?: System.getProperty("DRONE_BUILD_NUMBER") ?: "DEV"
+    }
+
+    String toString() {
+        "${major}.${minor}.${revision}_$build"
+    }
+}

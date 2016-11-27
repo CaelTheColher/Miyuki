@@ -1,9 +1,9 @@
 package br.com.brjdevs.miyuki.modules.init;
 
-import br.com.brjdevs.miyuki.framework.Module;
-import br.com.brjdevs.miyuki.lib.DiscordUtils;
+import br.com.brjdevs.miyuki.core.Module;
 import br.com.brjdevs.miyuki.lib.Holder;
 import br.com.brjdevs.miyuki.lib.StringUtils;
+import br.com.brjdevs.miyuki.lib.core.DiscordUtils;
 import br.com.brjdevs.miyuki.modules.cmds.utils.SessionManager;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;

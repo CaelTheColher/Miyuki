@@ -1,6 +1,6 @@
 package br.com.brjdevs.miyuki.lib.data;
 
-import br.com.brjdevs.miyuki.lib.log.LogUtils;
+import br.com.brjdevs.miyuki.lib.core.log.LogUtils;
 import com.google.gson.*;
 import org.slf4j.Logger;
 

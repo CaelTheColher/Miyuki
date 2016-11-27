@@ -1,11 +1,11 @@
 package br.com.brjdevs.miyuki.modules.cmds;
 
-import br.com.brjdevs.miyuki.framework.FrameworkInfo;
-import br.com.brjdevs.miyuki.framework.LoadController;
-import br.com.brjdevs.miyuki.framework.Module;
-import br.com.brjdevs.miyuki.framework.Module.Command;
-import br.com.brjdevs.miyuki.framework.Module.SelfUserInstance;
-import br.com.brjdevs.miyuki.framework.entities.ModuleContainer;
+import br.com.brjdevs.miyuki.core.FrameworkInfo;
+import br.com.brjdevs.miyuki.core.LoadController;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.Command;
+import br.com.brjdevs.miyuki.core.Module.SelfUserInstance;
+import br.com.brjdevs.miyuki.core.entities.ModuleContainer;
 import br.com.brjdevs.miyuki.lib.*;
 import br.com.brjdevs.miyuki.modules.ModuleInfo;
 import br.com.brjdevs.miyuki.modules.cmds.manager.CommandManager.TooFast;

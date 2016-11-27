@@ -13,7 +13,7 @@
 package br.com.brjdevs.miyuki.modules.cmds.manager.entities;
 
 import br.com.brjdevs.miyuki.lib.Holder;
-import br.com.brjdevs.miyuki.lib.log.LogUtils;
+import br.com.brjdevs.miyuki.lib.core.log.LogUtils;
 import br.com.brjdevs.miyuki.modules.cmds.PushCmd;
 import br.com.brjdevs.miyuki.modules.cmds.manager.CommandManager;
 import br.com.brjdevs.miyuki.modules.cmds.manager.PermissionsModule;

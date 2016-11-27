@@ -1,8 +1,8 @@
 package br.com.brjdevs.miyuki.modules.cmds;
 
 import br.com.brjdevs.java.lib.IOHelper;
-import br.com.brjdevs.miyuki.framework.Module;
-import br.com.brjdevs.miyuki.framework.Module.*;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.*;
 import br.com.brjdevs.miyuki.lib.Formatter;
 import br.com.brjdevs.miyuki.lib.TaskManager;
 import br.com.brjdevs.miyuki.modules.cmds.manager.entities.Commands;

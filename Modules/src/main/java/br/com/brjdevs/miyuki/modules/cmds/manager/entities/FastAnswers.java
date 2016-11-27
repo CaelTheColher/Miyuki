@@ -28,7 +28,7 @@ import org.slf4j.Logger;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import static br.com.brjdevs.miyuki.lib.log.LogUtils.logger;
+import static br.com.brjdevs.miyuki.lib.core.log.LogUtils.logger;
 
 
 public class FastAnswers {

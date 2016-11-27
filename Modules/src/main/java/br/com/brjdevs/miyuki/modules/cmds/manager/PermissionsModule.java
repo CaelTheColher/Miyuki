@@ -1,8 +1,8 @@
 package br.com.brjdevs.miyuki.modules.cmds.manager;
 
-import br.com.brjdevs.miyuki.framework.Module;
-import br.com.brjdevs.miyuki.framework.Module.JDAInstance;
-import br.com.brjdevs.miyuki.lib.DiscordUtils;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.JDAInstance;
+import br.com.brjdevs.miyuki.lib.core.DiscordUtils;
 import br.com.brjdevs.miyuki.modules.cmds.manager.entities.CommandEvent;
 import br.com.brjdevs.miyuki.modules.db.DBModule;
 import br.com.brjdevs.miyuki.modules.db.GuildModule;

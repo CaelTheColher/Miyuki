@@ -1,9 +1,9 @@
 package br.com.brjdevs.miyuki.modules.db;
 
-import br.com.brjdevs.miyuki.framework.Module;
-import br.com.brjdevs.miyuki.framework.Module.JDAInstance;
-import br.com.brjdevs.miyuki.framework.Module.PreReady;
-import br.com.brjdevs.miyuki.framework.Module.Ready;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.JDAInstance;
+import br.com.brjdevs.miyuki.core.Module.PreReady;
+import br.com.brjdevs.miyuki.core.Module.Ready;
 import br.com.brjdevs.miyuki.lib.StringUtils;
 import br.com.brjdevs.miyuki.lib.TaskManager;
 import br.com.brjdevs.miyuki.lib.data.ConfigUtils;

@@ -1,7 +1,7 @@
 package br.com.brjdevs.miyuki.modules.db;
 
-import br.com.brjdevs.miyuki.framework.Module;
-import br.com.brjdevs.miyuki.framework.Module.OnEnabled;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.OnEnabled;
 import br.com.brjdevs.miyuki.lib.CollectionUtils;
 import br.com.brjdevs.miyuki.lib.TaskManager;
 import br.com.brjdevs.miyuki.lib.data.Commitable;

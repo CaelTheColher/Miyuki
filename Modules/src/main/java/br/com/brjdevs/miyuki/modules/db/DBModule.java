@@ -1,10 +1,10 @@
 package br.com.brjdevs.miyuki.modules.db;
 
-import br.com.brjdevs.miyuki.framework.LoadController;
-import br.com.brjdevs.miyuki.framework.Module;
-import br.com.brjdevs.miyuki.framework.Module.Instance;
-import br.com.brjdevs.miyuki.framework.Module.JDAInstance;
-import br.com.brjdevs.miyuki.framework.Module.Type;
+import br.com.brjdevs.miyuki.core.LoadController;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.Instance;
+import br.com.brjdevs.miyuki.core.Module.JDAInstance;
+import br.com.brjdevs.miyuki.core.Module.Type;
 import br.com.brjdevs.miyuki.lib.data.ConfigUtils;
 import br.com.brjdevs.miyuki.lib.data.ReturnHandler;
 import br.com.brjdevs.miyuki.lib.data.ReturnHandler.HandlerInstance;

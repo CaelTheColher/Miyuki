@@ -26,8 +26,8 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 
 import static br.com.brjdevs.miyuki.lib.AsyncUtils.sleep;
-import static br.com.brjdevs.miyuki.lib.DiscordUtils.submit;
 import static br.com.brjdevs.miyuki.lib.StringUtils.splitArgs;
+import static br.com.brjdevs.miyuki.lib.core.DiscordUtils.submit;
 
 
 public class CommandEvent {

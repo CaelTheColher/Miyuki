@@ -1,9 +1,9 @@
 package br.com.brjdevs.miyuki.modules.cmds.manager;
 
-import br.com.brjdevs.miyuki.framework.Module;
-import br.com.brjdevs.miyuki.framework.Module.CommandRegister;
-import br.com.brjdevs.miyuki.framework.Module.LoggerInstance;
-import br.com.brjdevs.miyuki.framework.entities.CommandRegisterEvent;
+import br.com.brjdevs.miyuki.core.Module;
+import br.com.brjdevs.miyuki.core.Module.CommandRegister;
+import br.com.brjdevs.miyuki.core.Module.LoggerInstance;
+import br.com.brjdevs.miyuki.core.entities.CommandRegisterEvent;
 import br.com.brjdevs.miyuki.lib.TaskManager;
 import br.com.brjdevs.miyuki.modules.cmds.manager.entities.CommandEvent;
 import br.com.brjdevs.miyuki.modules.cmds.manager.entities.ICommand;
