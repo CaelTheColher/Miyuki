@@ -4,6 +4,7 @@ import br.com.brjdevs.miyuki.framework.FrameworkInfo;
 import br.com.brjdevs.miyuki.framework.LoadController;
 import br.com.brjdevs.miyuki.framework.Module;
 import br.com.brjdevs.miyuki.framework.Module.Command;
+import br.com.brjdevs.miyuki.framework.Module.SelfUserInstance;
 import br.com.brjdevs.miyuki.framework.entities.ModuleContainer;
 import br.com.brjdevs.miyuki.lib.*;
 import br.com.brjdevs.miyuki.modules.ModuleInfo;
@@ -14,13 +15,13 @@ import br.com.brjdevs.miyuki.modules.cmds.manager.entities.ICommand;
 import br.com.brjdevs.miyuki.modules.cmds.utils.SessionManager;
 import br.com.brjdevs.miyuki.modules.cmds.utils.scripting.JS;
 import br.com.brjdevs.miyuki.modules.db.I18nModule;
-import br.com.brjdevs.miyuki.modules.db.UserModule;
 import br.com.brjdevs.miyuki.modules.init.BotGreeter;
 import br.com.brjdevs.miyuki.modules.init.DiscordLogBack;
 import br.com.brjdevs.miyuki.modules.init.InitModule;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDAInfo;
 import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.entities.SelfUser;
 
 import java.awt.*;
 import java.io.File;
@@ -30,9 +31,13 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import static br.com.brjdevs.miyuki.modules.db.UserModule.getAvatarUrl;
+
 @Module(id = "cmds.bot", name = "BotCommand", order = 21)
 public class BotCmd {
 	private static final String ROOT_VERSION;
+	@SelfUserInstance
+	private static SelfUser selfUser;
 
 	static {
 		String value;
@@ -54,8 +59,9 @@ public class BotCmd {
 			.addCommand("version", Commands.buildSimple("bot.version.usage")
 				.setAction(event -> {
 					EmbedBuilder builder = new EmbedBuilder();
+					builder.setThumbnail(getAvatarUrl(selfUser));
 					builder.setColor(event.getOriginGuild().getSelfMember().getColor() == null ? Color.decode("#f1c40f") : event.getOriginGuild().getSelfMember().getColor());
-					builder.setFooter("Requested by " + event.getAuthor().getName() + " at " + DataFormatter.format(Instant.now().atOffset(ZoneOffset.UTC)), UserModule.getAvatarUrl(event.getAuthor()));
+					builder.setFooter("Requested by " + event.getAuthor().getName() + " at " + DataFormatter.format(Instant.now().atOffset(ZoneOffset.UTC)), getAvatarUrl(event.getAuthor()));
 					builder.addField("Bot Version", ROOT_VERSION, false);
 					builder.addField("Bot Modules", ModuleInfo.VERSION, false);
 					builder.addField("Bot Framework", FrameworkInfo.VERSION, false);

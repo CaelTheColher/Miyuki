@@ -27,10 +27,8 @@ import java.util.Date;
 //TODO CLEANUP THIS WHOLE SHIT. TOO MUCH TO FIX.
 @SuppressWarnings("unchecked")
 public class SessionManager {
-
 	public static Date startDate = null;
-	//public static int loads = 0, saves = 0, crashes = 0, noperm = 0, invalidargs = 0, msgs = 0, cmds = 0, wgets = 0, toofasts = 0;
-	public static int restActions = 0, toofasts = 0, cmds = 0, crashes = 0, noperm = 0, invalidargs = 0, wgets = 0;
+	public static long restActions = 0, toofasts = 0, cmds = 0, crashes = 0, noperm = 0, invalidargs = 0, wgets = 0;
 
 	public static double cpuUsage = 0;
 
