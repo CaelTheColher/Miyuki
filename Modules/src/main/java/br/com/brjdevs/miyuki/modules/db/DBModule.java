@@ -79,7 +79,7 @@ public class DBModule {
 		);
 
 		conn = r.connection().hostname(dbConfig.get("hostname").getAsString()).port(dbConfig.get("port").getAsInt()).db("bot").connect();
-		LoadController.token = mainConfig.get("tokens").getAsString();
+		LoadController.token = mainConfig.get("token").getAsString();
 	}
 
 	public static DBModule getInstance() {

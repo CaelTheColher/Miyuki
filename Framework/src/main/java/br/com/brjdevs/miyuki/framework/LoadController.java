@@ -24,7 +24,7 @@ import static br.com.brjdevs.miyuki.framework.LoadControllerUtils.*;
 import static br.com.brjdevs.miyuki.lib.log.LogUtils.logger;
 
 public class LoadController {
-	public static final Reflections REFLECTIONS = new Reflections("");
+	public static final Reflections REFLECTIONS = new Reflections(resource(LoadController.class, "/root.miyuki"));
 	private static final Logger logger = logger("LoadController");
 	public static String[] args;
 	public static String token = null;
