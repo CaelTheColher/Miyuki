@@ -42,7 +42,7 @@ public class CommandManager {
 		if (msgEvent.getAuthor().equals(msgEvent.getJDA().getSelfUser())) {
 			asyncSleepThen(15 * 1000, () -> {
 				if (GuildModule.fromDiscord(msgEvent.getGuild()).getFlag("cleanup"))
-					msgEvent.getMessage().deleteMessage();
+					msgEvent.getMessage().deleteMessage().queue();
 			}).run();
 			return;
 		} else if (msgEvent.getAuthor().isBot()) {
